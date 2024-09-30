@@ -192,7 +192,7 @@ The goal for this artifact is to define how users will interact with our website
 
 Changes made to the first submission:
 1. Added A1 and A2
-1. ...
+2. Artifacts fixing (1 and 2)
 
 ***
 GROUP112, 26/09/2024
