@@ -1,0 +1,60 @@
+@startuml
+left to right direction
+rectangle "4NSWERS Q&A Forum" {
+
+  actor Guest
+  actor User
+  actor Poster as PosterUser
+  actor Responder as ResponderUser
+  actor Voter as VoterUser
+  actor "Community Admin" as AdminUser
+
+  ' Guest Interactions
+  Guest -down-> (Read Questions and Answers) : US01
+  Guest --> (Create an Account) : US02
+  Guest --> (Sign in to Account) : US03
+  Guest --> (Search for Questions) : US04
+  Guest --> (Search for Users) : US05
+
+  ' User Interactions
+  User -down-> (Log out) : US06
+  User --> (View Closed Questions) : US07
+  User --> (Report a Question/Answer) : US08
+  User --> (Edit Profile) : US09
+  User --> (Delete Profile) : US10
+  User --> (Manage Posts) : US11
+
+  ' Poster Interactions
+  PosterUser --> (Post a Question) : US12
+  PosterUser --> (Set a Time Limit for Question) : US13
+  PosterUser --> (Edit Own Question) : US14
+  PosterUser --> (Close Question by Selecting Answer) : US15
+  PosterUser --> (Earn Points for Popular Question) : US16
+
+  ' Responder Interactions
+  ResponderUser --> (Respond to a Question) : US17
+  ResponderUser --> (Receive Votes on Answer) : US18
+  ResponderUser --> (See if Answer is Marked USEFUL) : US19
+  ResponderUser --> (Earn Points for Top Answer) : US20
+
+  ' Voter Interactions
+  VoterUser --> (Vote on Answers) : US21
+  VoterUser --> (View Answer Rankings) : US22
+  VoterUser --> (Earn Points for Voting) : US23
+
+  ' Admin Interactions
+  AdminUser --> (Issue Alerts on Questions) : US24
+  AdminUser --> (Issue Alerts on Answers) : US25
+  AdminUser --> (Remove Harmful Content) : US26
+  AdminUser --> (Moderate Users in the Community) : US27
+  AdminUser --> (Check Reported Answers) : US28
+
+  ' Relations between actors and processes
+  Guest -right-> User : "Creates Account"
+  User -right-> PosterUser : "Posts Question"
+  PosterUser -right-> ResponderUser : "Receives Answer"
+  ResponderUser -right-> VoterUser : "Receives Votes"
+  VoterUser -right-> AdminUser : "Reports Issues"
+}
+
+@enduml
