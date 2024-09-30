@@ -6,6 +6,7 @@ rectangle "4NSWERS Q&A Forum" {
   actor User
   actor Poster as PosterUser
   actor Responder as ResponderUser
+  actor Commenter as CommentUser
   actor Voter as VoterUser
   actor "Community Admin" as AdminUser
 
@@ -37,24 +38,29 @@ rectangle "4NSWERS Q&A Forum" {
   ResponderUser --> (See if Answer is Marked USEFUL) : US19
   ResponderUser --> (Earn Points for Top Answer) : US20
 
+  ' Commenter Interactions
+  CommentUser --> (Comment on Responses) : US21
+
   ' Voter Interactions
-  VoterUser --> (Vote on Answers) : US21
-  VoterUser --> (View Answer Rankings) : US22
-  VoterUser --> (Earn Points for Voting) : US23
+  VoterUser --> (Vote on Answers) : US22
+  VoterUser --> (View Answer Rankings) : US23
+  VoterUser --> (Earn Points for Voting) : US24
 
   ' Admin Interactions
-  AdminUser --> (Issue Alerts on Questions) : US24
-  AdminUser --> (Issue Alerts on Answers) : US25
-  AdminUser --> (Remove Harmful Content) : US26
-  AdminUser --> (Moderate Users in the Community) : US27
-  AdminUser --> (Check Reported Answers) : US28
+  AdminUser --> (Issue Alerts on Questions) : US25
+  AdminUser --> (Issue Alerts on Answers) : US26
+  AdminUser --> (Remove Harmful Content) : US27
+  AdminUser --> (Moderate Users in the Community) : US28
+  AdminUser --> (Check Reported Answers) : US29
 
   ' Relations between actors and processes
   Guest -right-> User : "Creates Account"
   User -right-> PosterUser : "Posts Question"
   PosterUser -right-> ResponderUser : "Receives Answer"
-  ResponderUser -right-> VoterUser : "Receives Votes"
+  ResponderUser -right-> CommentUser : "Receives Comment"
+  CommentUser -right-> VoterUser : "Votes on Response"
   VoterUser -right-> AdminUser : "Reports Issues"
 }
+
 
 @enduml

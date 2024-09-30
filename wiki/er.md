@@ -7,7 +7,7 @@
 
  As Learners, we often have questions that need answers as fast as possible. So we decided to create a Collaborative Q&A Content Rated Forum Website adapted for those situations.
  
- In this website, the user can post their questions or doubts about a certain topic, and other users can respond with what they think it is the best answer to the current problem.
+ In this website, the user can post their questions or doubts about a certain topic, and other users can respond with what they think it is the best answer to the current problem. To be able to do that, an account must be created. If not, the guest can only see the questions and responses, but can not partake in the feed's action.
 
  As those various answers start stacking up in the post's feed, they are positively or negatively voted by all the users, affecting the answers' order of appearance in the feed (meaning the most publicly supported answers appear first).
 
@@ -16,7 +16,7 @@
 
  The top 16 users with the most points are shown in a special hall of fame ranking in the website.
 
- Users can make comments on other peoples' answers.
+ Users can make comments on other peoples' answers, and can search for specific question feeds and users.
  
  Knowing that the website encourages a fast answer delivery mentality, all the questions' feeds are open only during a predetermined amount of time up to 48 hours maximum, selected by the poster.
  
@@ -39,7 +39,8 @@ The goal for this artifact is to define how users will interact with our website
 
 
 ### 1. Actors
-![alt text](docs/uml/actors.png)
+
+![actors.png](https://gitlab.up.pt/lbaw/lbaw2425/lbaw24112/-/raw/main/wiki/docs/uml/actors.png)
 
 **Table of Actors**
 
@@ -55,7 +56,7 @@ The goal for this artifact is to define how users will interact with our website
 
 ### 2. User Stories
 
-### 2.1 Actor 1: Guest
+#### 2.1. Actor 1: Guest
 
 | **ID**   | **Name**                     | **Priority** | **Description**                                                                                                                |
 |---------|------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -77,7 +78,7 @@ The goal for this artifact is to define how users will interact with our website
 | US11     |  Manage Posts  | Medium      | As a User, I want to be able to edit and delete my old posts, answers and comments, so they are not public anymore. |               
 
 
-#### 2.2 Actor 3: Poster
+#### 2.3. Actor 3: Poster
 
 | **ID**   | **Name**                     | **Priority** | **Description**                                                                                                                |
 |---------|------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -87,7 +88,7 @@ The goal for this artifact is to define how users will interact with our website
 | US15     | Close Question by Selecting Answer | Medium   | As a Poster, I want to close my question when I have received a satisfactory answer so no one else can answer.  |
 | US16     | Earn points | Medium   | As a Poster, I want to earn some points if my question is popular so I go up in the rankings.          |
 
-#### 2.3. Actor 4: Responder
+#### 2.4. Actor 4: Responder
 
 | **ID**   | **Name**                    | **Priority** | **Description**                                                                                                                   |
 |---------|-----------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------|
@@ -97,25 +98,30 @@ The goal for this artifact is to define how users will interact with our website
 | US20     | Earning points |  Medium      | As a Responder, I want to earn points if I'm one the top 4 best answers and/or if the poster marks my answer as USEFUL so that I can increase my chances of being in the top 16 hall of fame.   |
 
 
+#### 2.5. Actor 5: Commenter
+
+| **ID**   | **Name**                    | **Priority** | **Description**                                                                                                                   |
+|---------|-----------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| US21     | Comment on Responses          | High         | As a Commenter, I want to be able to comment on any post's responses, so I can complete them with any information I think is relevant.  |
 
 
-#### 2.4. Actor 5: Voter
-
-| **ID**   | **Name**                    | **Priority** | **Description**                                                                                                                  |
-|---------|-----------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------|
-| US21    | Vote on Answers              | High         | As a Voter, I want to positively or negatively vote on answers based on how helpful and accurate I think it is to the problem, so that I can help the Poster obtain a satisfactory answer.             |
-| US22    | View Answer Rankings         | Medium       | As a Voter, I want to see how answers rank based on community votes so that I can check the most popular answers.                  |
-| US23     | Earning points |  Low      | As a Voter, I want to earn some points for voting so that my time reading other people's posts is also rewarded points wise.  
-
-#### 2.5. Actor 6: Community Admin
+#### 2.6. Actor 6: Voter
 
 | **ID**   | **Name**                    | **Priority** | **Description**                                                                                                                  |
 |---------|-----------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------|
-| US24    | Issue Alerts on questions          | High         | As an Admin, I want to issue an alert when an question is found to be inappropriate or irrelevant to the community it was posted in, so that I can give users an experience that is aligned with their expectations.     |
-| US25    | Issue Alerts on answers          | High         | As an Admin, I want to issue an alert when an answer is found to be incorrect, even if it is marked USEFUL, so that I can inform future readers that the answer might not be correct.       |
-| US26    | Remove Harmful Content       | High         | As an Admin, I want the ability to delete harmful or misleading content so that I can maintain the integrity of the platform.                |
-| US27    | Moderate users in the community       | High         | As an Admin, I want the ability to moderate users in the community, having the ability to alert, and if necessary, to temporarilly or permanently ban them so that I keep my community clean.                |
-| US28    | Check reported answers   | Medium       | As an Admin, I want to be able to analyse questions and answers that have been reported so that I can keep my community clean.    |
+| US22    | Vote on Answers              | High         | As a Voter, I want to positively or negatively vote on answers based on how helpful and accurate I think it is to the problem, so that I can help the Poster obtain a satisfactory answer.             |
+| US23    | View Answer Rankings         | Medium       | As a Voter, I want to see how answers rank based on community votes so that I can check the most popular answers.                  |
+| US24     | Earning points |  Low      | As a Voter, I want to earn some points for voting so that my time reading other people's posts is also rewarded points wise.  
+
+#### 2.7. Actor 7: Community Admin
+
+| **ID**   | **Name**                    | **Priority** | **Description**                                                                                                                  |
+|---------|-----------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------|
+| US25    | Issue Alerts on questions          | High         | As an Admin, I want to issue an alert when an question is found to be inappropriate or irrelevant to the community it was posted in, so that I can give users an experience that is aligned with their expectations.     |
+| US26    | Issue Alerts on answers          | High         | As an Admin, I want to issue an alert when an answer is found to be incorrect, even if it is marked USEFUL, so that I can inform future readers that the answer might not be correct.       |
+| US27    | Remove Harmful Content       | High         | As an Admin, I want the ability to delete harmful or misleading content so that I can maintain the integrity of the platform.                |
+| US28    | Moderate users in the community       | High         | As an Admin, I want the ability to moderate users in the community, having the ability to alert, and if necessary, to temporarilly or permanently ban them so that I keep my community clean.                |
+| US29    | Check reported answers   | Medium       | As an Admin, I want to be able to analyse questions and answers that have been reported so that I can keep my community clean.    |
 
 
 
@@ -130,8 +136,9 @@ The goal for this artifact is to define how users will interact with our website
 | BR2     | Post Closure Policy                 | Questions will close either when the selected time expires or when the poster marks an answer as USEFUL, whichever occurs first.       |
 | BR3     | Reporting Answers           | Users can report an answer they think is harmful or incorrect. After reaching a threshold of reports, the system alerts Admin for review.                     |
 | BR4     | User can not auto-answer           | Users can not answer to their own posts, but can comment on other users' answers to their questions. |
-| BR5     | Deleted User Contents           | Questions, answers and comments remain even after the user's account elimination, appearing as posted by an deleted account.
-| BR6     | Time Paradox Forbidden           | Users can not answer a question THAT STILL HASN'T BEEN POSTED, AS IT IS IMPOSSIBLE ACCORDING TO OUR CURRENT UNDERSTANDING OF THE LAWS OF TIME AND SPACE.     |
+| BR5     | User can not auto-vote           | Users can not vote to their own answers, but can vote on other users' answers to the questions. |
+| BR6     | Deleted User Contents           | Questions, answers and comments remain even after the user's account elimination, appearing as posted by an deleted account.
+| BR7     | Time Paradox Forbidden           | Users can not answer a question THAT STILL HASN'T BEEN POSTED, AS IT IS IMPOSSIBLE ACCORDING TO OUR CURRENT UNDERSTANDING OF THE LAWS OF TIME AND SPACE.     |
 
 #### 3.2. Technical Requirements
 
@@ -151,3 +158,46 @@ The goal for this artifact is to define how users will interact with our website
 | R3      | Admin Alert Response Time   | Admins must review reported content within 24 hours to ensure swift removal of harmful content or alert activation.                                        |
 
 
+
+---
+
+
+## A3: Information Architecture
+
+> Brief presentation of the artifact goals.
+
+
+### 1. Sitemap
+
+> Sitemap presenting the overall structure of the web application.  
+> Each page must be identified in the sitemap.  
+> Multiple instances of the same page (e.g. student profile in SIGARRA) are presented as page stacks.
+
+
+### 2. Wireframes
+
+> Wireframes for, at least, two main pages of the web application.
+> Do not include trivial use cases (e.g. about page, contacts).
+
+
+#### UIxx: Page Name
+
+#### UIxx: Page Name
+
+
+---
+
+
+## Revision history
+
+Changes made to the first submission:
+1. Added A1 and A2
+1. ...
+
+***
+GROUP112, 26/09/2024
+
+* Group member 1 Afonso Castro, up202208026@up.pt
+* Group member 2 Leonor Couto, up202205796@up.pt
+* Group member 3 Pedro Santos, up202205900@up.pt
+* Group member 4 Rodrigo de Sousa, up202205751@up.pt
