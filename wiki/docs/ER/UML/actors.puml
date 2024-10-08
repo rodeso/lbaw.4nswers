@@ -1,4 +1,4 @@
-@startuml
+@startuml Actors
 top to bottom direction
 
 rectangle "4NSWERS Q&A Forum" {
