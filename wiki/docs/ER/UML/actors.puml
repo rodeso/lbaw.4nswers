@@ -3,21 +3,23 @@ top to bottom direction
 
 rectangle "4NSWERS Q&A Forum" {
 
-  actor Notifications
   actor User
   actor Guest
+  actor Person
   actor Poster as PosterUser
   actor Responder as ResponderUser
   actor Commenter as CommentUser
   actor Voter as VoterUser
-  actor "Community Admin" as AdminUser
+  actor Moderator as ModeratorUser
+  actor Admin as AdminUser
  
-
-  User <-- PosterUser
-  User <-- ResponderUser
-  User <-- CommentUser
-  User <-- VoterUser
-  User <-- AdminUser
+  Person ^-- User
+  Person ^-- Guest
+  User ^-- PosterUser
+  User ^-- ResponderUser
+  User ^-- CommentUser
+  User ^-- VoterUser
+  User ^-- ModeratorUser
 
 }
 
