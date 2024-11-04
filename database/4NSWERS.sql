@@ -15,6 +15,9 @@ DROP TABLE IF EXISTS vote_notification;
 DROP TABLE IF EXISTS helpful_notification;
 DROP TABLE IF EXISTS answer_notification;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS user_follows_tag;
+DROP TABLE IF EXISTS user_follows_question;
+DROP TABLE IF EXISTS question_tags;
 
 CREATE DOMAIN Today DATE DEFAULT CURRENT_DATE;
 
