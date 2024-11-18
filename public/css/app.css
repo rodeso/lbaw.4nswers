@@ -1,17 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+25&display=swap');
+/*
+letra: https://fonts.google.com/selection/embed
+cor fundo: #444444
+cor texto: #FF006E
+cor header fundo: #4E0F35
+
+cor cartoes fundo: #C18A8A
+cor cartoes header: #4B1414
+*/
+
 body {
-    background-color: #ffffff;
-    color: #9b4dca;
+    background-color: #444444;
+    color: white;
+    font-family: 'Jersey 25', sans-serif;
   }
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
-    background-color: #d2afe7;
+    background-color: #4E0F35;
     padding: 1em;
     margin: 1em;
   }
   main > header h1 {
     margin: 0;
+    color: #FF006E;
   }
   main > header a.button {
     margin: 1em;
@@ -28,7 +41,7 @@ body {
   #cards article.card {
     display: flex;
     flex-direction: column;
-    background-color: #d3edc3;
+    background-color: #C18A8A;
     padding: 1em;
     margin: 1em;
   }
@@ -152,7 +165,7 @@ body {
     color: #9b4dca;
   }
   a {
-    color: #9b4dca;
+    color: #FF006E;
   }
   input[type=text]:focus,
   input[type=email]:focus,

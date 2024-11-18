@@ -23,7 +23,10 @@
     <body>
         <main>
             <header>
-                <h1><a href="{{ url('/cards') }}">Thingy!</a></h1>
+                <h1><a href="{{ url('/cards') }}">4NSWERS</a></h1>
+                <!-- barra que vai rodando -->
+                <!-- notifications button -->
+                <!-- user button -->
                 @if (Auth::check())
                     <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
                 @endif
