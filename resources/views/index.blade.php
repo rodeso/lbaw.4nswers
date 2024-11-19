@@ -8,21 +8,21 @@
 </head>
 <body>
     <div id="app">
-        <aside>
-            <h2>4U</h2>
-            <ul>
-                <li>New</li>
-                <li>Urgent</li>
-                <li>Popular</li>
-            </ul>
-        </aside>
-
         <main>
             <header>
                 <h1>4NSWERS</h1>
                 <input type="search" placeholder="Search...">
                 <button>Ask a Question</button>
             </header>
+
+            <aside>
+                <ul>
+                    <li><h3>4U</h3></li>
+                    <li><h3>New</h3></li>
+                    <li><h3>Urgent</h3></li>
+                    <li><h3>Popular</h3></li>
+                </ul>
+            </aside>
 
             <section class="questions">
                 @foreach ($questions as $question)

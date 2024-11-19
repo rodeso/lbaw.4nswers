@@ -8,9 +8,9 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\IndexController;
 
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/', [IndexController::class, 'index'])->name('home');
 /*
 |--------------------------------------------------------------------------
 | Web Routes
