@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: 4NSWERS API
+  description: API documentation for the collaborative Q&A platform "4NSWERS".
+  version: 1.0.0
+servers:
+  - url: https://api.4nswers.com
+    description: Production server
+  - url: https://staging-api.4nswers.com
+    description: Staging server
+
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      description: Create an account for a new user.
+      requestBody:
+        description: User registration details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Invalid input
+    get:
+      summary: Get a list of users
+      description: Returns a list of all registered users.
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /questions:
+    post:
+      summary: Create a new question
+      description: Post a new question with optional tags and urgency.
+      requestBody:
+        description: Question details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+      responses:
+        '201':
+          description: Question created successfully
+        '400':
+          description: Invalid input
+    get:
+      summary: Get active questions
+      description: Retrieve a list of active questions, with filtering options.
+      parameters:
+        - name: tag
+          in: query
+          description: Filter questions by tag
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          description: Sort questions by urgency, votes, or creation time
+          schema:
+            type: string
+            enum: [urgency, votes, newest]
+      responses:
+        '200':
+          description: A list of questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: John Doe
+        nickname:
+          type: string
+          example: johnd123
+        email:
+          type: string
+          example: johndoe@example.com
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+          example: "How can I fix my computer?"
+        urgency:
+          type: string
+          example: "Red"
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["computers", "repair"]
+        time_end:
+          type: string
+          format: date-time
