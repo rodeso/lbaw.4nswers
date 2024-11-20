@@ -117,7 +117,7 @@
                             </div>
                             <p class="text-sm text-gray-500">Time Left: {{ $question->time_end->diffForHumans() }}</p>
                         </header>
-                        <h2 class="text-lg font-bold mt-4">{{ $question->title }}
+                        <h2 class="text-lg font-bold mt-4">
                             <a href="{{ route('question.show', $question->id) }}">
                                 {{ $question->title }}
                             </a>
