@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PostController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
