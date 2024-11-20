@@ -43,7 +43,7 @@ Route::controller(ItemController::class)->group(function () {
     Route::post('/api/item/{id}', 'update');
     Route::delete('/api/item/{id}', 'delete');
 });
-
+*/
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
@@ -52,9 +52,18 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
+// Authentication
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'showRegistrationForm')->name('register');
+    Route::post('/register', 'register');
+});
+
+
+/*
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
 */
 
+?>
