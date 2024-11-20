@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+use Illuminate\View\View;
+
+use App\Models\User;
 
 class RegisterController extends Controller
 {
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View
     {
         return view('auth.register');
     }
@@ -32,20 +37,22 @@ class RegisterController extends Controller
         }
 
         // Criação do usuário
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'nickname' => $request->nickname,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'birth_date' => $request->birth_date,
             'aura' => 0,
             //'profile_picture' => null, // user can't add a profile picture for now
             'created' => now(),
             'deleted' => false,
-            'is_mod' => false,
+            'is_mod' => false
         ]);
 
-        auth()->login($user);
+        $credentials = $request->only('email', 'password');
+        Auth::attempt($credentials);
+        $request->session()->regenerate();
         return redirect('/');
     }
 }

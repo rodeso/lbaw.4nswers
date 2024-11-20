@@ -15,6 +15,11 @@ class User extends Authenticatable
         'aura', 'profile_picture', 'created', 'deleted', 'is_mod'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token', // Not used?
+    ];
+
     protected $casts = [
         'birth_date' => 'date',
         'aura' => 'integer',
