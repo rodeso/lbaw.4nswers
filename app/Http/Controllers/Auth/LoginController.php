@@ -17,12 +17,12 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        $credentials = $request->validate([
+            'email' => ['required','email'],
+            'password' => ['required'],
         ]);
 
-        $user = \App\Models\User::where('email', $request->email)->first();
+        //$user = \App\Models\User::where('email', $request->email)->first();
 
         //For Debugging
         /*if ($user) {
@@ -30,7 +30,7 @@ class LoginController extends Controller
             \Log::info('Entered Password: ' . $request->password);
         }*/
 
-        if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended('/'); // Go back to inicial page
         }

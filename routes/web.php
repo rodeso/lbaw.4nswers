@@ -52,6 +52,9 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
+// Logout Route
+//Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 // Authentication
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
