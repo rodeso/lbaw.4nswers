@@ -184,7 +184,11 @@
                             </div>
                             <p class="text-sm text-gray-500">Time Left: {{ $question->time_end->diffForHumans() }}</p>
                         </header>
-                        <h2 class="text-lg font-bold mt-4">{{ $question->title }}</h2>
+                        <h2 class="text-lg font-bold mt-4">
+                            <a href="{{ route('question.show', $question->id) }}">
+                                {{ $question->title }}
+                            </a>
+                        </h2>
                         <p class="text-gray-600 mt-2">{{ $question->post->body }}</p>
                         <div class="flex justify-between items-center mt-4">
                             <div class="space-x-2">
