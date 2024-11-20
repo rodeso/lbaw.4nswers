@@ -1,18 +1,19 @@
 <?php
 
-// app/Http/Controllers/PostController.php
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        // Retrieve all questions with their related post data
-        $questions = Question::with('post')->get();
+        $questions = Question::with(['tags', 'post'])->get();
+        $tags = Tag::all();
 
-        return view('index', compact('questions'));
+        return view('index', compact('questions', 'tags'));
     }
 }
+
