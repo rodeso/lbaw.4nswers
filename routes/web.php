@@ -11,6 +11,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IndexController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
+
+Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

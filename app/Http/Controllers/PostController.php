@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function show($id)
     {
-        // Retrieve all questions with their related post data
-        $questions = Question::with('post')->get();
-
-        return view('index', compact('questions'));
-    }
+        // Retrieve the specific question with its related post data
+        $question = Question::with('post')->findOrFail($id);
+    
+        // Pass the question to the view
+        return view('post', compact('question'));
+    }    
 }
