@@ -1,37 +1,48 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
 
-@section('content')
-<form method="POST" action="{{ route('login') }}">
-    {{ csrf_field() }}
+        <!-- Display Validation Errors -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    <label for="email">E-mail</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
-    @if ($errors->has('email'))
-        <span class="error">
-          {{ $errors->first('email') }}
-        </span>
-    @endif
+        <!-- Login Form -->
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
 
-    <label for="password" >Password</label>
-    <input id="password" type="password" name="password" required>
-    @if ($errors->has('password'))
-        <span class="error">
-            {{ $errors->first('password') }}
-        </span>
-    @endif
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
+            </div>
 
-    <label>
-        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-    </label>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
 
-    <button type="submit">
-        Login
-    </button>
-    <a class="button button-outline" href="{{ route('register') }}">Register</a>
-    @if (session('success'))
-        <p class="success">
-            {{ session('success') }}
-        </p>
-    @endif
-</form>
-@endsection
+            <div>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <div>
+            <p>Don't have account? <a href="{{ route('register') }}">Sign Up</a></p>
+        </div>
+    </div>
+</body>
+</html>

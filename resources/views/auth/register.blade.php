@@ -1,39 +1,68 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
 
-@section('content')
-<form method="POST" action="{{ route('register') }}">
-    {{ csrf_field() }}
+        <!-- Display Validation Errors -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-    @if ($errors->has('name'))
-      <span class="error">
-          {{ $errors->first('name') }}
-      </span>
-    @endif
+        <!-- Registration Form -->
+        <form action="{{ route('register') }}" method="POST">
+            @csrf
 
-    <label for="email">E-Mail Address</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
-    @if ($errors->has('email'))
-      <span class="error">
-          {{ $errors->first('email') }}
-      </span>
-    @endif
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+            </div>
 
-    <label for="password">Password</label>
-    <input id="password" type="password" name="password" required>
-    @if ($errors->has('password'))
-      <span class="error">
-          {{ $errors->first('password') }}
-      </span>
-    @endif
+            <div>
+                <label for="nickname">Nickname:</label>
+                <input type="text" id="nickname" name="nickname" value="{{ old('nickname') }}">
+            </div>
 
-    <label for="password-confirm">Confirm Password</label>
-    <input id="password-confirm" type="password" name="password_confirmation" required>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+            </div>
 
-    <button type="submit">
-      Register
-    </button>
-    <a class="button button-outline" href="{{ route('login') }}">Login</a>
-</form>
-@endsection
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div>
+                <label for="password_confirmation">Confirm Password:</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" required>
+            </div>
+
+            <div>
+                <label for="birth_date">Birth Date:</label>
+                <input type="date" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required>
+            </div>
+
+            <div>
+                <button type="submit">Register</button>
+            </div>
+        </form>
+        <div>
+            <p>Already have an account? <a href="{{ route('login') }}">Sign In</a></p>
+        </div>
+    </div>
+</body>
+</html>

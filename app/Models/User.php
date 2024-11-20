@@ -9,8 +9,12 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'user';
-    protected $fillable = ['name', 'nickname', 'email', 'password', 'birth_date', 'aura', 'profile_picture', 'created', 'deleted', 'is_mod'];
+    protected $table = 'lbaw24112.user';
+    protected $fillable = [
+        'name', 'nickname', 'email', 'password', 'birth_date', 
+        'aura', 'profile_picture', 'created', 'deleted', 'is_mod'
+    ];
+
     protected $casts = [
         'birth_date' => 'date',
         'aura' => 'integer',
@@ -18,16 +22,17 @@ class User extends Authenticatable
         'is_mod' => 'boolean',
         'created' => 'date',
     ];
-    
+
+    // Disable timestamps handling
+    public $timestamps = false;
 
     public function posts()
     {
         return $this->hasMany(Post::class, 'user_id');
     }
-  
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
     }
-
 }
