@@ -7,10 +7,13 @@
             </div>
             <p class="text-sm text-gray-500">Time Left: {{ $question->time_end->diffForHumans() }}</p>
         </header>
-        <h2 class="text-lg font-bold mt-4">
-                {{ $question->title }}
-            
-        </h2>
+        <div class="flex items-center justify-between p-2">
+            <h2 class="text-lg font-bold mt-2">
+                    {{ $question->title }}
+                
+            </h2>
+            <h3 class="text-white">## Yeahs!</h3>
+        </div>
         <p class="text-gray-600 mt-2">{{ $question->post->body }}</p>
         <div class="flex justify-between items-center mt-4">
             <div class="space-x-2">
@@ -18,7 +21,6 @@
                     <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">{{ $tag->name }}</span>
                 @endforeach
             </div>
-            <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">## Yeahs!</button>
         </div>
     </a>
 </div>

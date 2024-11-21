@@ -44,7 +44,13 @@
                     <p class="text-sm text-gray-500">Time Left: {{ $question->time_end->diffForHumans() }}</p>
                 </header>
 
-                <h1 class="text-2xl font-bold">{{ $question->title }}</h1>
+                <div class="flex items-center justify-between p-2">
+                    <h1 class="text-lg font-bold mt-2">
+                            {{ $question->title }}
+                        
+                    </h1>
+                    <h2 class="text-white">## Yeahs!</h2>
+                </div>
 
                 <p class="text-gray-600">{{ $question->post->body }}</p>
 
@@ -53,8 +59,6 @@
                         <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">{{ $tag->name }}</span>
                     @endforeach
                 </div>
-
-                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">## Yeahs!</button>
             </section>
         </main>
 
