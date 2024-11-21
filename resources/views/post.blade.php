@@ -35,10 +35,9 @@
 
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
-
             <!-- Post's Feed -->
             <section class="w-3/5 space-y-8">
-                
+
                 <!-- Post's Question -->
                 <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-6">
                     <header class="flex items-center justify-between bg-[color:#4B1414] p-2">
@@ -68,10 +67,31 @@
                 </section>
 
                 <!-- Answers Section -->
-                <!-- TODO -->
+                <section class="w-full space-y-6">
+
+                        <div class="bg-[color:#C18A8A] rounded-lg shadow-md p-4">
+                            <a> <!-- Assuming each answer has a show route -->
+                                <header class="flex items-center justify-between bg-[color:#4B1414] p-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-10 h-10 bg-gray-300 rounded-full"></div> <!-- User Avatar -->
+                                        <p class="text-lg text-gray-500">Jesse Pinkman answered:</p> <!-- Answer author's name -->
+                                    </div>
+                                    <p class="text-sm text-gray-500">Aura: 1234</p> <!-- Time of the answer -->
+                                </header>
+                                <p class="text-gray-600 border-2 border-[color:#4B1414] p-2 mt-4">This is the text of an answer</p> <!-- Body of the answer -->
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="space-x-2">
+                                            <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">Random Tag</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                </section>
 
             </section>
         </main>
+
 
 
         <!-- Footer -->
