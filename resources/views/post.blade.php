@@ -24,44 +24,19 @@
     <!-- Main Page Wrapper -->
     <div class="flex flex-col min-h-screen">
         <!-- Header -->
-        <header class="fixed top-0 left-0 w-full bg-gray-900 text-white px-8 py-2 flex justify-between items-center z-10">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('home') }}" class="text-2xl font-bold">4NSWERS</a>
-            </div>
-            <!-- Scrolling Banner -->
-            <div class="bg-gray-800 text-white py-2 px-4 overflow-x-auto whitespace-nowrap scroll-banner">
-                <marquee>⚡ Urgent: Check out more questions on 4NSWERS 🎉 Dive into the conversation now!</marquee>
-            </div>
-            <!-- Squircle decorations -->
-            <div class="absolute inset-0 -z-10 squircle opacity-20"></div>
-        </header>
+        @include('partials.header')
 
         <!-- Floating Side Panel (Left) -->
-        <aside class="fixed top-20 left-5 w-[15%] bg-gray-200 p-6 rounded-lg shadow-lg">
-            <h2 class="font-bold text-lg mb-4">Navigation</h2>
-            <nav>
-                <ul class="space-y-4">
-                    <li>
-                        <a href="{{ route('home') }}" class="text-lg font-bold w-full text-left px-4 py-2 rounded hover:bg-gray-300">
-                            Home
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        @include('partials.left-panel')
 
         <!-- Floating Buttons (Right) -->
-        <div class="fixed top-24 right-10 space-y-4 w-[10%]">
-            <button class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md w-full text-sm">Search</button>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full text-sm">Question</button>
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full text-sm">4U</button>
-        </div>
+        @include('partials.right-buttons')
 
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Post Section -->
-            <section class="w-3/5 bg-white rounded-lg shadow-md p-6 space-y-6">
-                <header class="flex items-center justify-between">
+            <section class="w-3/5 bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-6">
+                <header class="flex items-center justify-between bg-[color:#4B1414] p-2">
                     <div class="flex items-center space-x-2">
                         <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
                         <p class="text-sm text-gray-500">Asked by User ID: {{ $question->author_id }}</p>
@@ -84,9 +59,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-gray-900 text-white text-center py-4">
-            Copyright © 2024 4NSWERS
-        </footer>
+        @include('partials.footer')
     </div>
 
 </body>

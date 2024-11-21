@@ -1,3 +1,3 @@
-<footer class="bg-gray-900 text-white text-center py-4 mt-8">
+<footer class="bg-[color:#4E0F35] text-[color:#FF006E] text-center py-4 mt-8">
     Copyright © 2024 4NSWERS
 </footer>
