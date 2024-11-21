@@ -3,7 +3,7 @@
         <ul class="space-y-4 bg-[color:#C18A8A]">
             <li>
                 <button class="text-lg font-bold w-full text-left px-4 py-2 rounded hover:bg-gray-300">
-                    4U
+                    <a href="{{ route('foryou') }}">4U</a>
                 </button>
             </li>
             <li>

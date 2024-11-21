@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 
+use App\Http\Controllers\ForYouController;
+
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
@@ -60,4 +62,6 @@ Route::controller(RegisterController::class)->group(function () {
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
+
+Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 ?>

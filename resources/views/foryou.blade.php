@@ -21,7 +21,6 @@
         @include('partials.right-buttons')
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
-            <a href="foryou.blade.php"> bom dia alegria</a>
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
