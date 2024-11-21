@@ -11,9 +11,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 
+// Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
-
-Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +23,6 @@ Route::get('/question/{id}', [PostController::class, 'show'])->name('question.sh
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-
-
-// Home
-Route::redirect('/', '/login');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
@@ -49,28 +44,20 @@ Route::controller(ItemController::class)->group(function () {
 });
 */
 
-// Authentication
+// Authentication - Login & Register & Logout
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
 });
 
-// Logout Route
-//Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Authentication
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
 
 
-/*
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'showRegistrationForm')->name('register');
-    Route::post('/register', 'register');
-});
-*/
+// Question
+Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
 ?>
