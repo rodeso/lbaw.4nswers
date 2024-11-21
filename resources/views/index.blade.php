@@ -43,6 +43,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
         const userButton = document.getElementById("userButton");
+        const userNickname = "{{ Auth::user()->nickname ?? '' }}";
 
         userButton.addEventListener("click", () => {
             const isLoggedIn = userButton.getAttribute("data-logged-in") === "true";
@@ -54,35 +55,36 @@
                     drawer.remove();
                 } else {
                     // Otherwise, open the drawer
-                    openDrawerMenu();
+                    openDrawerMenu(userNickname);
                 }
             } else {
                 window.location.href = "/login";
             }
         });
 
-        const openDrawerMenu = () => {
+        const openDrawerMenu = (nickname) => {
             const drawer = document.createElement("div");
-            drawer.className = "drawer-menu fixed top-0 right-0 h-full w-64 bg-gray-800 text-white shadow-lg p-4"; // Add 'drawer-menu' class
+            drawer.className = "drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4";
             drawer.innerHTML = `
-                <button class="text-white mb-4" onclick="this.parentElement.remove()">Close</button>
-                <h2 class="text-xl font-bold">User Menu</h2>
-                <ul class="mt-4">
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">Profile</li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">Settings</li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">
-                        <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="w-full text-left">Logout</button>
-                        </form>
-                    </li>
-                </ul>
+                <div>
+                    <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
+                    <h2 class="text-xl font-bold">${nickname} Menu</h2>
+                    <ul class="mt-4">
+                        <li class="py-2 hover:bg-gray-700 px-4 rounded">Profile</li>
+                        <li class="py-2 hover:bg-gray-700 px-4 rounded">Settings</li>
+                    </ul>
+                </div>
+                <div>
+                    <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
+                    </form>
+                </div>
             `;
             document.body.appendChild(drawer);
         };
     });
     </script>
-
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 relative">
 
