@@ -28,7 +28,7 @@
                 <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
                 <h2 class="text-xl font-bold">${nickname} Menu</h2>
                 <ul class="mt-4">
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">Profile</li>
+                    <li class="py-2 hover:bg-gray-700 px-4 rounded"> <a href="{{ route('profile') }}">Profile</a> </li>
                     <li class="py-2 hover:bg-gray-700 px-4 rounded">Settings</li>
                 </ul>
             </div>
