@@ -25,13 +25,13 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        //$user = \App\Models\User::where('email', $request->email)->first();
+        $user = \App\Models\User::where('email', $request->email)->first();
 
         //For Debugging
-        /*if ($user) {
+        if ($user) {
             \Log::info('Stored Password Hash: ' . $user->password);
             \Log::info('Entered Password: ' . $request->password);
-        }*/
+        }
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
