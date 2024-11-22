@@ -24,16 +24,17 @@
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
+                    @php $count = 0; @endphp
                     @foreach ($question->tags as $tag)
-                        @if (!empty($user->tags))
-                            @foreach ($user->tags as $user_tag)
-                                @if ($tag->id == $user_tag->id)
-                                    @include('partials.question')
-                                @endif
-                            @endforeach
-                        @endif
+                        @foreach ($user_tags as $user_tag)
+                            @if ($tag->id == $user_tag->id)
+                                @php $count++; @endphp
+                            @endif
+                        @endforeach
                     @endforeach
-                    @include('partials.question')
+                    @if ($count > 0)
+                        @include('partials.question')
+                    @endif
                 @endforeach
             </section>
         </main>
@@ -42,6 +43,5 @@
         <!-- Footer -->
         @include('partials.footer')
     </div>
-
 </body>
 </html>
