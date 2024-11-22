@@ -24,9 +24,13 @@
         </ul>
     </nav>
     <div class="mt-8">
-        <h4 class="font-bold mb-4 text-[color:#C18A8A]">Subscribed Tags</h4>
+        @if (Auth::check())
+            <h4 class="font-bold mb-4 text-[color:#C18A8A]">Subscribed Tags</h4>
+        @else
+            <a href="{{route('login')}}" class="font-bold mb-4 text-[color:#C18A8A]">Login to Subscribe to Tags</a>
+        @endif
         <ul class="space-y-2">
-            @foreach ($tags as $tag)
+            @foreach ($user_tags as $tag)
                 <li>
                     <a class="text-[color:#C18A8A]">
                         {{ $tag->name }}
