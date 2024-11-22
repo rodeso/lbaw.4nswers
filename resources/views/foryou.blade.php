@@ -24,6 +24,15 @@
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
+                    @foreach ($question->tags as $tag)
+                        @if (!empty($user->tags))
+                            @foreach ($user->tags as $user_tag)
+                                @if ($tag->id == $user_tag->id)
+                                    @include('partials.question')
+                                @endif
+                            @endforeach
+                        @endif
+                    @endforeach
                     @include('partials.question')
                 @endforeach
             </section>
