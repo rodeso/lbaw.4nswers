@@ -39,26 +39,26 @@
             <section class="w-3/5 space-y-8">
 
                 <!-- Post's Question -->
-                <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-4">
+                <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-6">
 
                     <!-- Question Header -->
                     <header class="flex items-center justify-between bg-[color:#4B1414]">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-20 h-20 bg-gray-300 rounded-full"></div>
+                        <div class="relative flex items-center space-x-24">
+                            <div class="absolute w-20 h-20 bg-gray-300 rounded-2xl "></div>
                             <p class="text-xl text-white">Asked by: Indiana_Jones {{ $question->author_id }}</p>
                         </div>
                         <div 
-                            class="relative w-64 h-20 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
+                            class="relative w-80 h-14 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
                             style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
                         >
-                            <p class="text-sm font-bold p-3">Time Left:<br>{{ $question->time_end->diffForHumans() }}</p>
+                            <p class="text-sm font-bold p-2">Time Left: {{ $question->time_end->diffForHumans() }}</p>
                         </div>
                     </header>
 
                     <!-- Question Title, Yeahs obtained & upvote/downvote buttons -->
                     <div class="flex justify-between items-center rounded-md">
                         <!-- Question Title with Border -->
-                        <h1 class="text-2xl font-bold border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
+                        <h1 class="text-xl font-bold border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
                             {{ $question->title }}
                         </h1>
                         <div class="flex items-center space-x-2">
@@ -93,7 +93,7 @@
                     <!-- Question Tags -->
                     <div class="space-x-2">
                         @foreach ($question->tags as $tag)
-                            <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">{{ $tag->name }}</span>
+                            <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
                         @endforeach
                     </div>
 
