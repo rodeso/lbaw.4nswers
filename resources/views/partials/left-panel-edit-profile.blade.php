@@ -30,9 +30,31 @@
             <li>
                 <a class="block pl-4 text-[color:#C18A8A]">
                     Email: 
-                    <span class="block">{{ $user->email }}</span>
+                    <span class="block">{{ formatEmail($user->email) }}</span>
                 </a>
             </li>
         </ul>
     </div>
 </aside>
+
+@php
+    /**
+     * Format an email address to display only the first two characters and mask the rest until the '@'.
+     *
+     * @param string $email
+     * @return string
+     */
+    function formatEmail($email) {
+        $parts = explode('@', $email);
+        $name = $parts[0];
+        $domain = $parts[1];
+        
+        if (strlen($name) > 2) {
+            $maskedName = substr($name, 0, 2) . str_repeat('*', strlen($name) - 2);
+        } else {
+            $maskedName = str_repeat('*', strlen($name)); // Mask the entire name if it's too short
+        }
+
+        return $maskedName . '@' . $domain;
+    }
+@endphp

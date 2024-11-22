@@ -20,7 +20,7 @@ class EditProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'nickname' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:user',
             'birth_date' => 'nullable|date',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
