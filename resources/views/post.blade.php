@@ -49,10 +49,20 @@
                             <p class="text-xl text-white">Asked by: Indiana_Jones {{ $question->author_id }}</p>
                         </div>
                         <div 
-                            class="relative w-80 h-14 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
+                            class="relative w-80 h-14 bg-white text-center flex items-end justify-end"
                             style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
                         >
-                            <p class="text-sm font-bold p-2">Time Left: {{ $question->time_end->diffForHumans() }}</p>
+                            <p class="text-sm font-bold p-2"
+                            style="color: 
+                                @if($question->urgency === 'Red') red
+                                @elseif($question->urgency === 'Orange') orange
+                                @elseif($question->urgency === 'Yellow') yellow
+                                @elseif($question->urgency === 'Green') green
+                                @else black
+                                @endif
+                            ;">
+                            Time Left: {{ $question->time_end->diffForHumans() }}
+                            </p>
                         </div>
                     </header>
                     <!-- Question Title, Yeahs obtained & upvote/downvote buttons -->
@@ -88,11 +98,18 @@
                     <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4">
                         {{ $question->post->body }}
                     </p>
-                    <!-- Question Tags -->
-                    <div class="space-x-2">
-                        @foreach ($question->tags as $tag)
-                            <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
-                        @endforeach
+                    <!-- Time Posting & Question Tags -->
+                    <div class="flex items-center space-x-4 mt-4">
+                        <!-- Time of Posting -->
+                        <p class="text-sm text-gray-700 font-semibold">
+                            Asked {{ $question->post->time_stamp->diffForHumans() }}!
+                        </p>
+                        <!-- Question Tags -->
+                        <div class="flex flex-wrap items-center space-x-2">
+                            @foreach ($question->tags as $tag)
+                                <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
+                            @endforeach
+                        </div>
                     </div>
 
                 </section>
@@ -141,59 +158,16 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- Answer Tags -->
-                        <div class="space-x-2">
-                            <span class="bg-red-500 text-black-800 text-sm font-bold px-2 py-1 rounded">WARNING: Flagged as Misinformation</span>
+                        <!-- Time Posting & Answer Tags -->
+                        <div class="flex items-center space-x-4 mt-4">
+                            <p class="text-sm text-gray-700 font-semibold">
+                                Asked #!
+                            </p>
+                            <div class="flex flex-wrap items-center space-x-2">
+                                <span class="bg-red-500 text-black-800 text-sm font-bold px-2 py-1 rounded">WARNING: Flagged as Misinformation</span>
+                            </div>
                         </div>
                     </section>
-
-                    <!-- Answer example 2 -->
-                    <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-3">
-                        <!-- Answer Header -->
-                        <header class="flex items-center justify-between bg-[color:#4B1414]">
-                            <div class="relative flex items-center space-x-16">
-                                <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1"></div>
-                                <p class="text-lg text-white">Answered by: Asac_Shrader</p>
-                            </div>
-                            <div 
-                                class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
-                                style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
-                            >
-                                <p class="text-sm font-bold p-2">Aura: 125453</p>
-                            </div>
-                        </header>
-                        <!-- Answer Body and upvote/downvote -->
-                        <div class="flex justify-between items-stretch rounded-md">
-                            <!-- Answer Body -->
-                            <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates. Quisquam, voluptates.
-                            </p>
-                            <div class="flex flex-col items-center space-y-1">
-                                <!-- Upvote Button -->
-                                <button 
-                                    class="w-10 h-10 bg-[color:#4B1414] hover:bg-green-600 text-white rounded-full flex items-center justify-center" 
-                                    aria-label="Upvote"
-                                    onclick="handleVote({{ $question->id }}, 'upvote')"
-                                >
-                                    ▲
-                                </button>
-
-                                <!-- Downvote Button -->
-                                <button 
-                                    class="w-10 h-10 bg-[color:#4B1414] hover:bg-red-600 text-white rounded-full flex items-center justify-center" 
-                                    aria-label="Downvote"
-                                    onclick="handleVote({{ $question->id }}, 'downvote')"
-                                >
-                                    ▼
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Answer Tags -->
-                        <div class="space-x-2">
-                            <!-- No tags for this answer -->
-                        </div>
-
-                </section>
 
             </section>
         </main>
