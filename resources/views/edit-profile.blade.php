@@ -34,25 +34,21 @@
             @endif
 
             <!-- Edit Profile Form -->
-            <form action="{{ route('edit-profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT') <!-- This method is used for PUT requests to update data -->
                 <div class="w-[35rem]">
-                    <!-- Avatar Section -->
+                    <!-- Profile Photo Section -->
                     <div class="flex items-center mb-6">
-                        <label for="avatar" class="mr-4 block text-gray-700 font-bold">Profile Picture</label>
+                        <label for="profile_picture" class="mr-4 block text-gray-700 font-bold">Profile Picture</label>
                         <input 
                             type="file" 
-                            id="avatar" 
-                            name="avatar" 
+                            id="profile_picture" 
+                            name="profile_picture" 
                             class="border p-2 rounded" 
                             accept="image/*" 
                         />
-                        @if (Auth::user()->avatar)
-                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Current Avatar" class="w-12 h-12 rounded-full ml-4">
-                        @else
-                            <img src="https://via.placeholder.com/100" alt="No Avatar" class="w-12 h-12 rounded-full ml-4">
-                        @endif
+                        <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('default.png') }}" alt="Current Profile Photo" class="w-12 h-12 rounded-full ml-4">
                     </div>
 
                     <!-- Name Section -->
