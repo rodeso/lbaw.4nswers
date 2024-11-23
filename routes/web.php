@@ -14,6 +14,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EditProfileController;
 use App\Http\Controllers\EditPasswordController;
+use App\Http\Controllers\ForYouController;
+
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -59,6 +61,11 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
+
+
+
+// ForYou
+Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
