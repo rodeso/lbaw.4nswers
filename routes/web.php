@@ -11,6 +11,12 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EditProfileController;
+use App\Http\Controllers\EditPasswordController;
+use App\Http\Controllers\ForYouController;
+
+
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
@@ -57,7 +63,26 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 
+
+// ForYou
+Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
+
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
+
+// Profile
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+// Edit Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/edit-profile', [EditProfileController::class, 'edit'])->name('edit-profile.edit');
+    Route::put('/edit-profile', [EditProfileController::class, 'update'])->name('edit-profile.update');
+});
+
+// Edit Credentials Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/edit-password-profile', [EditPasswordController::class, 'edit'])->name('edit-password-profile.edit');
+    Route::put('/edit-password-profile', [EditPasswordController::class, 'update'])->name('edit-password-profile.update');
+});
 
 ?>
