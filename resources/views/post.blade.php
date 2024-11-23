@@ -46,7 +46,7 @@
                     <header class="flex items-center justify-between bg-[color:#4B1414]">
                         <div class="relative flex items-center space-x-24">
                             <div class="absolute w-20 h-20 bg-gray-300 rounded-2xl"></div>
-                            <p class="text-xl text-white">Asked by: {{ $question->author_id }}</p> <!-- To be changed to user's nickname -->
+                            <p class="text-xl text-white">Asked by: {{ $question->author->nickname }}</p> <!-- To be changed to user's nickname -->
                         </div>
                         <div 
                             class="relative w-80 h-14 bg-white text-center flex items-end justify-end"
@@ -123,7 +123,7 @@
                             <header class="flex items-center justify-between bg-[color:#4B1414]">
                                 <div class="relative flex items-center space-x-16">
                                     <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1"></div>
-                                    <p class="text-lg text-white">Answered by: {{ $answer->author_id }}</p> <!-- To be changed to user's nickname -->
+                                    <p class="text-lg text-white">Answered by: {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
                                 </div>
                                 <div 
                                     class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
@@ -161,7 +161,7 @@
                             <!-- Time Posting & Answer Tags -->
                             <div class="flex items-center space-x-4 mt-4">
                                 <p class="text-sm text-gray-700 font-semibold">
-                                    Asked {{ $answer->post->time_stamp->diffForHumans() }}!
+                                    Answered {{ $answer->post->time_stamp->diffForHumans() }}!
                                 </p>
                                 <div class="flex flex-wrap items-center space-x-2">
                                     <!-- Not yet done because answers dont have tags yet -->
