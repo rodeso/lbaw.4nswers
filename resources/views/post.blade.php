@@ -46,7 +46,7 @@
                     <header class="flex items-center justify-between bg-[color:#4B1414]">
                         <div class="relative flex items-center space-x-24">
                             <div class="absolute w-20 h-20 bg-gray-300 rounded-2xl"></div>
-                            <p class="text-xl text-white">Asked by: Indiana_Jones {{ $question->author_id }}</p>
+                            <p class="text-xl text-white">Asked by: {{ $question->author_id }}</p>
                         </div>
                         <div 
                             class="relative w-80 h-14 bg-white text-center flex items-end justify-end"
@@ -117,7 +117,7 @@
                 <!-- Answers' Section -->
                 <section class="w-full space-y-6 pl-12">
 
-                    <!-- Answer example 1 -->
+                    <!-- Answer placeholder -->
                     <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-3">
                         <!-- Answer Header -->
                         <header class="flex items-center justify-between bg-[color:#4B1414]">
@@ -168,6 +168,61 @@
                             </div>
                         </div>
                     </section>
+
+                    @foreach ($question->answers as $answer)
+                        <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-3">
+                            <!-- Answer Header -->
+                            <header class="flex items-center justify-between bg-[color:#4B1414]">
+                                <div class="relative flex items-center space-x-16">
+                                    <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1"></div>
+                                    <p class="text-lg text-white">Answered by: {{ $answer->author_id }}</p>
+                                </div>
+                                <div 
+                                    class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
+                                    style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
+                                >
+                                    <p class="text-sm font-bold p-2">Aura: 16588753</p>
+                                </div>
+                            </header>
+                            <!-- Answer Body and upvote/downvote -->
+                            <div class="flex justify-between items-stretch rounded-md">
+                                <!-- Answer Body -->
+                                <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
+                                    {{ $answer->post->body }}
+                                </p>
+                                <div class="flex flex-col items-center space-y-1">
+                                    <!-- Upvote Button -->
+                                    <button 
+                                        class="w-10 h-10 bg-[color:#4B1414] hover:bg-green-600 text-white rounded-full flex items-center justify-center" 
+                                        aria-label="Upvote"
+                                        onclick="handleVote({{ $answer->id }}, 'upvote')"
+                                    >
+                                        ▲
+                                    </button>
+
+                                    <!-- Downvote Button -->
+                                    <button 
+                                        class="w-10 h-10 bg-[color:#4B1414] hover:bg-red-600 text-white rounded-full flex items-center justify-center" 
+                                        aria-label="Downvote"
+                                        onclick="handleVote({{ $answer->id }}, 'downvote')"
+                                    >
+                                        ▼
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Time Posting & Answer Tags -->
+                            <div class="flex items-center space-x-4 mt-4">
+                                <p class="text-sm text-gray-700 font-semibold">
+                                    Asked {{ $answer->post->time_stamp->diffForHumans() }}!
+                                </p>
+                                <div class="flex flex-wrap items-center space-x-2">
+                                    <span class="bg-red-500 text-black-800 text-sm font-bold px-2 py-1 rounded">WARNING: Flagged as Misinformation</span>
+                                </div>
+                            </div>
+                        </section>
+                    @endforeach
+
+                </section>
 
             </section>
         </main>

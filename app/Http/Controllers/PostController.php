@@ -11,11 +11,13 @@ class PostController extends Controller
 {
     public function show($id)
     {
-        // Retrieve the specific question with its related post data
-        $question = Question::with('post')->findOrFail($id);
-        $tags = Tag::all();
+        // Retrieve the specific question with its related data
+        $question = Question::with(['post', 'answers.post', 'tags'])->findOrFail($id);
     
-        // Pass the question to the view
+        // Extract tags separately if needed
+        $tags = $question->tags;
+    
         return view('post', compact('question', 'tags'));
-    }    
+    }
+    
 }
