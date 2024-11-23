@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
 // Edit Credentials Profile
 Route::middleware('auth')->group(function () {
     Route::get('/edit-password-profile', [UserController::class, 'editpassword'])->name('profile.editpassword');
-    Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('eprofile.updatepassword');
+    Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('profile.updatepassword');
 });
 
 ?>
