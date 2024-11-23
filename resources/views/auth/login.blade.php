@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4NSWERS - Login</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for the close icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
