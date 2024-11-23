@@ -11,6 +11,10 @@ class Post extends Model
     
     protected $table = 'post';
     protected $fillable = ['body', 'time_stamp', 'deleted', 'edited', 'edit_time'];
+    protected $casts = [
+        'time_stamp' => 'datetime',
+        'edit_time' => 'datetime'
+    ];
 
     public function question()
     {

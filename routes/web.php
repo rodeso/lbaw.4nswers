@@ -58,6 +58,11 @@ Route::controller(RegisterController::class)->group(function () {
     Route::post('/register', 'register');
 });
 
+
+
+// ForYou
+Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
+
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
     <title>4NSWERS - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -25,7 +24,17 @@
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
-                    @include('partials.question')
+                    @php $count = 0; @endphp
+                    @foreach ($question->tags as $tag)
+                        @foreach ($user_tags as $user_tag)
+                            @if ($tag->id == $user_tag->id)
+                                @php $count++; @endphp
+                            @endif
+                        @endforeach
+                    @endforeach
+                    @if ($count > 0)
+                        @include('partials.question')
+                    @endif
                 @endforeach
             </section>
         </main>
@@ -34,6 +43,5 @@
         <!-- Footer -->
         @include('partials.footer')
     </div>
-
 </body>
 </html>
