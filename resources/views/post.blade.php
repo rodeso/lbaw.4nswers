@@ -117,6 +117,45 @@
                 <!-- Answers' Section -->
                 <section class="w-full space-y-6 pl-12">
 
+                    <!-- Answer Form (Visible only to logged-in users) -->
+                    @auth
+                    <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-5">
+                        <header class="flex items-center justify-between bg-[color:#4B1414]">
+                            <div class="relative flex items-center space-x-16">
+                                <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1"></div>
+                                <p class="text-lg text-white">Answering as: {{ Auth::user()->nickname }}</p>
+                            </div>
+                        </header>
+                        <form action="{{ route('answer.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="question_id" value="{{ $question->id }}">
+                            <textarea 
+                                name="body" 
+                                id="body" 
+                                cols="30" 
+                                rows="5" 
+                                class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                                placeholder="Write your answer here..."
+                            ></textarea>
+                            <button 
+                                type="submit" 
+                                class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+                            >
+                                Post Answer
+                            </button>
+                        </form>
+                    </section>
+                    @endauth
+                    <!-- Message for Unauthenticated Users -->
+                    @guest
+                    <section class="w-full bg-[color:#FFEDED] rounded-lg shadow-md p-6 text-center">
+                        <p class="text-sm text-gray-700 font-semibold">
+                            Want to answer? <a href="{{ route('login') }}" class="text-blue-500">Log in</a> or 
+                            <a href="{{ route('register') }}" class="text-blue-500">Register</a> to post your answer.
+                        </p>
+                    </section>
+                    @endguest
+                    <!-- Answers -->
                     @foreach ($question->answers as $answer)
                         <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-3">
                             <!-- Answer Header -->
