@@ -4,8 +4,8 @@
         <div class="relative group w-24 h-24">
             <a href="/edit-profile" class="relative block w-24 h-24">
                 <img 
-                    src="{{ Auth::user()->avatar ?? 'https://via.placeholder.com/100' }}" 
-                    alt="User Avatar" 
+                    src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('default.png') }}" 
+                    alt="Profile Picture" 
                     class="w-24 h-24 rounded-full shadow-lg"
                 />
                 <div 

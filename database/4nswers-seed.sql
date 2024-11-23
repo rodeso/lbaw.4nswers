@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS lbaw24112.user (
   password VARCHAR NOT NULL,
   birth_date DATE CHECK (birth_date <= CURRENT_DATE - INTERVAL '13 years') NOT NULL,
   aura INT DEFAULT 0 NOT NULL,
-  profile_picture VARCHAR DEFAULT 'default.png' NOT NULL,
+  profile_picture VARCHAR DEFAULT 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png' NOT NULL,
   created DATE DEFAULT CURRENT_DATE NOT NULL,
   deleted BOOLEAN DEFAULT FALSE NOT NULL,
   is_mod BOOLEAN DEFAULT FALSE NOT NULL
@@ -160,11 +160,11 @@ CREATE TABLE IF NOT EXISTS question_tags (
 );
 
 
-INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, profile_picture)
-VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2004-10-23', 'default.png'),
-('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2004-03-16', 'default.png'),
-('Pedro', 'Puka', 'pedroemail@fake.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2004-11-03', 'default.png'),
-('Afonso', 'Osnofa', 'afonsoemail@fake.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2004-01-28', 'default.png');
+INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date)
+VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23'),
+('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16'),
+('Pedro', 'Puka', 'pedroemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03'),
+('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28');
 
 INSERT INTO tag(name, description)
 VALUES ('computers', 'all things related to the little machines that we control (or atleast think we do)'),
@@ -185,6 +185,26 @@ VALUES ('I need help fixing my computer!!', 'Red', '2021-06-01 00:00:00', 1, 1),
 ('Why does my tummy hurt?', 'Orange', '2014-03-16 16:31:54', 2, 4);
 
 INSERT INTO question_tags(question_id, tag_id)
+VALUES (1, 1),
+(2, 2),
+(3, 3),
+(4, 2);
+
+INSERT INTO post(body)
+VALUES ('For me maybe green, but i am not sure.'),
+('I think red is the best color, but I am not sure.'),
+('I think blue is the best color, because PORTOO.'),
+('I think yellow is the best color');
+
+INSERT INTO question(title, urgency, time_end, author_id, post_id)
+VALUES ('Which color is the best?', 'Red', '2024-10-26 00:00:00', 1, 5);
+
+INSERT INTO answer(chosen, question_id, author_id, post_id)
+VALUES (FALSE, 5, 2, 6),
+(TRUE, 5, 3, 7),
+(FALSE, 5, 4, 8);
+
+INSERT INTO user_follows_tag(user_id, tag_id)
 VALUES (1, 1),
 (2, 2),
 (3, 3),

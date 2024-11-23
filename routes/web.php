@@ -11,9 +11,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EditProfileController;
-use App\Http\Controllers\EditPasswordController;
+use App\Http\Controllers\UserController;
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -64,18 +62,18 @@ Route::controller(RegisterController::class)->group(function () {
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
 // Profile
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/profile', [UserController::class, 'index'])->name('profile');
 
 // Edit Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-profile', [EditProfileController::class, 'edit'])->name('edit-profile.edit');
-    Route::put('/edit-profile', [EditProfileController::class, 'update'])->name('edit-profile.update');
+    Route::get('/edit-profile', [UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/edit-profile', [UserController::class, 'update'])->name('profile.update');
 });
 
 // Edit Credentials Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-password-profile', [EditPasswordController::class, 'edit'])->name('edit-password-profile.edit');
-    Route::put('/edit-password-profile', [EditPasswordController::class, 'update'])->name('edit-password-profile.update');
+    Route::get('/edit-password-profile', [UserController::class, 'editpassword'])->name('profile.editpassword');
+    Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('eprofile.updatepassword');
 });
 
 ?>

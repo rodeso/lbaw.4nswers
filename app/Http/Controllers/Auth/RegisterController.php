@@ -36,7 +36,7 @@ class RegisterController extends Controller
             return back()->withErrors(['birth_date' => 'Sorry, you are too young to create an account.'])->withInput();
         }
 
-        // Criação do usuário
+        // Create user
         User::create([
             'name' => $request->name,
             'nickname' => $request->nickname,
