@@ -15,9 +15,9 @@ class PostController extends Controller
         $question = Question::with(['post', 'answers.post', 'tags'])->findOrFail($id);
     
         // Extract tags separately if needed
-        $tags = $question->tags;
+        $user_tags = $question->tags;
     
-        return view('post', compact('question', 'tags'));
+        return view('post', compact('question', 'user_tags'));
     }
     
 }
