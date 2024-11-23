@@ -15,6 +15,9 @@ class Answer extends Model
         'chosen' => 'boolean',
     ];
 
+    // Disable automatic timestamps
+    public $timestamps = false;
+
     /**
      * Relationship: Answer belongs to a Question.
      */

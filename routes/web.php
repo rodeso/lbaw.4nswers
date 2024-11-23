@@ -71,9 +71,7 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
 // Post Answer
-Route::post('/answer', [PostController::class, 'storeAnswer'])
-    ->middleware('auth')
-    ->name('answer.store');
+Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
 
 
 // Profile
