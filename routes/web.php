@@ -67,6 +67,10 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
+// Post Answer
+Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
+
+
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
 

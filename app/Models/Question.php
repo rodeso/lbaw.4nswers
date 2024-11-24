@@ -27,6 +27,10 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class, 'question_id');
     }
-
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+    
 
 }
