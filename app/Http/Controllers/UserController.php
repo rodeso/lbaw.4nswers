@@ -7,13 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Question;
+use App\Models\Answer;
+use App\Models\Tag;
+
 class UserController extends Controller
 {
     // Show the user's profile
     public function index()
     {
         $user = Auth::user();
-        return view('profile', compact('user'));
+        $userId = Auth::id(); // Get the logged-in user's ID
+        $questions = Question::where('author_id', $userId)->get(); // Filter questions by user ID
+        $tags = Tag::all();
+        $answers = Answer::where('author_id', $userId)->get(); // Filter answer by user ID 
+        return view('profile', compact('user','questions', 'tags','answers'));
     }
 
     // Show the profile edit form

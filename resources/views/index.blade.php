@@ -25,12 +25,11 @@
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
-                    @include('partials.question')
+                    @include('partials.main-question')
                 @endforeach
             </section>
         </main>
-
-
+        
         <!-- Footer -->
         @include('partials.footer')
     </div>
