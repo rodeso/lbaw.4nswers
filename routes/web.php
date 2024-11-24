@@ -12,6 +12,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ForYouController;
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');

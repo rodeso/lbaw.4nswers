@@ -48,7 +48,7 @@
                             class="border p-2 rounded" 
                             accept="image/*" 
                         />
-                        <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('default.png') }}" alt="Current Profile Photo" class="w-12 h-12 rounded-full ml-4">
+                        <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" alt="Current Profile Photo" class="w-12 h-12 rounded-full ml-4">
                     </div>
 
                     <!-- Name Section -->

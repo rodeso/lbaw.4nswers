@@ -4,7 +4,7 @@
         <div class="relative group w-24 h-24">
             <a class="relative block w-24 h-24">
                 <img 
-                    src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('default.png') }}" 
+                    src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
                     alt="User Avatar" 
                     class="w-24 h-24 rounded-full shadow-lg"
                 />

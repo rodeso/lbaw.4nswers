@@ -8,7 +8,9 @@
         <ul class="bg-[color:#C18A8A] rounded">
             <li>
                 <button class="text-lg font-bold w-full text-left px-4 py-2 rounded hover:bg-gray-300 {{ $isForYouPage ? 'text-[color:#FF006E] bg-[color:#4E0F35]' : 'bg-[color:#C18A8A] ' }}">
-                    @if ($isForYouPage)
+                    @if (!Auth::check())
+                        <a href="{{ route('home') }}">4U</a>
+                    @elseif ($isForYouPage)
                         <a href="{{ route('home') }}">4U</a>
                     @else
                         <a href="{{ route('foryou') }}">4U</a>

@@ -17,7 +17,9 @@ class ForYouController extends Controller
         $user = Auth::user(); // Get logged-in user
         $questions = Question::with(['tags', 'post'])->get();
         $tags = Tag::all();
-        $user_tags = Tag::whereIn('id', UserFollowsTag::where('user_id', $user->id)->pluck('tag_id'))->get();
+        $user_tags = $user 
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', $user->id)->pluck('tag_id'))->get()
+            : collect(); // Return an empty collection if $user is null
         return view('foryou', compact('user', 'questions', 'tags', 'user_tags'));
     }
 }
