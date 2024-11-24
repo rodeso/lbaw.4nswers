@@ -65,7 +65,7 @@ Route::controller(RegisterController::class)->group(function () {
 Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 
 // Question
-Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
+Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
 
 // Post Answer
 Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
