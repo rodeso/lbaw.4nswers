@@ -15,8 +15,7 @@ class Answer extends Model
         'chosen' => 'boolean',
     ];
 
-    // Disable automatic timestamps
-    public $timestamps = false;
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
 
     /**
      * Relationship: Answer belongs to a Question.

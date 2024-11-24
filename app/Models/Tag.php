@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     use HasFactory;
+
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
+
     protected $table = 'tag';
     public function questions()
     {

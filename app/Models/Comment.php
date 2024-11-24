@@ -12,6 +12,8 @@ class Comment extends Model
     protected $table = 'comment';
     protected $fillable = ['answer_id', 'author_id', 'post_id'];
 
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
+
     /**
      * Relationship: Comment belongs to an Answer.
      */

@@ -9,6 +9,8 @@ class Question extends Model
 {
     use HasFactory;
 
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
+
     protected $table = 'question';
     protected $fillable = ['title', 'urgency', 'time_end', 'closed', 'author_id', 'post_id'];
     protected $casts = [
