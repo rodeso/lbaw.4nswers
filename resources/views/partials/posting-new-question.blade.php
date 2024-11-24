@@ -14,43 +14,51 @@
     <form action="{{ route('question.store') }}" method="POST">
         @csrf
         <!-- Title of the question -->
-        <input 
-            type="text" 
-            name="title" 
-            id="title" 
-            class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
-            placeholder="Enter the title of your question..."
-            required
-        >
-        <!-- Body of the question -->
-        <textarea 
-            name="body" 
-            id="body" 
-            cols="30" 
-            rows="5" 
-            class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
-            placeholder="Provide details about your question..."
-            required
-        ></textarea>
-        <!-- Urgency Level -->
-        <label for="urgency" class="block text-sm text-white">Urgency Level:</label>
-        <select 
-            name="urgency" 
-            id="urgency" 
-            class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
-            required
-        >
-            <option value="Red">Red (Most Urgent)</option>
-            <option value="Orange">Orange</option>
-            <option value="Yellow">Yellow</option>
-            <option value="Green">Green (Least Urgent)</option>
-        </select>
-        <!-- Submit Button -->
-        <button 
-            type="submit" 
-            class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
-        >
-            Post Question
-        </button>
+        <div class= "mb-6 pt-2">
+            <input 
+                type="text" 
+                name="title" 
+                id="title" 
+                class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                placeholder="Enter the title of your question..."
+                required
+            >
+        </div>
+        <div class= "mb-4">
+            <!-- Body of the question -->
+            <textarea 
+                name="body" 
+                id="body" 
+                cols="30" 
+                rows="5" 
+                class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                placeholder="Provide details about your question..."
+                required
+            ></textarea>
+        </div>
+        <div class= "mb-6">
+            <!-- Urgency Level -->
+            <label for="urgency" class="block text-gray-700 font-bold mb-2">Urgency Level:</label>
+            <select 
+                name="urgency" 
+                id="urgency" 
+                class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                required
+            >
+                <option value="Red">Red (Most Urgent)</option>
+                <option value="Orange">Orange</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Green">Green (Least Urgent)</option>
+            </select>
+        </div>
+        <div class= "mb-6">
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+            >
+                Post Question
+            </button>
+        </div>
     </form>
 </section>
