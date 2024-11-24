@@ -47,7 +47,10 @@
             </button>
             
             <!-- Yeahs Count -->
-            <h2 class="text-lg font-bold">1000</h2>
+            <h2 id="yeahs-count-{{ $question->id }}" class="text-lg font-bold">
+                {{ $question->popularityVotes->where('is_positive', true)->count() - $question->popularityVotes->where('is_positive', false)->count() }}
+            </h2>
+
 
             <!-- Downvote Button -->
             <button 
@@ -58,6 +61,38 @@
                 ▼
             </button>
         </div>
+
+        <script>
+            async function handleVote(questionId, voteType) {
+                try {
+                    const response = await fetch(`/questions/${questionId}/vote`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ vote: voteType })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        // Update the Yeahs Count
+                        const countElement = document.getElementById(`yeahs-count-${questionId}`);
+                        if (countElement) {
+                            countElement.textContent = data.totalVotes;
+                        } else {
+                            console.error(`Count element not found for question ID: ${questionId}`);
+                        }
+                    } else {
+                        console.error('Failed to process the vote:', await response.text());
+                    }
+                } catch (error) {
+                    console.error('Error during vote handling:', error);
+                }
+            }
+        </script>
+
+
     </div>
     <!-- Question Body -->                        
     <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4">

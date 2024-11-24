@@ -70,6 +70,8 @@ Route::get('/question/{id}', [PostController::class, 'show'])->name('question.sh
 // Post Answer
 Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
 
+// Yeah Vote
+Route::post('/questions/{id}/vote', [PostController::class, 'vote'])->name('question.vote');
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
