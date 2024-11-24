@@ -84,20 +84,22 @@
                         // Update the Yeahs Count
                         document.getElementById(`yeahs-count-${questionId}`).textContent = data.totalVotes;
 
-                        // Update button colors based on the new vote status
+                        // Get buttons
                         const upvoteButton = document.getElementById(`upvote-button-${questionId}`);
                         const downvoteButton = document.getElementById(`downvote-button-${questionId}`);
 
+                        // Handle upvote action
                         if (voteType === 'upvote') {
                             upvoteButton.classList.add('bg-green-600');
                             upvoteButton.classList.remove('bg-[color:#4B1414]', 'hover:bg-green-600');
-
                             downvoteButton.classList.remove('bg-red-600');
                             downvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-red-600');
-                        } else if (voteType === 'downvote') {
+                        } 
+
+                        // Handle downvote action
+                        else if (voteType === 'downvote') {
                             downvoteButton.classList.add('bg-red-600');
                             downvoteButton.classList.remove('bg-[color:#4B1414]', 'hover:bg-red-600');
-
                             upvoteButton.classList.remove('bg-green-600');
                             upvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-green-600');
                         }

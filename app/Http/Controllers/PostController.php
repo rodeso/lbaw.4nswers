@@ -69,27 +69,30 @@ class PostController extends Controller
     {
         $userId = auth()->id();
         $voteType = $request->input('vote'); // 'upvote' or 'downvote'
-    
+        
         // Check if the user has already voted
         $existingVote = PopularityVote::where('user_id', $userId)
             ->where('question_id', $questionId)
             ->first();
-    
+        
+        $voteUndone = false; // Initialize flag
+        
         if ($existingVote) {
             // If the user clicks the same button twice, remove the vote (undo)
             if (($voteType === 'upvote' && $existingVote->is_positive) ||
                 ($voteType === 'downvote' && !$existingVote->is_positive)) {
                 $existingVote->delete();
-    
-                // Return the updated vote count
+                $voteUndone = true; // Mark that vote was undone
+
+                // Return the updated vote count and voteUndone flag
                 $totalVotes = PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', true)->count()
                     - PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', false)->count();
-    
-                return response()->json(['totalVotes' => $totalVotes]);
+        
+                return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
             }
-    
+
             // Otherwise, update the vote
             $existingVote->is_positive = ($voteType === 'upvote');
             $existingVote->save();
@@ -101,15 +104,16 @@ class PostController extends Controller
                 'is_positive' => ($voteType === 'upvote'),
             ]);
         }
-    
+
         // Calculate total votes
         $totalVotes = PopularityVote::where('question_id', $questionId)
             ->where('is_positive', true)->count()
             - PopularityVote::where('question_id', $questionId)
             ->where('is_positive', false)->count();
-    
-        return response()->json(['totalVotes' => $totalVotes]);
+        
+        return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
     }
+
 
 }
 
