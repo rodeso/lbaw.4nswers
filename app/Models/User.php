@@ -28,8 +28,7 @@ class User extends Authenticatable
         'created' => 'date',
     ];
 
-    // Disable timestamps handling
-    public $timestamps = false;
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
 
     public function posts()
     {

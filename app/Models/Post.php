@@ -24,8 +24,8 @@ class Post extends Model
         'edit_time' => 'datetime'
     ];
 
-    // Disable automatic timestamps
-    public $timestamps = false;
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
+    
     // Define custom timestamp fields
     const CREATED_AT = 'time_stamp';  // Use time_stamp as the created_at equivalent
     const UPDATED_AT = 'edit_time';   // Use edit_time as the updated_at equivalent

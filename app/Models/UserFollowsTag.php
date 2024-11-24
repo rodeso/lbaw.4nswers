@@ -13,5 +13,5 @@ class UserFollowsTag extends Model
 
     protected $fillable = ['user_id', 'tag_id'];
 
-    public $timestamps = false;
+    public $timestamps = false; // Disable timestamps that laravel automatically creates and we dont need
 }
