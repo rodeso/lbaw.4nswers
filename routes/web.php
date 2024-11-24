@@ -13,6 +13,8 @@ use App\Http\Controllers\PostController;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForYouController;
+use App\Http\Controllers\HallOfFameController;
+
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -64,6 +66,10 @@ Route::controller(RegisterController::class)->group(function () {
 // ForYou
 Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 
+// Hall of Fame
+Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
+
+
 // Question
 Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
 
@@ -85,5 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit-password-profile', [UserController::class, 'editpassword'])->name('profile.editpassword');
     Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('profile.updatepassword');
 });
+
+
 
 ?>
