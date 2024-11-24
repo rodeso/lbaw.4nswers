@@ -21,7 +21,7 @@
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
         <!-- Main Layout -->
-        <main class="mx-auto relative w-full flex-grow flex justify-center pt-16">
+        <main class="flex-grow flex justify-center pt-16">
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8">
                 @foreach ($questions as $question)
