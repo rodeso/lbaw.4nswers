@@ -8,6 +8,7 @@ use App\Models\Answer;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\UserFollowsTag;
+use App\Models\PopularityVote;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +24,18 @@ class PostController extends Controller
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
             : collect(); // Return an empty collection if logged in user is null
     
-        // Pass the question and tags to the view
-        return view('post', compact('question', 'user_tags'));
+        // Get the user's vote (if they have voted)
+        $userVote = null;
+        if (auth()->check()) {
+            $userVote = PopularityVote::where('user_id', auth()->id())
+                ->where('question_id', $id)
+                ->value('is_positive');
+        }
+    
+        // Pass the question, tags, and userVote to the view
+        return view('post', compact('question', 'user_tags', 'userVote'));
     }
+    
 
     public function showNewQuestion()
     {
@@ -113,7 +123,55 @@ class PostController extends Controller
     }
 
 
-    
+    public function vote(Request $request, $questionId)
+    {
+        $userId = auth()->id();
+        $voteType = $request->input('vote'); // 'upvote' or 'downvote'
+        
+        // Check if the user has already voted
+        $existingVote = PopularityVote::where('user_id', $userId)
+            ->where('question_id', $questionId)
+            ->first();
+        
+        $voteUndone = false; // Initialize flag
+        
+        if ($existingVote) {
+            // If the user clicks the same button twice, remove the vote (undo)
+            if (($voteType === 'upvote' && $existingVote->is_positive) ||
+                ($voteType === 'downvote' && !$existingVote->is_positive)) {
+                $existingVote->delete();
+                $voteUndone = true; // Mark that vote was undone
+
+                // Return the updated vote count and voteUndone flag
+                $totalVotes = PopularityVote::where('question_id', $questionId)
+                    ->where('is_positive', true)->count()
+                    - PopularityVote::where('question_id', $questionId)
+                    ->where('is_positive', false)->count();
+        
+                return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
+            }
+
+            // Otherwise, update the vote
+            $existingVote->is_positive = ($voteType === 'upvote');
+            $existingVote->save();
+        } else {
+            // Create a new vote if none exists
+            PopularityVote::create([
+                'user_id' => $userId,
+                'question_id' => $questionId,
+                'is_positive' => ($voteType === 'upvote'),
+            ]);
+        }
+
+        // Calculate total votes
+        $totalVotes = PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', true)->count()
+            - PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', false)->count();
+        
+        return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
+    }
+
 }
 
 

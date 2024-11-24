@@ -63,7 +63,7 @@ Route::controller(RegisterController::class)->group(function () {
 Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 
 // Question
-Route::get('/question/{id}', [PostController::class, 'show'])->name('question.show');
+Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
 
 // Post Answer
 Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
@@ -71,6 +71,9 @@ Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.sto
 // Posting Question
 Route::post('/new-question', [PostController::class, 'storeQuestion'])->name('question.store');
 Route::get('/new-question', [PostController::class, 'showNewQuestion'])->name('new-question');
+
+// Yeah Vote
+Route::post('/questions/{id}/vote', [PostController::class, 'vote'])->name('question.vote');
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');

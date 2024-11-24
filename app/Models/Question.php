@@ -33,6 +33,11 @@ class Question extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+    public function popularityVotes()
+    {
+        return $this->hasMany(PopularityVote::class);
+    }
+
     
 
 }
