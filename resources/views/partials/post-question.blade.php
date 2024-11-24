@@ -39,6 +39,7 @@
         <div class="flex items-center space-x-2">
             <!-- Upvote Button -->
             <button 
+                id="upvote-button-{{ $question->id }}"
                 class="w-10 h-10 bg-[color:#4B1414] hover:bg-green-600 text-white rounded-full flex items-center justify-center" 
                 aria-label="Upvote"
                 onclick="handleVote({{ $question->id }}, 'upvote')"
@@ -51,9 +52,9 @@
                 {{ $question->popularityVotes->where('is_positive', true)->count() - $question->popularityVotes->where('is_positive', false)->count() }}
             </h2>
 
-
             <!-- Downvote Button -->
             <button 
+                id="downvote-button-{{ $question->id }}"
                 class="w-10 h-10 bg-[color:#4B1414] hover:bg-red-600 text-white rounded-full flex items-center justify-center" 
                 aria-label="Downvote"
                 onclick="handleVote({{ $question->id }}, 'downvote')"
@@ -76,18 +77,19 @@
 
                     if (response.ok) {
                         const data = await response.json();
+
                         // Update the Yeahs Count
-                        const countElement = document.getElementById(`yeahs-count-${questionId}`);
-                        if (countElement) {
-                            countElement.textContent = data.totalVotes;
-                        } else {
-                            console.error(`Count element not found for question ID: ${questionId}`);
-                        }
+                        document.getElementById(`yeahs-count-${questionId}`).textContent = data.totalVotes;
+
+                        // Update active button styles
+                        const upvoteButton = document.getElementById(`upvote-button-${questionId}`);
+                        const downvoteButton = document.getElementById(`downvote-button-${questionId}`);
+
                     } else {
-                        console.error('Failed to process the vote:', await response.text());
+                        console.error('Failed to vote');
                     }
                 } catch (error) {
-                    console.error('Error during vote handling:', error);
+                    console.error('Error:', error);
                 }
             }
         </script>

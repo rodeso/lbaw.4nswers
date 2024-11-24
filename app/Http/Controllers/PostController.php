@@ -56,31 +56,48 @@ class PostController extends Controller
         return redirect()->route('question.show', ['id' => $validated['question_id']]);
     }
 
-    public function vote(Request $request, $id)
+    public function vote(Request $request, $questionId)
     {
-        $question = Question::findOrFail($id);
-        $user = auth()->user();
+        $userId = auth()->id();
+        $voteType = $request->input('vote'); // 'upvote' or 'downvote'
     
-        // Check if user already voted
-        $vote = PopularityVote::where('question_id', $id)->where('user_id', $user->id)->first();
+        // Check if the user has already voted
+        $existingVote = PopularityVote::where('user_id', $userId)
+            ->where('question_id', $questionId)
+            ->first();
     
-        if ($vote) {
-            // Update existing vote
-            $vote->is_positive = $request->vote === 'upvote';
-            $vote->save();
+        if ($existingVote) {
+            // If the user clicks the same button twice, remove the vote (undo)
+            if (($voteType === 'upvote' && $existingVote->is_positive) ||
+                ($voteType === 'downvote' && !$existingVote->is_positive)) {
+                $existingVote->delete();
+    
+                // Return the updated vote count
+                $totalVotes = PopularityVote::where('question_id', $questionId)
+                    ->where('is_positive', true)->count()
+                    - PopularityVote::where('question_id', $questionId)
+                    ->where('is_positive', false)->count();
+    
+                return response()->json(['totalVotes' => $totalVotes]);
+            }
+    
+            // Otherwise, update the vote
+            $existingVote->is_positive = ($voteType === 'upvote');
+            $existingVote->save();
         } else {
-            // Create a new vote
+            // Create a new vote if none exists
             PopularityVote::create([
-                'user_id' => $user->id,
-                'question_id' => $id,
-                'is_positive' => $request->vote === 'upvote',
+                'user_id' => $userId,
+                'question_id' => $questionId,
+                'is_positive' => ($voteType === 'upvote'),
             ]);
         }
     
         // Calculate total votes
-        $upvotes = PopularityVote::where('question_id', $id)->where('is_positive', true)->count();
-        $downvotes = PopularityVote::where('question_id', $id)->where('is_positive', false)->count();
-        $totalVotes = $upvotes - $downvotes;
+        $totalVotes = PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', true)->count()
+            - PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', false)->count();
     
         return response()->json(['totalVotes' => $totalVotes]);
     }
