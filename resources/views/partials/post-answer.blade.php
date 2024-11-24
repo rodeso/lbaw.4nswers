@@ -63,8 +63,6 @@
         }
     }
 </script>
-
-
 <!-- Message for Unauthenticated Users -->
 @guest
 <section class="w-full bg-[color:#FFEDED] rounded-lg shadow-md p-6 text-center">

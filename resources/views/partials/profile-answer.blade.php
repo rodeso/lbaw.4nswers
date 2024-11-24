@@ -13,7 +13,7 @@
                         class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
                     />
                 </div>
-                    <p class="text-lg text-white">Answered by: {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
+                    <p class="text-lg text-white">Answered by {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
                 </div>
                 <div 
                     class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
