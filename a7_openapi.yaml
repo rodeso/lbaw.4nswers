@@ -1,84 +1,517 @@
 openapi: 3.0.0
 info:
   title: 4NSWERS API
-  description: API documentation for the collaborative Q&A platform "4NSWERS".
+  description: Comprehensive API for the collaborative Q&A platform "4NSWERS".
   version: 1.0.0
 servers:
-  - url: https://api.4nswers.com
+  - url: https://4nswers.com
     description: Production server
-  - url: https://staging-api.4nswers.com
-    description: Staging server
+
+
+tags:
+  - name: "M01: User Authentication and Profile Management"
+  - name: "M02: Questions Management"
+  - name: "M03: Answers Management"
+  - name: "M04: Comments"
+  - name: "M05: Voting"
+  - name: "M06: Notifications"
+  - name: "M07: Admin Moderation"
 
 paths:
-  /users:
+  /login:
+    get:
+      summary: "Login Form"
+      description: "Provide login form. Access: PUB"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      responses:
+        '200':
+          description: "OK. Show Login UI"
     post:
-      summary: Register a new user
-      description: Create an account for a new user.
+      summary: "Login Action"
+      description: "Process the login form. Access: PUB"
+      tags:
+        - "M01: User Authentication and Profile Management"
       requestBody:
-        description: User registration details
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '302':
+          description: "Redirect after login."
+          headers:
+            Location:
+              schema:
+                type: string
+
+  /register:
+    get:
+      summary: "Registration Form"
+      description: "Provide user registration form. Access: PUB"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      responses:
+        '200':
+          description: "OK. Show Registration UI"
+    post:
+      summary: "Register Action"
+      description: "Process the registration form. Access: PUB"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '302':
+          description: "Redirect after registration."
+          headers:
+            Location:
+              schema:
+                type: string
+
+  /users/{id}:
+    get:
+      summary: "View User Profile"
+      description: "Retrieve user profile by ID. Access: OWN, ADM"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "User Profile"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      summary: "Edit User Profile"
+      description: "Edit profile of the user. Access: OWN"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '201':
-          description: User created successfully
-        '400':
-          description: Invalid input
-    get:
-      summary: Get a list of users
-      description: Returns a list of all registered users.
+              $ref: "#/components/schemas/UserUpdate"
       responses:
         '200':
-          description: A list of users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+          description: "User profile updated."
+    delete:
+      summary: "Delete User"
+      description: "Delete the user account. Access: OWN, ADM"
+      tags:
+        - "M01: User Authentication and Profile Management"
+      responses:
+        '204':
+          description: "User deleted."
 
   /questions:
-    post:
-      summary: Create a new question
-      description: Post a new question with optional tags and urgency.
-      requestBody:
-        description: Question details
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Question'
-      responses:
-        '201':
-          description: Question created successfully
-        '400':
-          description: Invalid input
     get:
-      summary: Get active questions
-      description: Retrieve a list of active questions, with filtering options.
+      summary: "Get Questions"
+      description: "Retrieve all active questions. Access: PUB"
+      tags:
+        - "M02: Questions Management"
       parameters:
-        - name: tag
-          in: query
-          description: Filter questions by tag
+        - in: query
+          name: tag
           schema:
             type: string
-        - name: sortBy
-          in: query
-          description: Sort questions by urgency, votes, or creation time
+          description: "Filter by tag"
+        - in: query
+          name: urgency
           schema:
             type: string
-            enum: [urgency, votes, newest]
+          description: "Filter by urgency level"
       responses:
         '200':
-          description: A list of questions
+          description: "List of questions"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Question'
+                  $ref: "#/components/schemas/Question"
+    post:
+      summary: "Create Question"
+      description: "Submit a new question. Access: USR"
+      tags:
+        - "M02: Questions Management"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionCreate"
+      responses:
+        '201':
+          description: "Question created successfully."
+
+  /questions/{id}:
+    get:
+      summary: "View Question"
+      description: "Retrieve details of a question by ID. Access: PUB"
+      tags:
+        - "M02: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Question details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    patch:
+      summary: "Edit Question"
+      description: "Edit details of a question. Access: OWN"
+      tags:
+        - "M02: Questions Management"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionUpdate"
+      responses:
+        '200':
+          description: "Question updated."
+    delete:
+      summary: "Delete Question"
+      description: "Delete a question. Access: OWN, ADM"
+      tags:
+        - "M02: Questions Management"
+      responses:
+        '204':
+          description: "Question deleted."
+
+  /answers:
+    post:
+      summary: "Submit an Answer"
+      description: "Post a new answer to a question. Access: USR"
+      tags:
+        - "M03: Answers Management"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnswerCreate"
+      responses:
+        '201':
+          description: "Answer submitted."
+
+  /answers/{id}:
+    get:
+      summary: "View Answer"
+      description: "Retrieve details of an answer by ID. Access: PUB"
+      tags:
+        - "M03: Answers Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Answer details"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+    patch:
+      summary: "Edit Answer"
+      description: "Edit details of an answer. Access: OWN"
+      tags:
+        - "M03: Answers Management"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnswerUpdate"
+      responses:
+        '200':
+          description: "Answer updated."
+    delete:
+      summary: "Delete Answer"
+      description: "Delete an answer. Access: OWN, ADM"
+      tags:
+        - "M03: Answers Management"
+      responses:
+        '204':
+          description: "Answer deleted."
+  /comments:
+    post:
+      summary: "Submit a Comment"
+      description: "Post a new comment to a question or answer. Access: USR"
+      tags:
+        - "M04: Comments"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentCreate"
+      responses:
+        '201':
+          description: "Comment submitted."
+    /comments/{id}:
+      get:
+        summary: "View Comment"
+        description: "Retrieve details of a comment by ID. Access: PUB"
+        tags:
+          - "M04: Comments"
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: "Comment details"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Comment"
+      patch:
+        summary: "Edit Comment"
+        description: "Edit details of a comment. Access: OWN"
+        tags:
+          - "M04: Comments"
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentUpdate"
+        responses:
+          '200':
+            description: "Comment updated."
+      delete:
+        summary: "Delete Comment"
+        description: "Delete a comment. Access: OWN, ADM"
+        tags:
+          - "M04: Comments"
+        responses:
+          '204':
+            description: "Comment deleted."
+    /questions/{id}/votes:
+      post: 
+        summary: "Vote on Question"
+        description: "Vote on a question. Access: USR"
+        tags:
+          - "M05: Voting"
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vote:
+                    type: string
+                    description: "up or down"
+        responses:
+          '200':
+            description: "Question voted."
+      get: ...
+    /answers/{id}/votes:
+      post:
+        summary: "Vote on Answer"
+        description: "Vote on an answer. Access: USR"
+        tags:
+          - "M05: Voting"
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vote:
+                    type: string
+                    description: "up or down"
+        responses:
+          '200':
+            description: "Answer voted."
+      get:
+        summary: "Get Answer Votes"
+        description: "Retrieve all votes for an answer. Access: USR"
+        tags:
+          - "M05: Voting"
+        responses:
+          '200':
+            description: "Votes retrieved."
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      vote:
+                        type: string
+                        example: "up"
+                      user_id:
+                        type: integer
+                      created_at:
+                        type: string
+                        format: date-time
+    /notifications:
+      get:
+        summary: "Get Notifications"
+        description: "Retrieve all notifications for the authenticated user. Access: USR"
+        tags:
+          - "M06: Notifications"
+        responses:
+          '200':
+            description: "Notifications retrieved."
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Notification"
+    /notifications/{id}:
+      patch:
+        summary: "Mark Notification as Read"
+        description: "Mark a specific notification as read. Access: USR"
+        tags:
+          - "M06: Notifications"
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: "Notification marked as read."
+      delete:
+        summary: "Delete Notification"
+        description: "Delete a specific notification. Access: USR"
+        tags:
+          - "M06: Notifications"
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+          '204':
+            description: "Notification deleted."
+    /admin/users/{id}:
+      patch:
+        summary: "Block or Unblock User"
+        description: "Block or unblock a user. Access: ADM"
+        tags:
+          - "M07: Admin Moderation"
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  block:
+                    type: boolean
+                    description: "True to block, false to unblock the user."
+        responses:
+          '200':
+            description: "User block status updated."
+    /admin/posts/{id}:
+      delete:
+        summary: "Remove Flagged Content"
+        description: "Remove flagged content. Access: ADM"
+        tags:
+          - "M07: Admin Moderation"
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+          '204':
+            description: "Flagged content removed."
+    /admin/reports:
+      get:
+        summary: "View Flagged Reports"
+        description: "Retrieve a list of all flagged content reports. Access: ADM"
+        tags:
+          - "M07: Admin Moderation"
+        responses:
+          '200':
+            description: "Flagged reports retrieved."
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      content_type:
+                        type: string
+                        example: "question"
+                      reason:
+                        type: string
+                        example: "Inappropriate content"
+                      reported_by:
+                        type: string
+                        example: "john_doe"
+                      created_at:
+                        type: string
+                        format: date-time
+
+
+
 
 components:
   schemas:
@@ -89,13 +522,17 @@ components:
           type: integer
         name:
           type: string
-          example: John Doe
-        nickname:
-          type: string
-          example: johnd123
         email:
           type: string
-          example: johndoe@example.com
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
     Question:
       type: object
       properties:
@@ -105,15 +542,68 @@ components:
           type: string
         body:
           type: string
-          example: "How can I fix my computer?"
         urgency:
           type: string
-          example: "Red"
         tags:
           type: array
           items:
             type: string
-          example: ["computers", "repair"]
-        time_end:
+
+    QuestionCreate:
+      type: object
+      required:
+        - title
+        - body
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+        body:
+          type: string
+        question_id:
+          type: integer
+
+    AnswerCreate:
+      type: object
+      required:
+        - body
+        - question_id
+      properties:
+        body:
+          type: string
+        question_id:
+          type: integer
+    
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        answer_id:
+          type: integer
+        body:
+          type: string
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        read:
+          type: boolean
+        created_at:
           type: string
           format: date-time
