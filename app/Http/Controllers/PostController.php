@@ -19,9 +19,18 @@ class PostController extends Controller
         // Extract tags separately
         $user_tags = $question->tags;
     
-        // Pass the question and tags to the view
-        return view('post', compact('question', 'user_tags'));
+        // Get the user's vote (if they have voted)
+        $userVote = null;
+        if (auth()->check()) {
+            $userVote = PopularityVote::where('user_id', auth()->id())
+                ->where('question_id', $id)
+                ->value('is_positive');
+        }
+    
+        // Pass the question, tags, and userVote to the view
+        return view('post', compact('question', 'user_tags', 'userVote'));
     }
+    
 
 
     public function storeAnswer(Request $request)

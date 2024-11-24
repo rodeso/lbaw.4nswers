@@ -40,7 +40,8 @@
             <!-- Upvote Button -->
             <button 
                 id="upvote-button-{{ $question->id }}"
-                class="w-10 h-10 bg-[color:#4B1414] hover:bg-green-600 text-white rounded-full flex items-center justify-center" 
+                class="w-10 h-10 rounded-full flex items-center justify-center text-white 
+                    {{ $userVote === true ? 'bg-green-600' : 'bg-[color:#4B1414] hover:bg-green-600' }}" 
                 aria-label="Upvote"
                 onclick="handleVote({{ $question->id }}, 'upvote')"
             >
@@ -55,7 +56,8 @@
             <!-- Downvote Button -->
             <button 
                 id="downvote-button-{{ $question->id }}"
-                class="w-10 h-10 bg-[color:#4B1414] hover:bg-red-600 text-white rounded-full flex items-center justify-center" 
+                class="w-10 h-10 rounded-full flex items-center justify-center text-white  
+                    {{ $userVote === false ? 'bg-red-600' : 'bg-[color:#4B1414] hover:bg-red-600' }}" 
                 aria-label="Downvote"
                 onclick="handleVote({{ $question->id }}, 'downvote')"
             >
@@ -63,6 +65,7 @@
             </button>
         </div>
 
+        <!-- Vote Handling Script -->
         <script>
             async function handleVote(questionId, voteType) {
                 try {
@@ -81,10 +84,32 @@
                         // Update the Yeahs Count
                         document.getElementById(`yeahs-count-${questionId}`).textContent = data.totalVotes;
 
-                        // Update active button styles
+                        // Update button colors based on the new vote status
                         const upvoteButton = document.getElementById(`upvote-button-${questionId}`);
                         const downvoteButton = document.getElementById(`downvote-button-${questionId}`);
 
+                        if (voteType === 'upvote') {
+                            upvoteButton.classList.add('bg-green-600');
+                            upvoteButton.classList.remove('bg-[color:#4B1414]', 'hover:bg-green-600');
+
+                            downvoteButton.classList.remove('bg-red-600');
+                            downvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-red-600');
+                        } else if (voteType === 'downvote') {
+                            downvoteButton.classList.add('bg-red-600');
+                            downvoteButton.classList.remove('bg-[color:#4B1414]', 'hover:bg-red-600');
+
+                            upvoteButton.classList.remove('bg-green-600');
+                            upvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-green-600');
+                        }
+
+                        // If the vote was undone, reset both buttons to default state
+                        if (data.voteUndone) {
+                            upvoteButton.classList.remove('bg-green-600');
+                            upvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-green-600');
+
+                            downvoteButton.classList.remove('bg-red-600');
+                            downvoteButton.classList.add('bg-[color:#4B1414]', 'hover:bg-red-600');
+                        }
                     } else {
                         console.error('Failed to vote');
                     }
@@ -93,7 +118,6 @@
                 }
             }
         </script>
-
 
     </div>
     <!-- Question Body -->                        
