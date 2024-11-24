@@ -4,7 +4,7 @@ info:
   description: Comprehensive API for the collaborative Q&A platform "4NSWERS".
   version: 1.0.0
 servers:
-  - url: https://4nswers.com
+  - url: http://127.0.0.1:8000]
     description: Production server
 
 
@@ -275,6 +275,7 @@ paths:
       responses:
         '204':
           description: "Answer deleted."
+
   /comments:
     post:
       summary: "Submit a Comment"
@@ -290,6 +291,7 @@ paths:
       responses:
         '201':
           description: "Comment submitted."
+
     /comments/{id}:
       get:
         summary: "View Comment"
@@ -331,6 +333,7 @@ paths:
         responses:
           '204':
             description: "Comment deleted."
+
     /questions/{id}/votes:
       post: 
         summary: "Vote on Question"
@@ -350,7 +353,32 @@ paths:
         responses:
           '200':
             description: "Question voted."
-      get: ...
+      get:
+        summary: "Get Question Votes"
+        description: "Retrieve all votes for a question. Access: USR"
+        tags:
+          - "M05: Voting"
+        responses:
+          '200':
+            description: "Votes retrieved."
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      vote:
+                        type: string
+                        example: "up"
+                      user_id:
+                        type: integer
+                      created_at:
+                        type: string
+                        format: date-time
+
     /answers/{id}/votes:
       post:
         summary: "Vote on Answer"
@@ -395,6 +423,7 @@ paths:
                       created_at:
                         type: string
                         format: date-time
+
     /notifications:
       get:
         summary: "Get Notifications"
@@ -410,6 +439,7 @@ paths:
                   type: array
                   items:
                     $ref: "#/components/schemas/Notification"
+
     /notifications/{id}:
       patch:
         summary: "Mark Notification as Read"
@@ -439,6 +469,7 @@ paths:
         responses:
           '204':
             description: "Notification deleted."
+
     /admin/users/{id}:
       patch:
         summary: "Block or Unblock User"
@@ -464,6 +495,7 @@ paths:
         responses:
           '200':
             description: "User block status updated."
+
     /admin/posts/{id}:
       delete:
         summary: "Remove Flagged Content"
@@ -479,6 +511,7 @@ paths:
         responses:
           '204':
             description: "Flagged content removed."
+
     /admin/reports:
       get:
         summary: "View Flagged Reports"
