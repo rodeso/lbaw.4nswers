@@ -88,7 +88,7 @@
     <!-- Scrolling Banner -->
     <div class="relative overflow-hidden bg-[#4B1414] w-2/3 mx-auto rounded-xl">
         <div class="scrolling-text bg-[#4B1414] text-[#FF006E] py-2 px-6 whitespace-nowrap">
-            ⚡ Urgent: Question about "X" is about to expire. View Hall of Fame 🎉 Join the Conversation Today!
+            ⚡ Urgent: Question about "X" is about to expire. <a href="{{ route('foryou') }}">View Hall of Fame 🎉</a> <a href ="{{ route('new-question') }}" >Join the Conversation Today!</a>
         </div>
     </div>
 
