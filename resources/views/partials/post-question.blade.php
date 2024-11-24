@@ -11,7 +11,7 @@
                     class="absolute w-20 h-20 bg-gray-300 rounded-2xl"
                 />
             </div>
-            <p class="text-xl text-white">Asked by: {{ $question->author->nickname }}</p>
+            <p class="text-xl text-white">Asked by {{ $question->author->nickname }}</p>
         </div>
         <div 
             class="relative w-80 h-14 bg-white text-center flex items-end justify-end"

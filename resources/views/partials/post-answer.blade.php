@@ -3,39 +3,66 @@
 
 <!-- Answer Form (Visible only to logged-in users) -->
 @auth
-<section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-5">
-    <header class="flex items-center justify-between bg-[color:#4B1414]">
-        <div class="relative flex items-center space-x-16">
-            <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1">
+<section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6">
+    <header class="flex items-center justify-between bg-[color:#4B1414] p-3 rounded-t-lg">
+        <div class="relative flex items-center space-x-4">
+            <div class="relative w-14 h-14 bg-gray-300 rounded-2xl overflow-hidden">
                 <img 
                     src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
                     alt="Profile Picture" 
-                    class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
+                    class="w-full h-full object-cover"
                 />
             </div>
-            <p class="text-lg text-white">Answering as: {{ Auth::user()->nickname }}</p>
+            <p class="text-lg text-white">{{ Auth::user()->nickname }}, post your answer!</p>
         </div>
-    </header>
-    <form action="{{ route('answer.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="question_id" value="{{ $question->id }}">
-        <textarea 
-            name="body" 
-            id="body" 
-            cols="30" 
-            rows="5" 
-            class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
-            placeholder="Write your answer here..."
-        ></textarea>
         <button 
-            type="submit" 
-            class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+            id="toggleAnswerButton"
+            onclick="toggleAnswerForm()" 
+            class="bg-white text-[color:#4B1414] px-4 py-2 rounded-lg hover:bg-[color:#C18A8A] transition font-semibold"
         >
-            Post Answer
+            Click here to answer!
         </button>
-    </form>
+    </header>
+    <!-- Hidden Answer Form -->
+    <div id="answerForm" class="hidden p-4 bg-white rounded-b-lg space-y-5">
+        <form action="{{ route('answer.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <textarea 
+                name="body" 
+                id="body" 
+                cols="30" 
+                rows="5" 
+                class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                placeholder="Write your answer here..."
+            ></textarea>
+            <button 
+                type="submit" 
+                class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+            >
+                Post Answer
+            </button>
+        </form>
+    </div>
 </section>
 @endauth
+
+<script>
+    function toggleAnswerForm() {
+        const form = document.getElementById('answerForm');
+        const button = document.getElementById('toggleAnswerButton');
+        
+        // Toggle visibility of the form
+        form.classList.toggle('hidden');
+        
+        // Update button text based on the form's state
+        if (form.classList.contains('hidden')) {
+            button.textContent = "Click here to answer!";
+        } else {
+            button.textContent = "Close Answer Form.";
+        }
+    }
+</script>
 <!-- Message for Unauthenticated Users -->
 @guest
 <section class="w-full bg-[color:#FFEDED] rounded-lg shadow-md p-6 text-center">
@@ -58,7 +85,7 @@
                     class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
                 />
             </div>
-                <p class="text-lg text-white">Answered by: {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
+                <p class="text-lg text-white">Answered by {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
             </div>
             <div 
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
