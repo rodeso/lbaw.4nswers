@@ -81,18 +81,20 @@
         animation-play-state: paused;
     }
 </style>
-<header class="fixed top-0 left-0 w-full bg-[color:#4E0F35] text-white px-8 py-2 flex justify-between items-center z-10">
-    <div class="flex items-center space-x-4">
+<header class="fixed top-0 left-0 w-full bg-[color:#4E0F35] text-white py-2 flex justify-between items-center z-10">
+    <div class="flex items-center space-x-4 pl-8">
         <a href="{{ route('home') }}" class="text-2xl font-bold text-[color:#FF006E]">4NSWERS</a>
     </div>
     <!-- Scrolling Banner -->
-    <div class="relative overflow-hidden bg-[color:#4B1414]">
-        <div class="scrolling-text bg-[color:#4B1414] text-[color:#FF006E] py-2 px-4 whitespace-nowrap">
+    <div class="relative overflow-hidden bg-[#4B1414] w-3/5 mx-auto">
+        <div class="scrolling-text bg-[#4B1414] text-[#FF006E] py-2 px-4 whitespace-nowrap">
             ⚡ Urgent: Question about "X" is about to expire. View Hall of Fame 🎉 Join the Conversation Today!
         </div>
     </div>
+
+
     <!-- Right Side Buttons -->
-    <div class="flex items-center space-x-2 "> 
+    <div class="flex items-center space-x-2 pr-6"> 
         <button class="bg-[color:#444444] p-2 rounded-full squircle">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11m4 0h1M5 6h14M5 14h14m-4 4h4m-6 0h-4m-6 0h-2m6-12h2m4 0h2m-6 8h4m-6 4h2m2-8h4" />
