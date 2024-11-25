@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS lbaw24112.user (
   aura INT DEFAULT 0 NOT NULL,
   profile_picture VARCHAR DEFAULT 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png' NOT NULL,
   created DATE DEFAULT CURRENT_DATE NOT NULL,
-  deleted BOOLEAN DEFAULT FALSE NOT NULL,
   is_mod BOOLEAN DEFAULT FALSE NOT NULL
 );
 
@@ -60,8 +59,6 @@ CREATE TABLE IF NOT EXISTS post (
   id SERIAL PRIMARY KEY UNIQUE NOT NULL,
   body TEXT CHECK (LENGTH(body) <= 4096) NOT NULL,
   time_stamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  deleted BOOLEAN DEFAULT FALSE NOT NULL,
-  edited BOOLEAN DEFAULT FALSE NOT NULL,
   edit_time TIMESTAMP DEFAULT NULL
 );
 
@@ -158,6 +155,8 @@ CREATE TABLE IF NOT EXISTS question_tags (
   question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL,
   tag_id INTEGER REFERENCES tag(id) ON DELETE CASCADE NOT NULL
 );
+
+CREATE INDEX post_body_tsvector_idx ON post USING GIN (to_tsvector('english', body));
 
 
 INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date)

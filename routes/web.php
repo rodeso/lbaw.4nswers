@@ -15,6 +15,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HallOfFameController;
 
+use App\Http\Controllers\SearchController;
+
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -83,6 +85,9 @@ Route::post('/questions/{id}/vote', [PostController::class, 'vote'])->name('ques
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
+
+//Search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Edit Profile
 Route::middleware('auth')->group(function () {
