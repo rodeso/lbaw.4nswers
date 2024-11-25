@@ -67,6 +67,7 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 // Hall of Fame
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
 
+Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
 
 // Question
 Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
