@@ -17,7 +17,14 @@ class PostController extends Controller
     public function show($id)
     {
         // Retrieve the specific question with its related data
-        $question = Question::with(['post', 'answers.post', 'tags', 'author', 'answers.author'])->findOrFail($id);
+        $question = Question::with([
+            'post',
+            'answers.post',
+            'tags',
+            'author',
+            'answers.author',
+            'answers.post.moderatorNotifications' // Load moderator notifications for posts
+        ])->findOrFail($id);
     
         // Tags that user follows
         $user_tags = Auth::user()
@@ -34,7 +41,7 @@ class PostController extends Controller
     
         // Pass the question, tags, and userVote to the view
         return view('post', compact('question', 'user_tags', 'userVote'));
-    }
+    }    
     
 
     public function showNewQuestion()

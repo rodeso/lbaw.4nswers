@@ -79,13 +79,13 @@
         <header class="flex items-center justify-between bg-[color:#4B1414]">
             <div class="relative flex items-center space-x-16">
                 <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1">
-                <img 
-                    src="{{ $answer->author->profile_picture ? asset('storage/' . $answer->author->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
-                    alt="Profile Picture" 
-                    class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
-                />
-            </div>
-                <p class="text-lg text-white">Answered by {{ $answer->author->nickname }}</p> <!-- To be changed to user's nickname -->
+                    <img 
+                        src="{{ $answer->author->profile_picture ? asset('storage/' . $answer->author->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
+                        alt="Profile Picture" 
+                        class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
+                    />
+                </div>
+                <p class="text-lg text-white">Answered by {{ $answer->author->nickname }}</p>
             </div>
             <div 
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
@@ -120,16 +120,21 @@
                 </button>
             </div>
         </div>
-        <!-- Time Posting & Answer Tags -->
+        <!-- Time Posting & Moderator Tags -->
         <div class="flex items-center space-x-4 mt-4">
             <p class="text-sm text-gray-700 font-semibold">
                 Answered {{ $answer->post->time_stamp->diffForHumans() }}!
             </p>
             <div class="flex flex-wrap items-center space-x-2">
-                <!-- Not yet done because answers dont have tags yet -->
+                @foreach ($answer->post->moderatorNotifications as $modNotification)
+                    <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                        {{ $modNotification->reason }}
+                    </span>
+                @endforeach
             </div>
         </div>
     </section>
 @endforeach
+
 
 </section>
