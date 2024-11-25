@@ -69,6 +69,10 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 
 Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
 
+Route::get('/urgent', [IndexController::class, 'reorderByUrgent'])->name('urgent');
+
+Route::get('/new', [IndexController::class, 'reorderByNew'])->name('new');
+
 // Question
 Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
 
