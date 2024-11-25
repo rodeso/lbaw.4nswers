@@ -192,6 +192,26 @@ class PostController extends Controller
         return view('edit-question', compact('tags', 'user_tags', 'question', 'post'));
     }
 
+    public function showEditAnswer($id)
+    {
+        $answer = Answer::findOrFail($id);
+
+        // Check if the logged-in user is the author of the answer 
+        /*if (Auth::id() !== $answer->author_id) {
+            return redirect()->route('question.show', ['id' => $id]);
+        }*/
+
+        $post = Post::findOrFail($answer->post_id);
+
+        // Tags that the user follows
+        $user_tags = Auth::user()
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
+            : collect();
+
+
+        return view('edit-answer', compact('user_tags', 'answer', 'post'));
+    }
+
 
     public function vote(Request $request, $questionId)
     {
@@ -316,9 +336,6 @@ class PostController extends Controller
         return response()->json(['totalAura' => $totalAura]);
     }
 
-
-
-
     
     public function updateQuestion(Request $request, $id)
     {
@@ -345,6 +362,20 @@ class PostController extends Controller
 
         return redirect()->route('question.show', $question->id)->with('success', 'Question updated successfully!');
     }
+
+    public function updateAnswer(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'body' => 'required|string|max:4096',
+        ]);
+
+        // Find the answer and update it
+        $answer = Answer::findOrFail($id);
+        $answer->post->update(['body' => $validated['body']]);
+
+        return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
+    }
+
 
     public function deleteQuestion($id)
     {
@@ -378,6 +409,23 @@ class PostController extends Controller
         return redirect()->route('home')->with('success', 'The question has been deleted successfully.');
     }
 
+    public function deleteAnswer($id)
+    {
+        $answer = Answer::findOrFail($id);
+
+        // Check if the authenticated user is the author or an admin
+        if (Auth::id() !== $answer->author_id && !Auth::user()->is_admin) {
+            return redirect()->route('question.show', $answer->question->id)->with('error', 'You are not authorized to delete this answer.');
+        }
+
+        $post = $answer->post;
+        $post->delete(); // Delete the post
+
+        $answer->delete(); // Delete the answer
+
+        // Redirect to a suitable page with success message
+        return redirect()->route('question.show', $answer->question->id)->with('success', 'The answer has been deleted successfully.');
+    }
 
 
 }
