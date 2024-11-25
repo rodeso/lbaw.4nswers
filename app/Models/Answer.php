@@ -40,9 +40,11 @@ class Answer extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
-    public function auraVote()
+
+    // Access moderator notification through post
+    public function moderatorNotification()
     {
-        return $this->hasMany(AuraVote::class);
+        return $this->post->hasOne(ModeratorNotification::class, 'post_id');
     }
 }
 

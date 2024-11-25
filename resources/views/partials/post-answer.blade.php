@@ -68,9 +68,12 @@
 
 <!-- Answers -->
 @foreach ($question->answers as $answer)
-    <section class="w-full bg-[color:#C18A8A] rounded-lg shadow-md p-6 space-y-3">
+    <section 
+        class="w-full rounded-lg shadow-md p-6 space-y-3 
+        @if($answer->chosen) bg-green-200 border-4 border-green-600 @else bg-[color:#C18A8A] @endif">
         <!-- Answer Header -->
-        <header class="flex items-center justify-between bg-[color:#4B1414]">
+        <header class="flex items-center justify-between 
+            @if($answer->chosen) bg-green-600 text-white @else bg-[color:#4B1414] @endif">
             <div class="relative flex items-center space-x-16">
                 <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1">
                     <img 
@@ -79,7 +82,10 @@
                         class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
                     />
                 </div>
-                <p class="text-lg text-white">Answered by {{ $answer->author->nickname }}</p>
+                <p class="text-lg 
+                    @if($answer->chosen) text-white @else text-white @endif">
+                    Answered by {{ $answer->author->nickname }}
+                </p>
             </div>
             <div 
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
@@ -114,16 +120,29 @@
                 </button>
             </div>
         </div>
-        <!-- Time Posting & Answer Tags -->
+        <!-- Time Posting & Moderator Tags -->
         <div class="flex items-center space-x-4 mt-4">
             <p class="text-sm text-gray-700 font-semibold">
                 Answered {{ $answer->post->time_stamp->diffForHumans() }}!
             </p>
             <div class="flex flex-wrap items-center space-x-2">
-                <!-- Not yet done because answers dont have tags yet -->
+                @foreach ($answer->post->moderatorNotifications as $modNotification)
+                    <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                        {{ $modNotification->reason }}
+                    </span>
+                @endforeach
             </div>
         </div>
+
+        <!-- Highlight for chosen answer -->
+        @if($answer->chosen)
+            <div class="text-green-700 font-bold text-center mt-4">
+                This answer was chosen by the questioner!
+            </div>
+        @endif
     </section>
 @endforeach
+
+
 
 </section>
