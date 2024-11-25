@@ -168,7 +168,7 @@ VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsB
 ('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17'),
 ('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19'),
 ('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26'),
-('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30')
+('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30'),
 ('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14');
 
 INSERT INTO tag(name, description)
@@ -184,7 +184,7 @@ INSERT INTO post(body)
 VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.'),
 ('I need help with a windows update, can anyone help me?'),
 ('I love biscuits, especially hungaros and belgas. Any suggestions?'),
-('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP')
+('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP'),
 ('I just love Benfica, they are the best team in the world! They play the beautiful game and make me smile everytime'),
 ('Estonian league is a mess, I love it!'),
 ('I love purple, what are your favorite colors?'),
@@ -194,31 +194,30 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('For me its Airbus A380 all the way, what about you?'),
 ('I am flying to Madrid next week, any tips and suggestions?'),
 ('Primavera Sound is coming up, anyone else excited?'),
-('I love all music, but I am a sucker for a good pop song.')
-;
+('I love all music, but I am a sucker for a good pop song.');
 
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
-VALUES ('I need help fixing my computer!!', 'Red', '2021-06-01 00:00:00', 1, 1),
-('How to install a windows update', 'Orange', '2024-11-28 00:00:00', 5, 2),
-('Any new biscuit recomendation?', 'Yellow', '2021-06-01 00:00:00', 4, 3),
-('Why does my tummy hurt?', 'Red', '2014-03-16 16:31:54', 10, 4),
-('Benfica is the greatest team in the world', 'Green', '2014-03-16 16:31:54', 9, 5),
-('Estonian league shenanigans...', 'Yellow', '2014-03-16 16:31:54', 8, 6),
-('What is the best color?', 'Green', '2021-06-01 00:00:00', 2, 7),
-('HELP what are the 7 colors of the rainbow??', 'Red', '2021-06-01 00:00:00', 3, 8),
+VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
+('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
+('Any new biscuit recomendation?', 'Yellow', '2024-06-01 00:00:00', 4, 3),
+('Why does my tummy hurt?', 'Red', '2024-03-16 16:31:54', 10, 4),
+('Benfica is the greatest team in the world', 'Green', '2024-07-20 16:31:54', 9, 5),
+('Estonian league shenanigans...', 'Yellow', '2015-10-20 16:31:54', 8, 6),
+('What is the best color?', 'Green', '2018-03-01 00:00:00', 2, 7),
+('HELP what are the 7 colors of the rainbow??', 'Red', '2022-02-04 00:00:00', 3, 8),
 ('Any grand champs to duo with?', 'Green', '2024-11-28 00:00:00', 6, 9),
-('Any tips for a noob in LoL?', 'Green', '2021-06-01 00:00:00', 7, 10),
-('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2021-06-01 00:00:00', 4, 11),
-('Im flying to Madrid next week', 'Green', '2021-06-01 00:00:00', 3, 12),
-('Anyone else excited for Primavera Sound?', 'Green', '2021-06-01 00:00:00', 2, 13),
-('Favorite music genres?', 'Green', '2021-06-01 00:00:00', 7, 14);
+('Any tips for a noob in LoL?', 'Green', '2025-01-04 00:00:00', 7, 10),
+('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-30 00:00:00', 4, 11),
+('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
+('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
+('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14);
 
 
 
 INSERT INTO question_tags(question_id, tag_id)
 VALUES (1, 1),
-(2, 1)
+(2, 1),
 (3, 2),
 (4, 2),
 (5, 3),
