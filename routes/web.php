@@ -93,6 +93,9 @@ Route::get('/new-question', [PostController::class, 'showNewQuestion'])->name('n
 // Yeah Vote
 Route::post('/questions/{id}/vote', [PostController::class, 'vote'])->name('question.vote');
 
+// Aura Vote
+Route::post('/answer/{answerId}/vote', [PostController::class, 'auraVote'])->name('answer.vote');
+
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
 

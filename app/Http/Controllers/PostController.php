@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\UserFollowsTag;
 use App\Models\PopularityVote;
+use App\Models\AuraVote;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,21 +17,31 @@ class PostController extends Controller
 {
     public function show($id)
     {
-        // Retrieve the specific question with its related data
         $question = Question::with([
             'post',
-            'answers.post',
             'tags',
             'author',
+            'answers.post',
             'answers.author',
-            'answers.post.moderatorNotifications' // Load moderator notifications for posts
-        ])->findOrFail($id);
-    
+            'answers.post.moderatorNotifications',
+        ])
+        ->findOrFail($id);
+
+        // Calculate aura for each answer
+        foreach ($question->answers as $answer) {
+            $answer->aura = AuraVote::where('answer_id', $answer->id)
+                ->where('is_positive', true)
+                ->count() 
+                - AuraVote::where('answer_id', $answer->id)
+                ->where('is_positive', false)
+                ->count();
+        }
+
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
-            : collect(); // Return an empty collection if logged in user is null
-    
+            : collect();
+
         // Get the user's vote (if they have voted)
         $userVote = null;
         if (auth()->check()) {
@@ -38,10 +49,11 @@ class PostController extends Controller
                 ->where('question_id', $id)
                 ->value('is_positive');
         }
-    
-        // Pass the question, tags, and userVote to the view
+
+        // Pass data to view
         return view('post', compact('question', 'user_tags', 'userVote'));
-    }    
+    }
+ 
     
 
     public function showNewQuestion()
@@ -239,6 +251,51 @@ class PostController extends Controller
         return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
     }
 
+
+    public function auraVote(Request $request, $answerId)
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'You must be logged in to vote'], 403);
+        }        
+
+        $userId = auth()->id(); // Get the authenticated user's ID
+        $isPositive = $request->input('vote') === 'upvote';
+        
+        // Check if the user has already voted on this answer
+        $existingVote = AuraVote::where('user_id', $userId)
+            ->where('answer_id', $answerId)
+            ->first(); // Get the existing vote if there is one
+        
+        if ($existingVote) {
+            // If the user clicks the same button twice, remove the vote (undo)
+            if ($existingVote->is_positive === $isPositive) {
+                $existingVote->delete(); // Remove the vote
+            } else {
+                // Otherwise, update the vote
+                $existingVote->is_positive = $isPositive;
+                $existingVote->save(); // Save the updated vote
+            }
+        } else {
+            // Create a new vote if none exists
+            AuraVote::create([
+                'user_id' => $userId,
+                'answer_id' => $answerId,
+                'is_positive' => $isPositive,
+            ]);
+        }
+        
+        // Calculate the total aura for the answer
+        $totalAura = AuraVote::where('answer_id', $answerId)
+            ->where('is_positive', true)
+            ->count() 
+            - AuraVote::where('answer_id', $answerId)
+            ->where('is_positive', false)
+            ->count();
+        
+        return response()->json(['totalAura' => $totalAura]);
+    }
+
+    
     public function updateQuestion(Request $request, $id)
     {
         // Validate input

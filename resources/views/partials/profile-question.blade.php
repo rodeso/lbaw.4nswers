@@ -34,7 +34,7 @@
         <!-- Question Title and Yeahs -->
         <div class="flex justify-between items-center rounded-md">
             <!-- Question Title with Border -->
-            <h1 class="text-2xl font-bold border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
+            <h1 class="text-2xl font-bold border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
                 {{ $question->title }}
             </h1>
             <div class="flex items-center space-x-2">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <!-- Question Body -->                        
-        <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4">
+        <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4 break-words">
             {{ $question->post->body }}
         </p>
         <!-- Time Posting & Question Tags -->

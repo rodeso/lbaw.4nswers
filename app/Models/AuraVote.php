@@ -9,10 +9,16 @@ class AuraVote extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; //reminder to recheck this later
+    protected $table = 'aura_vote'; // Ensure the correct table name
+    protected $fillable = [
+        'user_id',
+        'answer_id',
+        'is_positive',
+    ];
 
-    protected $table = 'aura_vote';
-    protected $fillable = ['is_positive', 'user_id', 'answer_id'];
+    public $timestamps = false; // Set to false if you don’t have timestamps (created_at, updated_at) in the table
+
+    use HasFactory;
 
     public function answer()
     {
@@ -22,4 +28,5 @@ class AuraVote extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

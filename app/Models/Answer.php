@@ -49,5 +49,11 @@ class Answer extends Model
     {
         return $this->post->hasOne(ModeratorNotification::class, 'post_id');
     }
+    
+    // Relationship with AuraVote
+    public function auraVotes()
+    {
+        return $this->hasMany(AuraVote::class);
+    }
 }
 
