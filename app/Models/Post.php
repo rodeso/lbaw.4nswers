@@ -60,6 +60,14 @@ class Post extends Model
             'id'                // Local key on the notifications table
         );
     }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->whereRaw(
+            "to_tsvector('english', body) @@ plainto_tsquery('english', ?)",
+            [$searchTerm]
+        );
+    }
 }
 
 
