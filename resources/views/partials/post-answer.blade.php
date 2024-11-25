@@ -108,7 +108,7 @@
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
                 style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
             >
-                <p id="aura-{{ $answer->id }}" class="text-sm font-bold p-2">Aura: {{ $answer->aura }}</p>
+                <p id="aura-{{ $answer->id }}" class="text-sm font-bold p-2">Aura: {{ $answer->aura ?? 0 }}</p>
             </div>
         </header>
         <!-- Answer Body and upvote/downvote -->

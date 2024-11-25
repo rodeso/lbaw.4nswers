@@ -253,47 +253,71 @@ class PostController extends Controller
 
 
     public function auraVote(Request $request, $answerId)
-    {
-        if (!auth()->check()) {
-            return response()->json(['error' => 'You must be logged in to vote'], 403);
-        }        
+{
+    if (!auth()->check()) {
+        return response()->json(['error' => 'You must be logged in to vote'], 403);
+    }
 
-        $userId = auth()->id(); // Get the authenticated user's ID
-        $isPositive = $request->input('vote') === 'upvote';
-        
-        // Check if the user has already voted on this answer
-        $existingVote = AuraVote::where('user_id', $userId)
-            ->where('answer_id', $answerId)
-            ->first(); // Get the existing vote if there is one
-        
-        if ($existingVote) {
-            // If the user clicks the same button twice, remove the vote (undo)
-            if ($existingVote->is_positive === $isPositive) {
-                $existingVote->delete(); // Remove the vote
-            } else {
-                // Otherwise, update the vote
-                $existingVote->is_positive = $isPositive;
-                $existingVote->save(); // Save the updated vote
-            }
-        } else {
-            // Create a new vote if none exists
-            AuraVote::create([
-                'user_id' => $userId,
-                'answer_id' => $answerId,
-                'is_positive' => $isPositive,
-            ]);
-        }
-        
-        // Calculate the total aura for the answer
+    // Retrieve the associated answer and its question
+    $answer = Answer::find($answerId);
+
+    if (!$answer) {
+        return response()->json(['error' => 'Answer not found'], 404);
+    }
+
+    $question = $answer->question;
+
+    if ($question->closed) {
+        // Calculate the current aura of the answer
         $totalAura = AuraVote::where('answer_id', $answerId)
             ->where('is_positive', true)
             ->count() 
             - AuraVote::where('answer_id', $answerId)
             ->where('is_positive', false)
             ->count();
-        
-        return response()->json(['totalAura' => $totalAura]);
+
+        return response()->json([
+            'error' => 'Voting is not allowed as the question is closed.',
+            'totalAura' => $totalAura,
+        ], 403);
     }
+
+    $userId = auth()->id();
+    $isPositive = $request->input('vote') === 'upvote';
+
+    // Check if the user has already voted on this answer
+    $existingVote = AuraVote::where('user_id', $userId)
+        ->where('answer_id', $answerId)
+        ->first();
+
+    if ($existingVote) {
+        if ($existingVote->is_positive === $isPositive) {
+            $existingVote->delete(); // Remove the vote
+        } else {
+            $existingVote->is_positive = $isPositive;
+            $existingVote->save(); // Save the updated vote
+        }
+    } else {
+        AuraVote::create([
+            'user_id' => $userId,
+            'answer_id' => $answerId,
+            'is_positive' => $isPositive,
+        ]);
+    }
+
+    // Calculate the total aura after the vote
+    $totalAura = AuraVote::where('answer_id', $answerId)
+        ->where('is_positive', true)
+        ->count() 
+        - AuraVote::where('answer_id', $answerId)
+        ->where('is_positive', false)
+        ->count();
+
+    return response()->json(['totalAura' => $totalAura]);
+}
+
+
+
 
     
     public function updateQuestion(Request $request, $id)
