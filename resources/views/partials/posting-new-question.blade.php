@@ -100,7 +100,7 @@
                     class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
                 />
             </div>
-            <p class="text-lg text-white">Asking as: {{ Auth::user()->nickname }}</p>
+            <p class="text-lg text-white">Asking as {{ Auth::user()->nickname }}</p>
         </div>
     </header>
     <form action="{{ route('question.store') }}" method="POST">
