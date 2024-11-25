@@ -41,6 +41,8 @@ document.getElementById('search-close').addEventListener('click', () => {
     document.getElementById('search-container').classList.add('hidden');
 });
 
+//AJAX
+
 document.getElementById('search-input').addEventListener('input', function () {
     const query = this.value.trim();
 
@@ -49,7 +51,7 @@ document.getElementById('search-input').addEventListener('input', function () {
         return;
     }
 
-    fetch(`/search?query=${encodeURIComponent(query)}`)
+    fetch(`/api/search?query=${encodeURIComponent(query)}`) // Use the API endpoint
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch search results');
@@ -67,10 +69,13 @@ document.getElementById('search-input').addEventListener('input', function () {
                     const resultItem = document.createElement('div');
                     resultItem.classList.add('p-2', 'border-b', 'border-gray-300');
                     resultItem.innerHTML = `
-                        <a href="/questions/${question.id}" class="block hover:bg-gray-100 rounded-md p-2">
+                        <a href="/question/${question.id}" class="block hover:bg-gray-100 rounded-md p-2">
                             <p class="font-bold">${question.title}</p>
                             <p class="text-sm text-gray-500">
                                 ${question.post.body.substring(0, 100)}...
+                            </p>
+                            <p class="text-xs text-gray-400">
+                                Matched in: ${query.toLowerCase() === question.title.toLowerCase().substring(0, query.length) ? 'Title' : 'Body'}
                             </p>
                         </a>
                     `;
@@ -84,6 +89,7 @@ document.getElementById('search-input').addEventListener('input', function () {
             console.error('Error fetching search results:', error);
         });
 });
+
 
 
 
