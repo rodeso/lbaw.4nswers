@@ -40,5 +40,9 @@ class Answer extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+    public function auraVote()
+    {
+        return $this->hasMany(AuraVote::class);
+    }
 }
 

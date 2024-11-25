@@ -19,7 +19,7 @@
                     class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
                     style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
                 >
-                    <p class="text-sm font-bold p-2">Aura: 16588753</p>
+                    <p class="text-sm font-bold p-2">{{ $answer->vote_difference }} aura</p>
                 </div>
             </header>
             <!-- Answer Body-->
