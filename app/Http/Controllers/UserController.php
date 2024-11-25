@@ -18,9 +18,40 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $userId = Auth::id(); // Get the logged-in user's ID
-        $questions = Question::where('author_id', $userId)->get(); // Filter questions by user ID
+        $questions = Question::with(['tags', 'post'])
+        ->withCount([
+            'popularityVotes as positive_votes' => function ($query) {
+                $query->where('is_positive', true);
+            },
+            'popularityVotes as negative_votes' => function ($query) {
+                $query->where('is_positive', false);
+            },
+        ])
+        ->where('author_id', $userId) // Filter questions by user ID
+        ->get();
+
+        // Calculate the vote difference for each question
+        foreach ($questions as $question) {
+            $question->vote_difference = $question->positive_votes - $question->negative_votes;
+        }
         $tags = Tag::all();
-        $answers = Answer::where('author_id', $userId)->get(); // Filter answer by user ID 
+        $answers = Answer::withCount([
+            'auraVote as positive_votes' => function ($query) {
+                $query->where('is_positive', true);
+            },
+            'auraVote as negative_votes' => function ($query) {
+                $query->where('is_positive', false);
+            },
+        ])
+        ->where('author_id', $userId) // Filter answers by user ID
+        ->get();
+
+        // Calculate the vote difference for each question
+        foreach ($answers as $answer) {
+            $answer->vote_difference = $answer->positive_votes - $answer->negative_votes;
+        }
+        
+         // Filter answer by user ID 
         return view('profile', compact('user','questions', 'tags','answers'));
     }
 

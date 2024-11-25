@@ -15,6 +15,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HallOfFameController;
 
+use App\Http\Controllers\SearchController;
+
 
 // Home
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -67,9 +69,19 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 // Hall of Fame
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
 
+Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
+
+Route::get('/urgent', [IndexController::class, 'reorderByUrgent'])->name('urgent');
+
+Route::get('/new', [IndexController::class, 'reorderByNew'])->name('new');
 
 // Question
 Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
+
+// Edit Question
+Route::get('/questions/{id}/edit', [PostController::class, 'showEditQuestion'])->name('question.edit');
+Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])->name('question.update');
+Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
 
 // Post Answer
 Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');
@@ -86,6 +98,9 @@ Route::post('/answer/{answerId}/vote', [PostController::class, 'auraVote'])->nam
 
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
+
+//Search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Edit Profile
 Route::middleware('auth')->group(function () {

@@ -93,7 +93,7 @@ paths:
               schema:
                 type: string
 
-  /users/{id}:
+  /users/{id}: #to implement, currently /profile
     get:
       summary: "View User Profile"
       description: "Retrieve user profile by ID. Access: OWN, ADM"
@@ -135,7 +135,7 @@ paths:
         '204':
           description: "User deleted."
 
-  /questions:
+  /questions: #to implement, currently /
     get:
       summary: "Get Questions"
       description: "Retrieve all active questions. Access: PUB"
@@ -234,7 +234,7 @@ paths:
         '201':
           description: "Answer submitted."
 
-  /answers/{id}:
+  /answers/{id}: #to implement
     get:
       summary: "View Answer"
       description: "Retrieve details of an answer by ID. Access: PUB"
@@ -276,7 +276,7 @@ paths:
         '204':
           description: "Answer deleted."
 
-  /comments:
+  /comments: #No comments yet
     post:
       summary: "Submit a Comment"
       description: "Post a new comment to a question or answer. Access: USR"
@@ -292,256 +292,278 @@ paths:
         '201':
           description: "Comment submitted."
 
-    /comments/{id}:
-      get:
-        summary: "View Comment"
-        description: "Retrieve details of a comment by ID. Access: PUB"
-        tags:
-          - "M04: Comments"
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-        responses:
-          '200':
-            description: "Comment details"
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Comment"
-      patch:
-        summary: "Edit Comment"
-        description: "Edit details of a comment. Access: OWN"
-        tags:
-          - "M04: Comments"
-        requestBody:
+  /comments/{id}:
+    get:
+      summary: "View Comment"
+      description: "Retrieve details of a comment by ID. Access: PUB"
+      tags:
+        - "M04: Comments"
+      parameters:
+        - in: path
+          name: id
           required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Comment details"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CommentUpdate"
-        responses:
-          '200':
-            description: "Comment updated."
-      delete:
-        summary: "Delete Comment"
-        description: "Delete a comment. Access: OWN, ADM"
-        tags:
-          - "M04: Comments"
-        responses:
-          '204':
-            description: "Comment deleted."
+                $ref: "#/components/schemas/Comment"
+    patch:
+      summary: "Edit Comment"
+      description: "Edit details of a comment. Access: OWN"
+      tags:
+        - "M04: Comments"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentUpdate"
+      responses:
+        '200':
+          description: "Comment updated."
+    delete:
+      summary: "Delete Comment"
+      description: "Delete a comment. Access: OWN, ADM"
+      tags:
+        - "M04: Comments"
+      responses:
+        '204':
+          description: "Comment deleted."
 
-    /questions/{id}/votes:
-      post: 
-        summary: "Vote on Question"
-        description: "Vote on a question. Access: USR"
-        tags:
-          - "M05: Voting"
-        requestBody:
-          required: true
+  /questions/{id}/votes:
+    post: 
+      summary: "Vote on Question"
+      description: "Vote on a question. Access: USR"
+      tags:
+        - "M05: Voting"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vote:
+                  type: string
+                  description: "up or down"
+      responses:
+        '200':
+          description: "Question voted."
+    get:
+      summary: "Get Question Votes"
+      description: "Retrieve all votes for a question. Access: USR"
+      tags:
+        - "M05: Voting"
+      responses:
+        '200':
+          description: "Votes retrieved."
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  vote:
-                    type: string
-                    description: "up or down"
-        responses:
-          '200':
-            description: "Question voted."
-      get:
-        summary: "Get Question Votes"
-        description: "Retrieve all votes for a question. Access: USR"
-        tags:
-          - "M05: Voting"
-        responses:
-          '200':
-            description: "Votes retrieved."
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      vote:
-                        type: string
-                        example: "up"
-                      user_id:
-                        type: integer
-                      created_at:
-                        type: string
-                        format: date-time
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    vote:
+                      type: string
+                      example: "up"
+                    user_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date-time
 
-    /answers/{id}/votes:
-      post:
-        summary: "Vote on Answer"
-        description: "Vote on an answer. Access: USR"
-        tags:
-          - "M05: Voting"
-        requestBody:
-          required: true
+  /answers/{id}/votes:
+    post:
+      summary: "Vote on Answer"
+      description: "Vote on an answer. Access: USR"
+      tags:
+        - "M05: Voting"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vote:
+                  type: string
+                  description: "up or down"
+      responses:
+        '200':
+          description: "Answer voted."
+    get:
+      summary: "Get Answer Votes"
+      description: "Retrieve all votes for an answer. Access: USR"
+      tags:
+        - "M05: Voting"
+      responses:
+        '200':
+          description: "Votes retrieved."
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  vote:
-                    type: string
-                    description: "up or down"
-        responses:
-          '200':
-            description: "Answer voted."
-      get:
-        summary: "Get Answer Votes"
-        description: "Retrieve all votes for an answer. Access: USR"
-        tags:
-          - "M05: Voting"
-        responses:
-          '200':
-            description: "Votes retrieved."
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      vote:
-                        type: string
-                        example: "up"
-                      user_id:
-                        type: integer
-                      created_at:
-                        type: string
-                        format: date-time
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    vote:
+                      type: string
+                      example: "up"
+                    user_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date-time
 
-    /notifications:
-      get:
-        summary: "Get Notifications"
-        description: "Retrieve all notifications for the authenticated user. Access: USR"
-        tags:
-          - "M06: Notifications"
-        responses:
-          '200':
-            description: "Notifications retrieved."
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/Notification"
-
-    /notifications/{id}:
-      patch:
-        summary: "Mark Notification as Read"
-        description: "Mark a specific notification as read. Access: USR"
-        tags:
-          - "M06: Notifications"
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-        responses:
-          '200':
-            description: "Notification marked as read."
-      delete:
-        summary: "Delete Notification"
-        description: "Delete a specific notification. Access: USR"
-        tags:
-          - "M06: Notifications"
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-        responses:
-          '204':
-            description: "Notification deleted."
-
-    /admin/users/{id}:
-      patch:
-        summary: "Block or Unblock User"
-        description: "Block or unblock a user. Access: ADM"
-        tags:
-          - "M07: Admin Moderation"
-        parameters:
-          - in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-        requestBody:
-          required: true
+  /notifications:
+    get:
+      summary: "Get Notifications"
+      description: "Retrieve all notifications for the authenticated user. Access: USR"
+      tags:
+        - "M06: Notifications"
+      responses:
+        '200':
+          description: "Notifications retrieved."
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  block:
-                    type: boolean
-                    description: "True to block, false to unblock the user."
-        responses:
-          '200':
-            description: "User block status updated."
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
 
-    /admin/posts/{id}:
-      delete:
-        summary: "Remove Flagged Content"
-        description: "Remove flagged content. Access: ADM"
-        tags:
-          - "M07: Admin Moderation"
-        parameters:
-          - in: path
-            name: id
-            required: true
+  /notifications/{id}:
+    patch:
+      summary: "Mark Notification as Read"
+      description: "Mark a specific notification as read. Access: USR"
+      tags:
+        - "M06: Notifications"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Notification marked as read."
+    delete:
+      summary: "Delete Notification"
+      description: "Delete a specific notification. Access: USR"
+      tags:
+        - "M06: Notifications"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "Notification deleted."
+
+  /admin/users/{id}:
+    patch:
+      summary: "Block or Unblock User"
+      description: "Block or unblock a user. Access: ADM"
+      tags:
+        - "M07: Admin Moderation"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
-              type: integer
-        responses:
-          '204':
-            description: "Flagged content removed."
+              type: object
+              properties:
+                block:
+                  type: boolean
+                  description: "True to block, false to unblock the user."
+      responses:
+        '200':
+          description: "User block status updated."
 
-    /admin/reports:
-      get:
-        summary: "View Flagged Reports"
-        description: "Retrieve a list of all flagged content reports. Access: ADM"
-        tags:
-          - "M07: Admin Moderation"
-        responses:
-          '200':
-            description: "Flagged reports retrieved."
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      content_type:
-                        type: string
-                        example: "question"
-                      reason:
-                        type: string
-                        example: "Inappropriate content"
-                      reported_by:
-                        type: string
-                        example: "john_doe"
-                      created_at:
-                        type: string
-                        format: date-time
+  /admin/posts/{id}:
+    delete:
+      summary: "Remove Flagged Content"
+      description: "Remove flagged content. Access: ADM"
+      tags:
+        - "M07: Admin Moderation"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "Flagged content removed."
+
+  /admin/reports:
+    get:
+      summary: "View Flagged Reports"
+      description: "Retrieve a list of all flagged content reports. Access: ADM"
+      tags:
+        - "M07: Admin Moderation"
+      responses:
+        '200':
+          description: "Flagged reports retrieved."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    content_type:
+                      type: string
+                      example: "question"
+                    reason:
+                      type: string
+                      example: "Inappropriate content"
+                    reported_by:
+                      type: string
+                      example: "john_doe"
+                    created_at:
+                      type: string
+                      format: date-time
+  /api/search: #works, its what Search uses
+    get:
+      summary: "Search"
+      description: "Search for questions. Access: PUB"
+      tags:
+        - "M02: Questions Management"
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: "Search query"
+      responses:
+        '200':
+          description: "List of questions"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
+
 
 
 

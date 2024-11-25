@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuraVote extends Model
 {
-    protected $table = 'aura_vote'; // Ensure the correct table name
+    use HasFactory;
 
+    protected $table = 'aura_vote'; // Ensure the correct table name
     protected $fillable = [
         'user_id',
         'answer_id',
@@ -16,4 +17,16 @@ class AuraVote extends Model
     ];
 
     public $timestamps = false; // Set to false if you don’t have timestamps (created_at, updated_at) in the table
+
+    use HasFactory;
+
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

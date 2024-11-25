@@ -39,7 +39,11 @@
             </h1>
             <div class="flex items-center space-x-2">
                 <!-- Yeahs Count -->
-                <h2 class="text-lg font-bold">1000 Yeahs</h2>
+                @if ($question->vote_difference >= 0)
+                    <h2 class="text-lg font-bold"> {{ $question->vote_difference }} YEAHs</h2>
+                @else
+                    <h2 class="text-lg font-bold"> {{ -$question->vote_difference }} BOOs</h2>
+                @endif
             </div>
         </div>
         <!-- Question Body -->                        
