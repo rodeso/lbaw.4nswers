@@ -17,31 +17,31 @@ class PostController extends Controller
 {
     public function show($id)
     {
-        // Retrieve the specific question with its related data
         $question = Question::with([
             'post',
-            'answers.post',
             'tags',
             'author',
+            'answers.post',
             'answers.author',
-            'answers.post.moderatorNotifications'
-        ])
-        ->withCount([
-            'answers as aura' => function ($query) {
-                $query->select(
-                    \DB::raw('COALESCE(SUM(CASE WHEN aura_vote.is_positive THEN 1 ELSE -1 END), 0)')
-                )->join('aura_vote', 'aura_vote.answer_id', '=', 'answer.id'); // Use correct table name here
-            }
+            'answers.post.moderatorNotifications',
         ])
         ->findOrFail($id);
-        
-        
-    
+
+        // Calculate aura for each answer
+        foreach ($question->answers as $answer) {
+            $answer->aura = AuraVote::where('answer_id', $answer->id)
+                ->where('is_positive', true)
+                ->count() 
+                - AuraVote::where('answer_id', $answer->id)
+                ->where('is_positive', false)
+                ->count();
+        }
+
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
-            : collect(); // Return an empty collection if logged in user is null
-    
+            : collect();
+
         // Get the user's vote (if they have voted)
         $userVote = null;
         if (auth()->check()) {
@@ -49,10 +49,11 @@ class PostController extends Controller
                 ->where('question_id', $id)
                 ->value('is_positive');
         }
-    
-        // Pass the question, tags, and userVote to the view
+
+        // Pass data to view
         return view('post', compact('question', 'user_tags', 'userVote'));
-    }    
+    }
+ 
     
 
     public function showNewQuestion()
