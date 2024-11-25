@@ -72,7 +72,7 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
 
 // Post Answer
-Route::post('/answer', [PostController::class, 'storeAnswer'])->name('answer.store');
+Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');
 
 // Posting Question
 Route::post('/new-question', [PostController::class, 'storeQuestion'])->name('question.store');

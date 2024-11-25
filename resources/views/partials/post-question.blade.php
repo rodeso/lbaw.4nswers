@@ -123,9 +123,10 @@
 
     </div>
     <!-- Question Body -->                        
-    <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4">
+    <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4 break-words">
         {{ $question->post->body }}
     </p>
+
     <!-- Time Posting & Question Tags -->
     <div class="flex items-center space-x-4 mt-4">
         <!-- Time of Posting -->

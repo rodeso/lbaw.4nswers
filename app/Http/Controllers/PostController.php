@@ -141,7 +141,6 @@ class PostController extends Controller
         return redirect()->route('question.show', $question->id)->with('success', 'Your question has been posted successfully.');
     }
 
-
     public function vote(Request $request, $questionId)
     {
         $userId = auth()->id();
