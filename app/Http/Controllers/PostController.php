@@ -58,6 +58,16 @@ class PostController extends Controller
             'question_id' => 'required|exists:question,id',
         ]);
 
+        // Fetch the question to check if it's closed
+        $question = Question::find($validated['question_id']);
+
+        if ($question->closed) {
+            // If the question is closed, redirect with an error message
+            return redirect()
+                ->route('question.show', ['id' => $validated['question_id']])
+                ->with('error', 'The question is closed and cannot accept new answers.');
+        }
+
         // Create the post associated with the answer
         $post = Post::create([
             'body' => $request->body,
@@ -144,6 +154,15 @@ class PostController extends Controller
     public function vote(Request $request, $questionId)
     {
         $userId = auth()->id();
+        // Fetch the question to check if it's closed
+        $question = Question::find($questionId);
+
+        if ($question->closed) {
+            // If the question is closed, redirect with an error message
+            return redirect()
+                ->route('question.show', ['id' => $questionId])
+                ->with('error', 'The question is closed and cannot accept new answers.');
+        }
         $voteType = $request->input('vote'); // 'upvote' or 'downvote'
         
         // Check if the user has already voted

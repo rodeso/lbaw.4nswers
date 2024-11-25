@@ -27,7 +27,11 @@
                     @else black
                     @endif
                 ;">
-                Time Left: {{ $question->time_end->diffForHumans() }}
+                @if($question->closed)
+                    Closed: {{ $question->time_end->diffForHumans() }}
+                @else
+                    Closes: {{ $question->time_end->diffForHumans() }}
+                @endif
                 </p>
             </div>
         </header>

@@ -17,7 +17,7 @@
             class="relative w-80 h-14 bg-white text-center flex items-end justify-end"
             style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
         >
-            <p class="text-sm font-bold p-2"
+        <p class="text-sm font-bold p-2"
             style="color: 
                 @if($question->urgency === 'Red') red
                 @elseif($question->urgency === 'Orange') orange
@@ -26,7 +26,11 @@
                 @else black
                 @endif
             ;">
-            Time Left: {{ $question->time_end->diffForHumans() }}
+            @if($question->closed)
+                Closed: {{ $question->time_end->diffForHumans() }}
+            @else
+                Closes: {{ $question->time_end->diffForHumans() }}
+            @endif
             </p>
         </div>
     </header>
