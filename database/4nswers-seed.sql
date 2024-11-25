@@ -163,51 +163,146 @@ INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date)
 VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23'),
 ('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16'),
 ('Pedro', 'Puka', 'pedroemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03'),
-('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28');
+('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28'),
+('Miguel', 'Miguel', 'miguelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-22'),
+('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17'),
+('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19'),
+('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26'),
+('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30'),
+('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14');
 
 INSERT INTO tag(name, description)
 VALUES ('computers', 'all things related to the little machines that we control (or atleast think we do)'),
 ('cookies', 'from the savoury to the yummy, all things cookies'),
+('sports', 'a place to talk about what brings us together: sports'),
+('colors', 'roses are red, violets are blue, join us if you love colors too'),
+('gaming', 'from the classics to the new releases, all things gaming'),
+('airplanes', 'we love to fly!'),
 ('music', 'all bangers included from mozart to ksi');
 
 INSERT INTO post(body)
 VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.'),
-('I love biscuits. Hungaros and belgas are the best.'),
-('I love music, it is the best thing in the world.'),
-('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP');
+('I need help with a windows update, can anyone help me?'),
+('I love biscuits, especially hungaros and belgas. Any suggestions?'),
+('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP'),
+('I just love Benfica, they are the best team in the world! They play the beautiful game and make me smile everytime'),
+('Estonian league is a mess, I love it!'),
+('I love purple, what are your favorite colors?'),
+('FAST I have a 50 word essay due tomorrow on rainbows, what are their 7 colors?'),
+('I am a grand champ in rocket league, looking for a duo partner!'),
+('guys i need help to play lol, im too bad xD'),
+('For me its Airbus A380 all the way, what about you?'),
+('I am flying to Madrid next week, any tips and suggestions?'),
+('Primavera Sound is coming up, anyone else excited?'),
+('I love all music, but I am a sucker for a good pop song.');
 
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
-VALUES ('I need help fixing my computer!!', 'Red', '2021-06-01 00:00:00', 1, 1),
-('Any new biscuit recomendation?', 'Green', '2021-06-01 00:00:00', 4, 2),
-('What is the best music genre?', 'Yellow', '2021-06-01 00:00:00', 3, 3),
-('Why does my tummy hurt?', 'Orange', '2014-03-16 16:31:54', 2, 4);
+VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
+('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
+('Any new biscuit recomendation?', 'Yellow', '2024-06-01 00:00:00', 4, 3),
+('Why does my tummy hurt?', 'Red', '2024-03-16 16:31:54', 10, 4),
+('Benfica is the greatest team in the world', 'Green', '2024-07-20 16:31:54', 9, 5),
+('Estonian league shenanigans...', 'Yellow', '2015-10-20 16:31:54', 8, 6),
+('What is the best color?', 'Green', '2018-03-01 00:00:00', 2, 7),
+('HELP what are the 7 colors of the rainbow??', 'Red', '2022-02-04 00:00:00', 3, 8),
+('Any grand champs to duo with?', 'Green', '2024-11-28 00:00:00', 6, 9),
+('Any tips for a noob in LoL?', 'Green', '2025-01-04 00:00:00', 7, 10),
+('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-30 00:00:00', 4, 11),
+('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
+('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
+('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14);
+
+
 
 INSERT INTO question_tags(question_id, tag_id)
 VALUES (1, 1),
-(2, 2),
-(3, 3),
-(4, 2);
+(2, 1),
+(3, 2),
+(4, 2),
+(5, 3),
+(6, 3),
+(7, 4),
+(8, 4),
+(9, 5),
+(10, 5),
+(11, 6),
+(12, 6),
+(13, 7),
+(14, 7);
 
 INSERT INTO post(body)
-VALUES ('For me maybe green, but i am not sure.'),
-('I think red is the best color, but I am not sure.'),
-('I think blue is the best color, because PORTOO.'),
-('I think yellow is the best color');
-
-INSERT INTO question(title, urgency, time_end, author_id, post_id)
-VALUES ('Which color is the best?', 'Red', '2024-10-26 00:00:00', 1, 5);
+VALUES ('Have you tried turning it off and on again?'),
+('I have the same problem, I think its a bug in the update'),
+('I love the belgas, they are so good!'),
+('You might have eaten too many cookies, try drinking some water'),
+('I also love the Glorioso Benfica'),
+('Estonian league should be considered a national treasure'),
+('Honestly, purple is kinda awful as a color, but sure'),
+('The 7 colors of the rainbow are red, orange, yellow, green, blue, indigo and violet'),
+('I am a grand champ, I can help you out'),
+('I can help you out, what do you need help with?'),
+('I love the Airbus A380, its a beautiful plane'),
+('I live in Madrid, I have some tips for you'),
+('IM SO EXCITED, its gonna be hype'),
+('I love pop music, its the best genre out there');
 
 INSERT INTO answer(chosen, question_id, author_id, post_id)
-VALUES (FALSE, 5, 2, 6),
-(TRUE, 5, 3, 7),
-(FALSE, 5, 4, 8);
+VALUES (FALSE, 1, 4, 15),
+(TRUE, 2, 7, 16),
+(FALSE, 3, 3, 17),
+(FALSE, 4, 1, 18),
+(TRUE, 5, 3, 19),
+(FALSE, 6, 6, 20),
+(FALSE, 7, 2, 21),
+(FALSE, 8, 5, 22),
+(FALSE, 9, 5, 23),
+(TRUE, 10, 3, 24),
+(FALSE, 11, 10, 25),
+(TRUE, 12, 9, 26),
+(FALSE, 13, 8, 27),
+(FALSE, 14, 1, 28);
+
+
 
 INSERT INTO user_follows_tag(user_id, tag_id)
-VALUES (1, 1),
-(2, 2),
-(3, 3),
-(4, 2);
+VALUES (1,1),
+(1,2),
+(1,4),
+(1,7),
+(2,1),
+(2,5),
+(2,7),
+(3,1),
+(3,2),
+(3,3),
+(3,5),
+(4,1),
+(4,2),
+(4,6),
+(4,7),
+(5,1),
+(5,5),
+(5,7),
+(6,1),
+(6,3),
+(6,4),
+(6,5),
+(6,6),
+(7,3),
+(7,5),
+(7,6),
+(8,1),
+(8,3),
+(8,7),
+(9,1),
+(9,3),
+(9,5),
+(10,1),
+(10,2),
+(10,4),
+(10,7);
+
 
 CREATE OR REPLACE FUNCTION update_post_edit_time()
     RETURNS TRIGGER AS $$
