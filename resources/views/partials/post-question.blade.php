@@ -52,11 +52,17 @@
                 ▲
             </button>
             
-            <!-- Yeahs Count -->
-            <h2 id="yeahs-count-{{ $question->id }}" class="text-lg font-bold">
-                {{ $question->popularityVotes->where('is_positive', true)->count() - $question->popularityVotes->where('is_positive', false)->count() }}
-            </h2>
-
+            @if ($question->popularityVotes->where('is_positive', true)->count() - $question->popularityVotes->where('is_positive', false)->count() >= 0)
+                <!-- Yeahs Count -->
+                <h2 id="yeahs-count-{{ $question->id }}" class="text-lg font-bold">
+                    {{ $question->popularityVotes->where('is_positive', true)->count() - $question->popularityVotes->where('is_positive', false)->count() }} YEAHs
+                </h2>
+            @else
+                <!-- Boos Count -->
+                <h2 id="yeahs-count-{{ $question->id }}" class="text-lg font-bold">
+                    {{ $question->popularityVotes->where('is_positive', false)->count() - $question->popularityVotes->where('is_positive', true)->count() }} BOOs
+                </h2>
+            @endif
             <!-- Downvote Button -->
             <button 
                 id="downvote-button-{{ $question->id }}"
