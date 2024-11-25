@@ -61,7 +61,7 @@ class PostController extends Controller
         // Create the post associated with the answer
         $post = Post::create([
             'body' => $request->body,
-            'time_stamp' => now(), // Set creation timestamp
+            'time_stamp' => now(),
         ]);
 
         // Create the answer with the post_id
@@ -69,15 +69,11 @@ class PostController extends Controller
             'body' => $validated['body'],
             'author_id' => Auth::id(),
             'question_id' => $validated['question_id'],
-            'post_id' => $post->id,  // Link the answer to the created post
+            'post_id' => $post->id,
         ]);
         
         // Save the answer
         $answer->save();
-
-        // Optionally update the 'edit_time' when the post is updated
-        $post->edit_time = now(); // Set the edit_time to current time
-        $post->save();
 
         // Redirect or return success response
         return redirect()->route('question.show', ['id' => $validated['question_id']]);
@@ -89,23 +85,19 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string|max:4096',
-            'urgency' => 'required|string|in:Red,Orange,Yellow,Green', // Validate against allowed values
+            'urgency' => 'required|string|in:Red,Orange,Yellow,Green',
+            'tags' => 'nullable|string', // Comma-separated tag IDs
+            'new_tags' => 'nullable|string', // JSON string of new tag objects
         ]);
 
-        // Create the associated post first
+        // Create the post
         $post = Post::create([
             'body' => $validated['body'],
             'time_stamp' => now(),
         ]);
 
-        // Define urgency levels with corresponding durations in hours
-        $urgencyDurations = [
-            'Red' => 3,
-            'Orange' => 5,
-            'Yellow' => 10,
-            'Green' => 24,
-        ];
-        // Calculate `time_end` 
+        // Calculate time_end based on urgency
+        $urgencyDurations = ['Red' => 3, 'Orange' => 5, 'Yellow' => 10, 'Green' => 24];
         $timeEnd = now()->addHours($urgencyDurations[$validated['urgency']]);
 
         // Create the question
@@ -118,7 +110,34 @@ class PostController extends Controller
             'closed' => false,
         ]);
 
-        // Redirect to the newly created question page
+        // Attach selected existing tags
+        if (!empty($validated['tags'])) {
+            $tagIds = array_filter(explode(',', $validated['tags']), fn($tagId) => !empty($tagId));
+            if (!empty($tagIds)) {
+                $question->tags()->attach($tagIds);
+            }
+        }
+
+        // Handle new tags
+        if (!empty($validated['new_tags'])) {
+            $newTags = json_decode($validated['new_tags'], true);
+            $newTagIds = [];
+            foreach ($newTags as $newTag) {
+                if (!empty($newTag['name']) && !empty($newTag['description'])) {
+                    $createdTag = Tag::create([
+                        'name' => $newTag['name'],
+                        'description' => $newTag['description'],
+                    ]);
+                    $newTagIds[] = $createdTag->id;
+                }
+            }
+
+            // Attach new tags
+            if (!empty($newTagIds)) {
+                $question->tags()->attach($newTagIds);
+            }
+        }
+
         return redirect()->route('question.show', $question->id)->with('success', 'Your question has been posted successfully.');
     }
 

@@ -20,9 +20,9 @@
 
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
+        
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-16">
-            <!-- Centered New Question Section -->
             <section class="w-3/5 space-y-8">
                 @include('partials.posting-new-question')
             </section>
