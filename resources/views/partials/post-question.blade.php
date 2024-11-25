@@ -128,17 +128,74 @@
     </p>
 
     <!-- Time Posting & Question Tags -->
-    <div class="flex items-center space-x-4 mt-4">
-        <!-- Time of Posting -->
-        <p class="text-sm text-gray-700 font-semibold">
-            Asked {{ $question->post->time_stamp->diffForHumans() }}!
-        </p>
-        <!-- Question Tags -->
-        <div class="flex flex-wrap items-center space-x-2">
-            @foreach ($question->tags as $tag)
-                <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
-            @endforeach
+    <div class="flex items-center space-x-4 mt-4 justify-between">
+        <div class= "flex items-center space-x-4 mt-4">
+            <!-- Time of Posting -->
+            <p class="text-sm text-gray-700 font-semibold">
+                Asked {{ $question->post->time_stamp->diffForHumans() }}!
+            </p>
+            <!-- Question Tags -->
+            <div class="flex flex-wrap items-center space-x-2">
+                @foreach ($question->tags as $tag)
+                    <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
+                @endforeach
+            </div>
         </div>
-    </div>
+        <!-- Author's Actions Icon -->
+        @if (auth()->id() === $question->author->id)
+            <div class="relative">
+                <!-- Button to open the menu -->
+                <button 
+                    class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                    aria-label="Options"
+                    onclick="toggleOptionsMenu({{ $question->id }})"
+                >
+                    ...
+                </button>
 
+                <!-- Options Menu -->
+                <div 
+                    id="options-menu-{{ $question->id }}" 
+                    class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+                >
+                    <!-- Close Button -->
+                    <button 
+                        class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                        aria-label="Close Options"
+                        onclick="toggleOptionsMenu({{ $question->id }})"
+                    >
+                        ✕
+                    </button>
+
+                    <!-- Menu Content -->
+                    <ul class="mt-8 space-y-4 text-base font-semibold">
+                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                            <a href="{{ route('question.edit', $question->id) }}"> Edit </a>
+                        </li>
+                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                            <a href="#"> Close Question </a>
+                        </li>
+                        <!-- Delete button with confirmation -->
+                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">
+                                    Delete
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- JavaScript to toggle the menu -->
+            <script>
+                function toggleOptionsMenu(questionId) {
+                    const menu = document.getElementById(`options-menu-${questionId}`);
+                    menu.classList.toggle('hidden');
+                }
+            </script>
+        @endif
+    </div>
 </section>
