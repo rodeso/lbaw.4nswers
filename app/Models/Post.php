@@ -28,7 +28,7 @@ class Post extends Model
 
     // Define custom timestamp fields
     const CREATED_AT = 'time_stamp';  // Use time_stamp as the created_at equivalent
-    const UPDATED_AT = 'edit_time';   // Use edit_time as the updated_at equivalent
+    const UPDATED_AT = 'edit_time';   // Use edit_time as the updated_at equivalent (reminder para rever e talvez retirar esta linha, que talvez seja a razão pela qual o edit_time está atualizar quando não devia)
 
     // Relationship to a Question (if the Post is a Question)
     public function question()

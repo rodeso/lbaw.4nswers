@@ -25,7 +25,7 @@
             <!-- Answer Body-->
             <div class="flex justify-between items-stretch rounded-md">
                 <!-- Answer Body -->
-                <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
+                <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
                     {{ $answer->post->body }}
                 </p>
             </div>
@@ -35,8 +35,12 @@
                     Answered to: {{ $answer->question->title }}
                 </p>
                 <div class="flex flex-wrap items-center space-x-2">
-                    <!-- Not yet done because answers dont have tags yet -->
-                </div>
+                @foreach ($answer->post->moderatorNotifications as $modNotification)
+                    <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                        {{ $modNotification->reason }}
+                    </span>
+                @endforeach
+            </div>
             </div>
         </section>
     </section>

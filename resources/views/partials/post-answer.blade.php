@@ -97,7 +97,7 @@
         <!-- Answer Body and upvote/downvote -->
         <div class="flex justify-between items-stretch rounded-md">
             <!-- Answer Body -->
-            <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow">
+            <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
                 {{ $answer->post->body }}
             </p>
             <div class="flex flex-col items-center space-y-1">
