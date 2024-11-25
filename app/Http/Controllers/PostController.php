@@ -61,7 +61,7 @@ class PostController extends Controller
         // Create the post associated with the answer
         $post = Post::create([
             'body' => $request->body,
-            'time_stamp' => now(), // Set creation timestamp
+            'time_stamp' => now(),
         ]);
 
         // Create the answer with the post_id
@@ -69,15 +69,11 @@ class PostController extends Controller
             'body' => $validated['body'],
             'author_id' => Auth::id(),
             'question_id' => $validated['question_id'],
-            'post_id' => $post->id,  // Link the answer to the created post
+            'post_id' => $post->id,
         ]);
         
         // Save the answer
         $answer->save();
-
-        // Optionally update the 'edit_time' when the post is updated
-        $post->edit_time = now(); // Set the edit_time to current time
-        $post->save();
 
         // Redirect or return success response
         return redirect()->route('question.show', ['id' => $validated['question_id']]);
@@ -124,12 +120,10 @@ class PostController extends Controller
 
         // Handle new tags
         if (!empty($validated['new_tags'])) {
-            $newTags = json_decode($validated['new_tags'], true); // Decode JSON to array
+            $newTags = json_decode($validated['new_tags'], true);
             $newTagIds = [];
-
             foreach ($newTags as $newTag) {
                 if (!empty($newTag['name']) && !empty($newTag['description'])) {
-                    // Save only non-empty tags
                     $createdTag = Tag::create([
                         'name' => $newTag['name'],
                         'description' => $newTag['description'],
