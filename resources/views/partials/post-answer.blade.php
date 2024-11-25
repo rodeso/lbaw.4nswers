@@ -55,6 +55,23 @@
     </section>
     @endauth
 
+    <script>
+        function toggleAnswerForm() {
+            const form = document.getElementById('answerForm');
+            const button = document.getElementById('toggleAnswerButton');
+            
+            // Toggle visibility of the form
+            form.classList.toggle('hidden');
+            
+            // Update button text based on the form's state
+            if (form.classList.contains('hidden')) {
+                button.textContent = "Click here to answer!";
+            } else {
+                button.textContent = "Close Answer Form.";
+            }
+        }
+    </script>
+
     <!-- Message for Unauthenticated Users -->
     @guest
     <section class="w-full bg-[color:#FFEDED] rounded-lg shadow-md p-6 text-center">
@@ -91,7 +108,7 @@
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
                 style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
             >
-                <p class="text-sm font-bold p-2">Aura: 16588753</p>
+                <p id="aura-{{ $answer->id }}" class="text-sm font-bold p-2">Aura: {{ $answer->aura ?? 0 }}</p>
             </div>
         </header>
         <!-- Answer Body and upvote/downvote -->
@@ -105,7 +122,7 @@
                 <button 
                     class="w-10 h-10 bg-[color:#4B1414] hover:bg-green-600 text-white rounded-full flex items-center justify-center" 
                     aria-label="Upvote"
-                    onclick="handleVote({{ $answer->id }}, 'upvote')"
+                    onclick="handleAuraVote({{ $answer->id }}, 'upvote')"
                 >
                     ▲
                 </button>
@@ -114,11 +131,34 @@
                 <button 
                     class="w-10 h-10 bg-[color:#4B1414] hover:bg-red-600 text-white rounded-full flex items-center justify-center" 
                     aria-label="Downvote"
-                    onclick="handleVote({{ $answer->id }}, 'downvote')"
+                    onclick="handleAuraVote({{ $answer->id }}, 'downvote')"
                 >
                     ▼
                 </button>
             </div>
+
+            <script>
+                function handleAuraVote(answerId, voteType) {
+                    fetch(`/answer/${answerId}/vote`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify({ vote: voteType }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Update the aura display
+                            const auraElement = document.querySelector(`#aura-${answerId}`);
+                            if (auraElement) {
+                                auraElement.textContent = `Aura: ${data.totalAura}`;
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            </script>
+
         </div>
         <!-- Time Posting & Moderator Tags -->
         <div class="flex items-center space-x-4 mt-4">
