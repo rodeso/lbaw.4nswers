@@ -86,6 +86,11 @@ Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'
 // Post Answer
 Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');
 
+// Edit Answer
+Route::get('/answers/{id}/edit', [PostController::class, 'showEditAnswer'])->name('answer.edit');
+Route::put('/answers/{id}/update', [PostController::class, 'updateAnswer'])->name('answer.update');
+Route::delete('/answers/{id}/delete', [PostController::class, 'deleteAnswer'])->name('answer.delete');
+
 // Posting Question
 Route::post('/new-question', [PostController::class, 'storeQuestion'])->name('question.store');
 Route::get('/new-question', [PostController::class, 'showNewQuestion'])->name('new-question');

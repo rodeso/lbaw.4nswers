@@ -108,7 +108,7 @@
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
                 style="clip-path: polygon(100% 0, 100% 100%, 0 100%);"
             >
-                <p id="aura-{{ $answer->id }}" class="text-sm font-bold p-2">Aura: {{ $answer->aura ?? 0 }}</p>
+                <p id="aura-{{ $answer->id }}" class="text-sm font-bold p-2">Aura: {{ $answer->aura }}</p>
             </div>
         </header>
         <!-- Answer Body and upvote/downvote -->
@@ -161,17 +161,72 @@
 
         </div>
         <!-- Time Posting & Moderator Tags -->
-        <div class="flex items-center space-x-4 mt-4">
-            <p class="text-sm text-gray-700 font-semibold">
-                Answered {{ $answer->post->time_stamp->diffForHumans() }}!
-            </p>
-            <div class="flex flex-wrap items-center space-x-2">
-                @foreach ($answer->post->moderatorNotifications as $modNotification)
-                    <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
-                        {{ $modNotification->reason }}
-                    </span>
-                @endforeach
+        <div class="flex items-center space-x-4 mt-4 justify-between">
+            <div class="flex items-center space-x-4 mt-4">
+                <p class="text-sm text-gray-700 font-semibold">
+                    Answered {{ $answer->post->time_stamp->diffForHumans() }}!
+                </p>
+                <div class="flex flex-wrap items-center space-x-2">
+                    @foreach ($answer->post->moderatorNotifications as $modNotification)
+                        <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                            {{ $modNotification->reason }}
+                        </span>
+                    @endforeach
+                </div>
             </div>
+            <!-- Author's Actions Icon -->
+            @if (auth()->id() === $answer->author->id)
+                <div class="relative">
+                    <!-- Button to open the menu -->
+                    <button 
+                        class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                        aria-label="Options"
+                        onclick="toggleOptionsMenu({{ $answer->id }})"
+                    >
+                        ...
+                    </button>
+
+                    <!-- Options Menu -->
+                    <div 
+                        id="options-menu-{{ $answer->id }}" 
+                        class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+                    >
+                        <!-- Close Button -->
+                        <button 
+                            class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                            aria-label="Close Options"
+                            onclick="toggleOptionsMenu({{ $answer->id }})"
+                        >
+                            ✕
+                        </button>
+
+                        <!-- Menu Content -->
+                        <ul class="mt-8 space-y-4 text-base font-semibold">
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="{{ route('answer.edit', $answer->id) }}"> Edit </a>
+                            </li>
+                            <!-- Delete button with confirmation -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">
+                                        Delete
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- JavaScript to toggle the menu -->
+                <script>
+                    function toggleOptionsMenu(answerId) {
+                        const menu = document.getElementById(`options-menu-${answerId}`);
+                        menu.classList.toggle('hidden');
+                    }
+                </script>
+            @endif
         </div>
 
         <!-- Highlight for chosen answer -->
