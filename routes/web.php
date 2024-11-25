@@ -71,6 +71,11 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 // Question
 Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.show');
 
+// Edit Question
+Route::get('/questions/{id}/edit', [PostController::class, 'showEditQuestion'])->name('question.edit');
+Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])->name('question.update');
+Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
+
 // Post Answer
 Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');
 

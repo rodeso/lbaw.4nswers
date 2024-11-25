@@ -158,6 +158,29 @@ class PostController extends Controller
         return redirect()->route('question.show', $question->id)->with('success', 'Your question has been posted successfully.');
     }
 
+    public function showEditQuestion($id)
+    {
+        $question = Question::with('tags')->findOrFail($id);
+
+        // Check if the logged-in user is the author of the question 
+        if (Auth::id() !== $question->author_id) {
+            return redirect()->route('question.show', ['id' => $id]);
+        }
+
+        $post = Post::findOrFail($question->post_id);
+
+        // Tags that the user follows
+        $user_tags = Auth::user()
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
+            : collect();
+
+        // Extract all the tags for selection
+        $tags = Tag::all();
+
+        return view('edit-question', compact('tags', 'user_tags', 'question', 'post'));
+    }
+
+
     public function vote(Request $request, $questionId)
     {
         $userId = auth()->id();
@@ -215,6 +238,66 @@ class PostController extends Controller
         
         return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
     }
+
+    public function updateQuestion(Request $request, $id)
+    {
+        // Validate input
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string|max:4096',
+            'urgency' => 'required|string|in:Red,Orange,Yellow,Green',
+        ]);
+
+        // Retrieve the question
+        $question = Question::findOrFail($id);
+
+        $post = Post::findOrFail($question->post_id);
+        $post->update([
+            'body' => $validated['body'],
+        ]);
+
+        // Update the question
+        $question->update([
+            'title' => $validated['title'],
+            'urgency' => $validated['urgency'],
+        ]);
+
+        return redirect()->route('question.show', $question->id)->with('success', 'Question updated successfully!');
+    }
+
+    public function deleteQuestion($id)
+    {
+        // Retrieve the question
+        $question = Question::with(['answers', 'tags'])->findOrFail($id);
+
+        // Check if the authenticated user is the author or an admin
+        if (Auth::id() !== $question->author_id && !Auth::user()->is_admin) {
+            return redirect()->route('question.show', $id)->with('error', 'You are not authorized to delete this question.');
+        }
+
+        // Delete related answers
+        foreach ($question->answers as $answer) {
+            $answer->post()->delete(); // Delete the associated post
+            $answer->delete(); // Delete the answer
+        }
+
+        $post = $question->post;
+        $post->delete(); // Delete the post
+
+        // Detach tags
+        $question->tags()->detach();
+
+        // Delete the question's post
+        $question->post()->delete();
+
+        // Delete the question
+        $question->delete();
+
+        // Redirect to a suitable page with success message
+        return redirect()->route('home')->with('success', 'The question has been deleted successfully.');
+    }
+
+
 
 }
 
