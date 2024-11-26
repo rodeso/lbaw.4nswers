@@ -324,11 +324,17 @@ EXECUTE FUNCTION update_post_edit_time();
 CREATE OR REPLACE FUNCTION update_user_aura()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- Increment or decrement the aura of the answer owner
     IF NEW.is_positive THEN
-        UPDATE lbaw24112.user SET aura = aura + 1 WHERE id = NEW.user_id;
+        UPDATE lbaw24112.user
+        SET aura = aura + 1
+        WHERE id = (SELECT author_id FROM lbaw24112.answer WHERE id = NEW.answer_id);
     ELSE
-        UPDATE lbaw24112.user SET aura = aura - 1 WHERE id = NEW.user_id;
+        UPDATE lbaw24112.user
+        SET aura = aura - 1
+        WHERE id = (SELECT author_id FROM lbaw24112.answer WHERE id = NEW.answer_id);
     END IF;
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -337,3 +343,27 @@ CREATE TRIGGER TRIGGER02
 AFTER INSERT ON aura_vote
 FOR EACH ROW
 EXECUTE FUNCTION update_user_aura();
+
+
+CREATE OR REPLACE FUNCTION reverse_user_aura()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Reverse the aura adjustment for the answer owner
+    IF OLD.is_positive THEN
+        UPDATE lbaw24112.user
+        SET aura = aura - 1
+        WHERE id = (SELECT author_id FROM lbaw24112.answer WHERE id = OLD.answer_id);
+    ELSE
+        UPDATE lbaw24112.user
+        SET aura = aura + 1
+        WHERE id = (SELECT author_id FROM lbaw24112.answer WHERE id = OLD.answer_id);
+    END IF;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TRIGGER03
+AFTER DELETE ON aura_vote
+FOR EACH ROW
+EXECUTE FUNCTION reverse_user_aura();
