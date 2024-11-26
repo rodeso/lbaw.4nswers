@@ -159,17 +159,17 @@ CREATE TABLE IF NOT EXISTS question_tags (
 CREATE INDEX post_body_tsvector_idx ON post USING GIN (to_tsvector('english', body));
 
 
-INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date)
-VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23'),
-('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16'),
-('Pedro', 'Puka', 'pedroemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03'),
-('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28'),
-('Miguel', 'Miguel', 'miguelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-22'),
-('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17'),
-('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19'),
-('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26'),
-('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30'),
-('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14');
+INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, profile_picture)
+VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23', 'profile_pictures/N0tRfvH1MHP02zNHNNc0cHpJjdNQxckuyoLBqiPv.jpg'),
+('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16', 'profile_pictures/rJ2LsD8YY4ywMKx1UtbnJfXWWlXHKHtmrmSw60gW.jpg'),
+('Pedro', 'Puka', 'pedroemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03', 'profile_pictures/yTbQ1IqrVfz7dFDVxnR0IXCICgZ2to3MiiCbtSdv.jpg'),
+('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28', 'profile_pictures/2GphZhBD3PHr65qCHlOM0bVOCJHduKXhPZFHOsyr.jpg'),
+('Miguel', 'Miguel', 'miguelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-22', 'profile_pictures/WSS0v1cdife3VfV4TKUCt5orIIaPe5DifNsuaWeu.jpg'),
+('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17', 'profile_pictures/JPAzV9YlMUkfSkaRKBXIGogxGcrEZ65XOBYCD1LJ.jpg'),
+('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19', 'profile_pictures/rGVQeyrqfMFkqjkdL2gpnkI8RjjwiTHI5EklbwNA.png'),
+('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26', 'profile_pictures/K1LVtEeG8IIh1RZaYxKSWCDtUDFoaFnynfZDUIJv.jpg'),
+('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30', 'profile_pictures/X6rPuddaSb616CKoQ7W8tvMil6gicxNonLBpNVDJ.jpg'),
+('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg');
 
 INSERT INTO tag(name, description)
 VALUES ('computers', 'all things related to the little machines that we control (or atleast think we do)'),
