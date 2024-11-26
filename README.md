@@ -34,7 +34,7 @@ docker run -d --name lbaw24112 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24
 
 Run to update the closed questions:
 ```
-docker exec -it laravel-app php /var/www/artisan schedule:run
+docker exec -it lbaw24112 php /var/www/artisan schedule:run
 ```
 
 Open in browser:
