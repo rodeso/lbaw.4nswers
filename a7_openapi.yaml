@@ -4,26 +4,47 @@ info:
   description: Comprehensive API for the collaborative Q&A platform "4NSWERS".
   version: 1.0.0
 servers:
-  - url: http://127.0.0.1:8000]
-    description: Production server
-
+  - url: http://127.0.0.1:8000
+    description: Local Development Server
 
 tags:
-  - name: "M01: User Authentication and Profile Management"
-  - name: "M02: Questions Management"
-  - name: "M03: Answers Management"
-  - name: "M04: Comments"
-  - name: "M05: Voting"
-  - name: "M06: Notifications"
-  - name: "M07: Admin Moderation"
+  - name: "M01: Authentication"
+  - name: "M02: Home and Navigation"
+  - name: "M03: Questions Management"
+  - name: "M04: Answers Management"
+  - name: "M05: User Profiles"
+  - name: "M06: Search"
+  - name: "M07: Voting System"
 
 paths:
+  /search:
+    get:
+      summary: "Search Questions"
+      description: "Search for questions using a query string. Access: PUB"
+      tags:
+        - "M06: Search"
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: "The search term to query questions by title or content."
+      responses:
+        '200':
+          description: "A list of questions that match the search query."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
+
   /login:
     get:
       summary: "Login Form"
       description: "Provide login form. Access: PUB"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M01: Authentication"
       responses:
         '200':
           description: "OK. Show Login UI"
@@ -31,7 +52,7 @@ paths:
       summary: "Login Action"
       description: "Process the login form. Access: PUB"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M01: Authentication"
       requestBody:
         required: true
         content:
@@ -59,7 +80,7 @@ paths:
       summary: "Registration Form"
       description: "Provide user registration form. Access: PUB"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M01: Authentication"
       responses:
         '200':
           description: "OK. Show Registration UI"
@@ -67,7 +88,7 @@ paths:
       summary: "Register Action"
       description: "Process the registration form. Access: PUB"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M01: Authentication"
       requestBody:
         required: true
         content:
@@ -93,12 +114,12 @@ paths:
               schema:
                 type: string
 
-  /users/{id}: #to implement, currently /profile
+  /users/{id}:
     get:
       summary: "View User Profile"
       description: "Retrieve user profile by ID. Access: OWN, ADM"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M05: User Profiles"
       parameters:
         - in: path
           name: id
@@ -116,7 +137,7 @@ paths:
       summary: "Edit User Profile"
       description: "Edit profile of the user. Access: OWN"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M05: User Profiles"
       requestBody:
         required: true
         content:
@@ -130,17 +151,17 @@ paths:
       summary: "Delete User"
       description: "Delete the user account. Access: OWN, ADM"
       tags:
-        - "M01: User Authentication and Profile Management"
+        - "M05: User Profiles"
       responses:
         '204':
           description: "User deleted."
 
-  /questions: #to implement, currently /
+  /questions:
     get:
       summary: "Get Questions"
       description: "Retrieve all active questions. Access: PUB"
       tags:
-        - "M02: Questions Management"
+        - "M03: Questions Management"
       parameters:
         - in: query
           name: tag
@@ -165,7 +186,7 @@ paths:
       summary: "Create Question"
       description: "Submit a new question. Access: USR"
       tags:
-        - "M02: Questions Management"
+        - "M03: Questions Management"
       requestBody:
         required: true
         content:
@@ -181,7 +202,7 @@ paths:
       summary: "View Question"
       description: "Retrieve details of a question by ID. Access: PUB"
       tags:
-        - "M02: Questions Management"
+        - "M03: Questions Management"
       parameters:
         - in: path
           name: id
@@ -199,7 +220,7 @@ paths:
       summary: "Edit Question"
       description: "Edit details of a question. Access: OWN"
       tags:
-        - "M02: Questions Management"
+        - "M03: Questions Management"
       requestBody:
         required: true
         content:
@@ -213,7 +234,7 @@ paths:
       summary: "Delete Question"
       description: "Delete a question. Access: OWN, ADM"
       tags:
-        - "M02: Questions Management"
+        - "M03: Questions Management"
       responses:
         '204':
           description: "Question deleted."
@@ -223,7 +244,7 @@ paths:
       summary: "Submit an Answer"
       description: "Post a new answer to a question. Access: USR"
       tags:
-        - "M03: Answers Management"
+        - "M04: Answers Management"
       requestBody:
         required: true
         content:
@@ -234,12 +255,12 @@ paths:
         '201':
           description: "Answer submitted."
 
-  /answers/{id}: #to implement
+  /answers/{id}:
     get:
       summary: "View Answer"
       description: "Retrieve details of an answer by ID. Access: PUB"
       tags:
-        - "M03: Answers Management"
+        - "M04: Answers Management"
       parameters:
         - in: path
           name: id
@@ -257,7 +278,7 @@ paths:
       summary: "Edit Answer"
       description: "Edit details of an answer. Access: OWN"
       tags:
-        - "M03: Answers Management"
+        - "M04: Answers Management"
       requestBody:
         required: true
         content:
@@ -271,195 +292,33 @@ paths:
       summary: "Delete Answer"
       description: "Delete an answer. Access: OWN, ADM"
       tags:
-        - "M03: Answers Management"
+        - "M04: Answers Management"
       responses:
         '204':
           description: "Answer deleted."
 
-  /comments: #No comments yet
+  /vote:
     post:
-      summary: "Submit a Comment"
-      description: "Post a new comment to a question or answer. Access: USR"
+      summary: "Vote on an Answer"
+      description: "Submit a vote for an answer. Access: USR"
       tags:
-        - "M04: Comments"
+        - "M07: Voting System"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CommentCreate"
+              $ref: "#/components/schemas/VoteCreate"
       responses:
-        '201':
-          description: "Comment submitted."
+        '200':
+          description: "Vote submitted successfully."
 
-  /comments/{id}:
-    get:
-      summary: "View Comment"
-      description: "Retrieve details of a comment by ID. Access: PUB"
-      tags:
-        - "M04: Comments"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: "Comment details"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
-    patch:
-      summary: "Edit Comment"
-      description: "Edit details of a comment. Access: OWN"
-      tags:
-        - "M04: Comments"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CommentUpdate"
-      responses:
-        '200':
-          description: "Comment updated."
+  /vote/{id}:
     delete:
-      summary: "Delete Comment"
-      description: "Delete a comment. Access: OWN, ADM"
+      summary: "Remove Vote"
+      description: "Remove a vote from an answer. Access: USR"
       tags:
-        - "M04: Comments"
-      responses:
-        '204':
-          description: "Comment deleted."
-
-  /questions/{id}/votes:
-    post: 
-      summary: "Vote on Question"
-      description: "Vote on a question. Access: USR"
-      tags:
-        - "M05: Voting"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                vote:
-                  type: string
-                  description: "up or down"
-      responses:
-        '200':
-          description: "Question voted."
-    get:
-      summary: "Get Question Votes"
-      description: "Retrieve all votes for a question. Access: USR"
-      tags:
-        - "M05: Voting"
-      responses:
-        '200':
-          description: "Votes retrieved."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    vote:
-                      type: string
-                      example: "up"
-                    user_id:
-                      type: integer
-                    created_at:
-                      type: string
-                      format: date-time
-
-  /answers/{id}/votes:
-    post:
-      summary: "Vote on Answer"
-      description: "Vote on an answer. Access: USR"
-      tags:
-        - "M05: Voting"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                vote:
-                  type: string
-                  description: "up or down"
-      responses:
-        '200':
-          description: "Answer voted."
-    get:
-      summary: "Get Answer Votes"
-      description: "Retrieve all votes for an answer. Access: USR"
-      tags:
-        - "M05: Voting"
-      responses:
-        '200':
-          description: "Votes retrieved."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    vote:
-                      type: string
-                      example: "up"
-                    user_id:
-                      type: integer
-                    created_at:
-                      type: string
-                      format: date-time
-
-  /notifications:
-    get:
-      summary: "Get Notifications"
-      description: "Retrieve all notifications for the authenticated user. Access: USR"
-      tags:
-        - "M06: Notifications"
-      responses:
-        '200':
-          description: "Notifications retrieved."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Notification"
-
-  /notifications/{id}:
-    patch:
-      summary: "Mark Notification as Read"
-      description: "Mark a specific notification as read. Access: USR"
-      tags:
-        - "M06: Notifications"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: "Notification marked as read."
-    delete:
-      summary: "Delete Notification"
-      description: "Delete a specific notification. Access: USR"
-      tags:
-        - "M06: Notifications"
+        - "M07: Voting System"
       parameters:
         - in: path
           name: id
@@ -468,104 +327,7 @@ paths:
             type: integer
       responses:
         '204':
-          description: "Notification deleted."
-
-  /admin/users/{id}:
-    patch:
-      summary: "Block or Unblock User"
-      description: "Block or unblock a user. Access: ADM"
-      tags:
-        - "M07: Admin Moderation"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                block:
-                  type: boolean
-                  description: "True to block, false to unblock the user."
-      responses:
-        '200':
-          description: "User block status updated."
-
-  /admin/posts/{id}:
-    delete:
-      summary: "Remove Flagged Content"
-      description: "Remove flagged content. Access: ADM"
-      tags:
-        - "M07: Admin Moderation"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: "Flagged content removed."
-
-  /admin/reports:
-    get:
-      summary: "View Flagged Reports"
-      description: "Retrieve a list of all flagged content reports. Access: ADM"
-      tags:
-        - "M07: Admin Moderation"
-      responses:
-        '200':
-          description: "Flagged reports retrieved."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    content_type:
-                      type: string
-                      example: "question"
-                    reason:
-                      type: string
-                      example: "Inappropriate content"
-                    reported_by:
-                      type: string
-                      example: "john_doe"
-                    created_at:
-                      type: string
-                      format: date-time
-  /api/search: #works, its what Search uses
-    get:
-      summary: "Search"
-      description: "Search for questions. Access: PUB"
-      tags:
-        - "M02: Questions Management"
-      parameters:
-        - in: query
-          name: q
-          schema:
-            type: string
-          description: "Search query"
-      responses:
-        '200':
-          description: "List of questions"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Question"
-
-
-
+          description: "Vote removed."
 
 
 components:
@@ -640,25 +402,3 @@ components:
         question_id:
           type: integer
     
-    Comment:
-      type: object
-      properties:
-        id:
-          type: integer
-        answer_id:
-          type: integer
-        body:
-          type: string
-
-    Notification:
-      type: object
-      properties:
-        id:
-          type: integer
-        content:
-          type: string
-        read:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
