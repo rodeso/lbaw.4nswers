@@ -88,7 +88,11 @@
     <!-- Scrolling Banner -->
     <div class="relative overflow-hidden bg-[#4B1414] w-2/3 mx-auto rounded-xl">
         <div class="scrolling-text bg-[#4B1414] text-[#FF006E] py-2 px-6 whitespace-nowrap">
-            ⚡ Urgent: Question about "X" is about to expire. <a href="{{ route('hall-of-fame') }}">View Hall of Fame 🎉</a> <a href ="{{ route('new-question') }}" >Join the Conversation Today!</a>
+        @if($urgentQuestion)
+        <a href="{{ route('question.show', ['id' => $urgentQuestion->id]) }}" class="text-[#FF006E]"> ⚡ Urgent: The Question "{{ $urgentQuestion->title }}" is about to expire.</a> <a href="{{ route('hall-of-fame') }}">View Hall of Fame 🎉</a> <a href ="{{ route('new-question') }}" >Join the Conversation Today!</a>
+        @else
+        <a href="{{ route('hall-of-fame') }}">View Hall of Fame 🎉</a> <a href ="{{ route('new-question') }}" >Join the Conversation Today!</a>
+        @endif
         </div>
     </div>
 
