@@ -9,6 +9,11 @@
 
 ## Instructions to run the project
 
+Login to docker registry:
+```
+docker login gitlab.up.pt:5050
+```
+
 Run to start the docker containers:
 ```
 docker run -d --name lbaw24112 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24112
@@ -22,4 +27,10 @@ docker exec -it lbaw24112 php /var/www/artisan schedule:run
 Open in browser:
 ```
 http://localhost:8001
+```
+
+Use the following credentials to login:
+```
+Email: leonoremail@fake.com
+Password: password123
 ```
