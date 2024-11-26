@@ -307,7 +307,6 @@ VALUES (1,1),
 CREATE OR REPLACE FUNCTION update_post_edit_time()
     RETURNS TRIGGER AS $$
         BEGIN
-            NEW.edited := TRUE;
             NEW.edit_time := CURRENT_TIMESTAMP;
             RETURN NEW;
         END;

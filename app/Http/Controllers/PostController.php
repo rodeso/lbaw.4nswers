@@ -371,7 +371,10 @@ class PostController extends Controller
 
         // Find the answer and update it
         $answer = Answer::findOrFail($id);
-        $answer->post->update(['body' => $validated['body']]);
+        $post = Post::findOrFail($answer->post_id);
+        $post->update([
+            'body' => $validated['body'],
+        ]);
 
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
     }
