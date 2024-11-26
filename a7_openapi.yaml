@@ -17,27 +17,6 @@ tags:
   - name: "M07: Voting System"
 
 paths:
-  /search:
-    get:
-      summary: "Search Questions"
-      description: "Search for questions using a query string. Access: PUB"
-      tags:
-        - "M06: Search"
-      parameters:
-        - in: query
-          name: q
-          schema:
-            type: string
-          description: "The search term to query questions by title or content."
-      responses:
-        '200':
-          description: "A list of questions that match the search query."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Question"
 
   /login:
     get:
@@ -296,6 +275,28 @@ paths:
       responses:
         '204':
           description: "Answer deleted."
+          
+  /search:
+    get:
+      summary: "Search Questions"
+      description: "Search for questions using a query string. Access: PUB"
+      tags:
+        - "M06: Search"
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: "The search term to query questions by title or content."
+      responses:
+        '200':
+          description: "A list of questions that match the search query."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
 
   /vote:
     post:
