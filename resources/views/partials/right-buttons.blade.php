@@ -69,7 +69,7 @@ document.getElementById('search-input').addEventListener('input', function () {
                     const resultItem = document.createElement('div');
                     resultItem.classList.add('p-2', 'border-b', 'border-gray-300');
                     resultItem.innerHTML = `
-                        <a href="/question/${question.id}" class="block hover:bg-gray-100 rounded-md p-2">
+                        <a href="/questions/${question.id}" class="block hover:bg-gray-100 rounded-md p-2">
                             <p class="font-bold">${question.title}</p>
                             <p class="text-sm text-gray-500">
                                 ${question.post.body.substring(0, 100)}...
