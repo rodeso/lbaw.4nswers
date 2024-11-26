@@ -55,11 +55,6 @@
     .scroll-banner {
         scrollbar-width: none; /* Firefox */
     }
-    /* Squircle styling */
-    .squircle {
-        background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), transparent);
-        clip-path: path("M20,2 Q38,2,38,20 Q38,38,20,38 Q2,38,2,20 Q2,2,20,2 Z");
-    }
     /* Scrolling Text Animation */
     .scrolling-text {
         display: inline-block;
