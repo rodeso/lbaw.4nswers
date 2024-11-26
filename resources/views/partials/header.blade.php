@@ -28,18 +28,18 @@
                 <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
                 <h2 class="text-xl font-bold">${nickname} Menu</h2>
                 <ul class="mt-4">
-                    <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded"><a href="{{ route('hall-of-fame') }}">Hall of Fame</a></li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded"> <a href="/profile">Profile</a> </li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded"> <a href="/edit-profile">Edit Profile</a> </li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">Settings</li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">About Us</li>
-                    <li class="py-2 hover:bg-gray-700 px-4 rounded">Terms & Conditions</li>
+                    <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
+                    <a href="/profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
+                    <a href="/edit-profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Edit Profile</li></a>
+                    <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
+                    <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
+                    <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
                 </ul>
             </div>
             <div>
                 <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
+                    <button type="submit" class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Logout</button>
                 </form>
             </div>
         `;
