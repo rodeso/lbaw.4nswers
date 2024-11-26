@@ -19,9 +19,13 @@ Run to start the docker containers:
 docker run -d --name lbaw24112 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24112
 ```
 
-Run to update the closed questions:
+Run to update the closed questions every minute:
 ```
 docker exec -it lbaw24112 php /var/www/artisan schedule:run
+```
+Run to get profile pictures for users:
+```
+docker exec -it lbaw24112 php /var/www/artisan storage:link
 ```
 
 Open in browser:
