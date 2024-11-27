@@ -51,20 +51,21 @@
             </li>
         </ul>
     </nav>
-    <div class="mt-8">
+    <div class="relative mt-8">
+        <div class="absolute top-0 left-0 h-full w-1 bg-[color:#C18A8A] rounded"></div>
         @if (Auth::check() && !$user_tags->isEmpty())
-            <h4 class="font-bold mb-4 text-[color:#C18A8A]">Subscribed Tags</h4>
+            <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">Subscribed Tags</h4>
                 @foreach ($user_tags as $tag)
-                        <li>
-                            <a class="text-[color:#C18A8A]">
-                                {{ $tag->name }}
-                            </a>
-                        </li>
+                    <li class="list-none">
+                        <a class="font-bold mb-4 text-[color:#C18A8A] pl-4">
+                            {{ $tag->name }}
+                        </a>
+                    </li>
                 @endforeach
         @elseif (Auth::check())
-            <h4 class="font-bold mb-4 text-[color:#C18A8A]">No Tags Subscribed</h4>
+            <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">No Tags Subscribed</h4>
         @else
-            <a href="{{route('login')}}" class="font-bold mb-4 text-[color:#C18A8A]">Login to Subscribe to Tags</a>
+            <a href="{{route('login')}}" class="font-bold mb-4 text-[color:#C18A8A] pl-4">Login to Subscribe to Tags</a>
         @endif
     </div>
 </aside>
