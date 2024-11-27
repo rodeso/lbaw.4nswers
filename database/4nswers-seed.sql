@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS lbaw24112.user (
   aura INT DEFAULT 0 NOT NULL,
   profile_picture VARCHAR DEFAULT 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png' NOT NULL,
   created DATE DEFAULT CURRENT_DATE NOT NULL,
+  deleted BOOLEAN DEFAULT FALSE NOT NULL,
   is_mod BOOLEAN DEFAULT FALSE NOT NULL
 );
 
@@ -180,21 +181,21 @@ VALUES ('computers', 'all things related to the little machines that we control 
 ('airplanes', 'we love to fly!'),
 ('music', 'all bangers included from mozart to ksi');
 
-INSERT INTO post(body)
-VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.'),
-('I need help with a windows update, can anyone help me?'),
-('I love biscuits, especially hungaros and belgas. Any suggestions?'),
-('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP'),
-('I just love Benfica, they are the best team in the world! They play the beautiful game and make me smile everytime'),
-('Estonian league is a mess, I love it!'),
-('I love purple, what are your favorite colors?'),
-('FAST I have a 50 word essay due tomorrow on rainbows, what are their 7 colors?'),
-('I am a grand champ in rocket league, looking for a duo partner!'),
-('guys i need help to play lol, im too bad xD'),
-('For me its Airbus A380 all the way, what about you?'),
-('I am flying to Madrid next week, any tips and suggestions?'),
-('Primavera Sound is coming up, anyone else excited?'),
-('I love all music, but I am a sucker for a good pop song.');
+INSERT INTO post(body, time_stamp)
+VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-05-31 21:00:00'),
+('I need help with a windows update, can anyone help me?', '2023-12-27 19:00:00'),
+('I love biscuits, especially hungaros and belgas. Any suggestions?', '2024-05-31 14:00:00'),
+('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP', '2024-03-16 13:31:54'),
+('I just love Benfica, they are the best team in the world! They play the beautiful game and make me smile everytime',  '2024-07-19 16:31:54'),
+('Estonian league is a mess, I love it!',  '2015-10-20 06:31:54'),
+('I love purple, what are your favorite colors?','2018-02-28 00:00:00' ),
+('FAST I have a 50 word essay due tomorrow on rainbows, what are their 7 colors?', '2022-02-03 21:00:00'),
+('I am a grand champ in rocket league, looking for a duo partner!', '2024-11-27 00:00:00'),
+('guys i need help to play lol, im too bad xD', '2024-01-03 00:00:00'),
+('For me its Airbus A380 all the way, what about you?', '2024-11-09 14:00:00'),
+('I am flying to Madrid next week, any tips and suggestions?', '2023-12-30 00:00:00'),
+('Primavera Sound is coming up, anyone else excited?', '2024-09-16 00:00:00'),
+('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00');
 
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
@@ -207,8 +208,8 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('What is the best color?', 'Green', '2018-03-01 00:00:00', 2, 7),
 ('HELP what are the 7 colors of the rainbow??', 'Red', '2022-02-04 00:00:00', 3, 8),
 ('Any grand champs to duo with?', 'Green', '2024-11-28 00:00:00', 6, 9),
-('Any tips for a noob in LoL?', 'Green', '2025-01-04 00:00:00', 7, 10),
-('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-30 00:00:00', 4, 11),
+('Any tips for a noob in LoL?', 'Green', '2024-01-04 00:00:00', 7, 10),
+('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-10 00:00:00', 4, 11),
 ('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
 ('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14);
