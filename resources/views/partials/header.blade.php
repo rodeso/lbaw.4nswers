@@ -33,7 +33,7 @@
                     <a href="/edit-profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Edit Profile</li></a>
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
-                    <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
+                    <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
                 </ul>
             </div>
             <div>
