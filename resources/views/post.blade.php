@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>{{ $question->title }} - 4NSWERS</title>
+    <title>4NSWERS - {{ $question->title }}</title>
     <style>
         .scroll-banner::-webkit-scrollbar {
             display: none;
