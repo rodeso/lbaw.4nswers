@@ -218,6 +218,9 @@
                                 <a href="#">Report Answer</a>
                             </li>
                         @if (auth()->user()->is_mod)
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="">Alert</a>
+                            </li>
                             <!-- Admin Option: Delete Answer -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
@@ -233,15 +236,6 @@
                                 <a href="{{ route('answer.edit', $answer->id) }}"> Edit </a>
                             </li>
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </li>
-                        @elseif (auth()->user()->is_moderator)
-                            <!-- Menu for Moderators -->
-                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                 <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
                                     @csrf
                                     @method('DELETE')

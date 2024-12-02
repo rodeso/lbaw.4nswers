@@ -206,16 +206,9 @@
                             </form>
                         </li>
                     @elseif (auth()->user()->is_mod)
-                        <!-- Menu for Admins -->
-                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete Question</button>
-                            </form>
+                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                            <a href="">Alert</a>
                         </li>
-                    @elseif (auth()->user()->is_moderator)
-                        <!-- Menu for Moderators -->
                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                             <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
                                 @csrf
