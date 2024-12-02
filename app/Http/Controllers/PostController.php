@@ -480,7 +480,7 @@ class PostController extends Controller
         $question = Question::with(['answers', 'tags'])->findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        if (Auth::id() !== $question->author_id && !Auth::user()->is_admin) {
+        if (Auth::id() !== $question->author_id && !Auth::user()->is_mod) {
             return redirect()->route('question.show', $id)->with('error', 'You are not authorized to delete this question.');
         }
 
@@ -511,7 +511,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        if (Auth::id() !== $answer->author_id && !Auth::user()->is_admin) {
+        if (Auth::id() !== $answer->author_id && !Auth::user()->is_mod) {
             return redirect()->route('question.show', $answer->question->id)->with('error', 'You are not authorized to delete this answer.');
         }
 

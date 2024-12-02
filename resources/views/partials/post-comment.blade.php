@@ -57,7 +57,7 @@
                                     </li>
                                 @endif
 
-                                @if (auth()->user()->is_admin)
+                                @if (auth()->user()->is_mod)
                                     <!-- Actions for admins and moderators -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                         <a href="{{ route('comment.moderate', $comment->id) }}"> Moderate </a>
@@ -69,7 +69,7 @@
                                             <button type="submit">Delete</button>
                                         </form>
                                     </li>
-                                @elseif (!auth()->user()->is_admin && auth()->id() !== $comment->author->id)
+                                @elseif (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
                                     <!-- Actions for regular users -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                         <a href=""> Report Comment</a>

@@ -217,7 +217,7 @@
                             <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                 <a href="#">Report Answer</a>
                             </li>
-                        @if (auth()->user()->is_admin)
+                        @if (auth()->user()->is_mod)
                             <!-- Admin Option: Delete Answer -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">

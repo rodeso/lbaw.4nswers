@@ -205,7 +205,7 @@
                                 </button>
                             </form>
                         </li>
-                    @elseif (auth()->user()->is_admin)
+                    @elseif (auth()->user()->is_mod)
                         <!-- Menu for Admins -->
                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                             <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
