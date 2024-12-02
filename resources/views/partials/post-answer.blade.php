@@ -109,7 +109,6 @@
                         {{ $answer->author->nickname }}
                     </a>
                 </p>
-
             </div>
             <div 
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
@@ -179,59 +178,94 @@
                     @endforeach
                 </div>
             </div>
-            <!-- Author's Actions Icon -->
-            @if (auth()->id() === $answer->author->id)
-                <div class="relative">
-                    <!-- Button to open the menu -->
+            <div class="relative">
+                <!-- Button to open the menu -->
+                <button 
+                    class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                    aria-label="Options"
+                    onclick="toggleAnswerOptionsMenu({{ $answer->id }})"
+                >
+                    ...
+                </button>
+
+                <!-- Options Menu -->
+                <div 
+                    id="answer-options-menu-{{ $answer->id }}" 
+                    class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+                >
+                    <!-- Close Button -->
                     <button 
-                        class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
-                        aria-label="Options"
-                        onclick="toggleOptionsMenu({{ $answer->id }})"
+                        class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                        aria-label="Close Options"
+                        onclick="toggleAnswerOptionsMenu({{ $answer->id }})"
                     >
-                        ...
+                        ✕
                     </button>
 
-                    <!-- Options Menu -->
-                    <div 
-                        id="options-menu-{{ $answer->id }}" 
-                        class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
-                    >
-                        <!-- Close Button -->
-                        <button 
-                            class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
-                            aria-label="Close Options"
-                            onclick="toggleOptionsMenu({{ $answer->id }})"
-                        >
-                            ✕
-                        </button>
-
-                        <!-- Menu Content -->
-                        <ul class="mt-8 space-y-4 text-base font-semibold">
+                    <!-- Menu Content -->
+                    <ul class="mt-8 space-y-4 text-base font-semibold">
+                        @if (auth()->id() === $question->author->id)
+                            <!-- Menu for the Author of the Question -->
+                            @if (!$answer->chosen && !$question->closed)
+                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                    <form action="{{ route('question.chooseAnswer', ['questionId' => $question->id, 'answerId' => $answer->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Choose this answer</button>
+                                    </form>
+                                </li>
+                            @endif
                             <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                <a href="{{ route('answer.edit', $answer->id) }}"> Edit </a>
+                                <a href="#">Report Answer</a>
                             </li>
-                            <!-- Delete button with confirmation -->
+                        @if (auth()->user()->is_admin)
+                            <!-- Admin Option: Delete Answer -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit">
-                                        Delete
-                                    </button>
+                                    <button type="submit">Delete</button>
                                 </form>
                             </li>
-                        </ul>
-                    </div>
+                        @endif
+                        @elseif (auth()->id() === $answer->author->id)
+                            <!-- Menu for the Author of the Answer -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="{{ route('answer.edit', $answer->id) }}"> Edit </a>
+                            </li>
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </li>
+                        @elseif (auth()->user()->is_moderator)
+                            <!-- Menu for Moderators -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </li>
+                        @else
+                            <!-- Menu for the General Public -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="#">Report Answer</a>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
+            </div>
 
-                <!-- JavaScript to toggle the menu -->
-                <script>
-                    function toggleOptionsMenu(answerId) {
-                        const menu = document.getElementById(`options-menu-${answerId}`);
-                        menu.classList.toggle('hidden');
-                    }
-                </script>
-            @endif
+            <!-- JavaScript to toggle the menu -->
+            <script>
+                function toggleAnswerOptionsMenu(answerId) {
+                    const menu = document.getElementById(`answer-options-menu-${answerId}`);
+                    menu.classList.toggle('hidden');
+                }
+            </script>
+
         </div>
         <!-- Highlight for chosen answer -->
         @if($answer->chosen)
