@@ -6,8 +6,18 @@
                 <!-- Comment Header -->
                 <header class="flex items-center justify-between bg-[color:#4B1414]">
                     <div class="relative flex items-center space-x-16 pl-2">
+                        <p class="text-lg 
+                            @if($answer->chosen) text-white @else text-white @endif">
+                            Commented by 
+                            <a 
+                                href="{{ Auth::id() === $comment->author->id ? route('profile') : route('user.profile', ['id' => $comment->author->id]) }}" 
+                                class="hover:text-gray-500"
+                            >
+                            {{ $comment->author->nickname }}
+                            </a>
+                        </p>
                         <p class="text-lg text-white">
-                            Commented by {{ $comment->author->nickname }}
+                             
                         </p>
                     </div>
                 </header>
