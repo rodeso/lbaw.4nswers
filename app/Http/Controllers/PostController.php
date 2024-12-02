@@ -18,6 +18,11 @@ class PostController extends Controller
 {
     public function show($id)
     {
+
+        if (!is_numeric($id)) {
+            return redirect()->route('home')->with('alert', 'Invalid question ID.');
+        }
+        
         $question = Question::with([
             'post',
             'tags',
@@ -29,8 +34,13 @@ class PostController extends Controller
                 $query->with(['post', 'author']);  // This is fine since comment has an author and post
             }
         ])
-        ->findOrFail($id);
-    
+        ->find($id);
+
+        // If the question does not exist, redirect to home with a message
+        if (!$question) {
+            return redirect()->route('home')->with('alert', 'Question not found.');
+        }
+
         // Calculate aura for each answer
         foreach ($question->answers as $answer) {
             $answer->aura = AuraVote::where('answer_id', $answer->id)

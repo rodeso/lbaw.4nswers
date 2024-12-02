@@ -15,6 +15,10 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You are already logged in!');
+        }
         return view('auth.login');
     }
 
@@ -24,14 +28,6 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-
-        //$user = \App\Models\User::where('email', $request->email)->first();
-
-        //For Debugging
-        /*if ($user) {
-            \Log::info('Stored Password Hash: ' . $user->password);
-            \Log::info('Entered Password: ' . $request->password);
-        }*/
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
