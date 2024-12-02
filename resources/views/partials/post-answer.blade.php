@@ -235,8 +235,11 @@
             </div>
         @endif
     </section>
+
+    @include('partials.post-comment')
+
 @endforeach
 
-@include('partials.post-comment')
+
 
 </section>

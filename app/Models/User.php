@@ -39,4 +39,21 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    // Define the user's authored content
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'author_id');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'author_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'author_id');
+    }
+    
 }

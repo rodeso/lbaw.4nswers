@@ -44,6 +44,7 @@ class Answer extends Model
     {
         return $this->hasMany(AuraVote::class);
     }
+
     // Access moderator notification through post
     public function moderatorNotification()
     {
@@ -55,5 +56,12 @@ class Answer extends Model
     {
         return $this->hasMany(AuraVote::class);
     }
+
+    // Relationship with Comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }
 
