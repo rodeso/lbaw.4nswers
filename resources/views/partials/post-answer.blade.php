@@ -136,30 +136,30 @@
                     ▼
                 </button>
             </div>
-
-            <script>
-                function handleAuraVote(answerId, voteType) {
-                    fetch(`/answer/${answerId}/vote`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                        body: JSON.stringify({ vote: voteType }),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Update the aura display
-                            const auraElement = document.querySelector(`#aura-${answerId}`);
-                            if (auraElement) {
-                                auraElement.textContent = `Aura: ${data.totalAura}`;
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-            </script>
-
         </div>
+
+        <script>
+            function handleAuraVote(answerId, voteType) {
+                fetch(`/answer/${answerId}/vote`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({ vote: voteType }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the aura display
+                        const auraElement = document.querySelector(`#aura-${answerId}`);
+                        if (auraElement) {
+                            auraElement.textContent = `Aura: ${data.totalAura}`;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        </script>
+
         <!-- Time Posting & Moderator Tags -->
         <div class="flex items-center space-x-4 mt-4 justify-between">
             <div class="flex items-center space-x-4 mt-4">
@@ -234,12 +234,86 @@
                 This answer was chosen by the questioner!
             </div>
         @endif
+
+        <!-- Comment Form Section inside Answer Block -->
+        @if(!$question->closed)
+            @auth
+            <button 
+                id="toggleCommentButton-{{ $answer->id }}"
+                onclick="toggleCommentForm({{ $answer->id }})" 
+                class="bg-[color:#4B1414] text-white px-2 py-1 rounded-lg hover:bg-white hover:text-[color:#4B1414] transition font-semibold"
+            >
+                Comment here!
+            </button>
+            <div id="commentForm-{{ $answer->id }}" class="hidden rounded-b-lg space-y-5">
+                <form action="{{ route('comments.store', ['answerId' => $answer->id]) }}" method="POST">
+                    @csrf
+                    <textarea 
+                        name="body" 
+                        id="body" 
+                        cols="30" 
+                        rows="3" 
+                        class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
+                        placeholder="Write your comment here..."
+                    ></textarea>
+                    <button 
+                        type="submit" 
+                        class="w-full p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+                    >
+                        Post Comment
+                    </button>
+                </form>
+            </div>
+            @endauth
+        @endif
     </section>
 
-    @include('partials.post-comment')
+    <!-- Comments will remain outside the answer block -->
+    @foreach ($answer->comments as $comment)
+    <section class="w-full space-y-6 pl-20">
+        <section class="w-full rounded-lg shadow-md p-6 space-y-3 bg-[color:#C18A8A]">
+            <!-- Comment Header -->
+            <header class="flex items-center justify-between bg-[color:#4B1414]">
+                <div class="relative flex items-center space-x-16 pl-2">
+                    <p class="text-lg text-white">
+                        Commented by {{ $comment->author->nickname }}
+                    </p>
+                </div>
+            </header>
+            <!-- Comment Body and Metadata -->
+            <div class="flex justify-between items-stretch rounded-md">
+                <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
+                    {{ $comment->post->body }}
+                </p>
+            </div>
+            <div class="flex items-center space-x-4 mt-4 justify-between">
+                <p class="text-sm text-gray-700 font-semibold">
+                    Commented {{ $comment->post->time_stamp->diffForHumans() }}
+                </p>
+            </div>
+        </section>
+    </section>
+    @endforeach
 
 @endforeach
 
+<!-- JavaScript to toggle the comment form visibility -->
+<script>
+    function toggleCommentForm(answerId) {
+        const form = document.getElementById('commentForm-' + answerId);
+        const button = document.getElementById('toggleCommentButton-' + answerId);
+        
+        // Toggle visibility of the form
+        form.classList.toggle('hidden');
+        
+        // Update button text based on the form's state
+        if (form.classList.contains('hidden')) {
+            button.textContent = "Comment here!";
+        } else {
+            button.textContent = "Close Comment Form.";
+        }
+    }
+</script>
 
 
 </section>
