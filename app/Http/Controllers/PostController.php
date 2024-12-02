@@ -469,7 +469,9 @@ class PostController extends Controller
     }
 
 
-
+    /*
+    Delete -------------------------------------------------------------------------------------------------------------------------
+    */
 
 
     public function deleteQuestion($id)
