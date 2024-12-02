@@ -10,8 +10,13 @@
                     class="w-20 h-20 bg-gray-300 rounded-2xl !m-0"
                 />
             </div>
-            <div class="relative flex items-center space-x-[100px] w-full p-4 ml-4 mr-4  bg-[color:#4B1414] rounded-md">
-                <p class="ml-[50px] text-2xl text-white !mr-1rem">{{ $user->nickname }}</p>
+            <div class="relative flex items-center space-x-[100px] w-full p-4 ml-4 mr-4 bg-[color:#4B1414] rounded-md">
+                <a 
+                    href="{{ Auth::id() === $user->id ? route('profile') : route('user.profile', ['id' => $user->id]) }}" 
+                    class="ml-[50px] text-2xl text-white hover:text-gray-500"
+                >
+                    {{ $user->nickname }}
+                </a>
                 <p class="text-2xl text-white absolute left-[180px]">Aura: {{ $user->aura }}</p>
             </div>
         </div>

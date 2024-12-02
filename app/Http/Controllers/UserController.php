@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Tag;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -54,6 +55,52 @@ class UserController extends Controller
          // Filter answer by user ID 
         return view('profile', compact('user','questions', 'tags','answers'));
     }
+    public function show($id)
+    {
+        // Fetch user by ID
+        $user = User::findOrFail($id); // Returns 404 if user not found
+
+        // Fetch user's questions
+        $questions = Question::with(['tags', 'post'])
+            ->withCount([
+                'popularityVotes as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'popularityVotes as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
+            ->where('author_id', $id) // Filter by the requested user's ID
+            ->get();
+
+        // Calculate the vote difference for each question
+        foreach ($questions as $question) {
+            $question->vote_difference = $question->positive_votes - $question->negative_votes;
+        }
+
+        // Fetch user's answers
+        $answers = Answer::withCount([
+            'auraVote as positive_votes' => function ($query) {
+                $query->where('is_positive', true);
+            },
+            'auraVote as negative_votes' => function ($query) {
+                $query->where('is_positive', false);
+            },
+        ])
+            ->where('author_id', $id) // Filter answers by user ID
+            ->get();
+
+        // Calculate the vote difference for each answer
+        foreach ($answers as $answer) {
+            $answer->vote_difference = $answer->positive_votes - $answer->negative_votes;
+        }
+
+        $tags = Tag::all(); // Tags are optional; include if needed
+
+        // Return the profile view with user data
+        return view('profile', compact('user', 'questions', 'tags', 'answers'));
+    }
+
 
     // Show the profile edit form
     public function edit()

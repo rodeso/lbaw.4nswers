@@ -76,6 +76,9 @@ Route::post('/answer/{answerId}/vote', [PostController::class, 'auraVote'])->nam
 // Profile
 Route::get('/profile', [UserController::class, 'index'])->name('profile');
 
+// User Profiles
+Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
+
 //Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
