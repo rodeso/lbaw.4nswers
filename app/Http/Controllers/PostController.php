@@ -379,6 +379,48 @@ class PostController extends Controller
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
     }
 
+    public function chooseAnswer(Request $request, $questionId, $answerId)
+    {
+        // Find the question using the passed questionId
+        $question = Question::find($questionId);
+        
+        // Find the answer using the passed answerId
+        $answer = Answer::find($answerId);
+
+        // Check if question or answer exists
+        if (!$question || !$answer) {
+            return redirect()->back()->with('error', 'Question or answer not found.');
+        }
+
+        // Check if the question is already closed
+        if ($question->closed) {
+            return redirect()->back()->with('error', 'This question is already closed.');
+        }
+
+        // Check if the question already has a chosen answer
+        if ($question->answers()->where('chosen', true)->exists()) {
+            return redirect()->back()->with('error', 'This question already has a chosen answer.');
+        }
+
+        // Only allow the question author to choose an answer
+        if (auth()->id() !== $question->author->id) {
+            return redirect()->back()->with('error', 'You are not authorized to mark this answer as chosen.');
+        }
+
+        // Set this answer as chosen
+        $answer->chosen = true;
+        $answer->save();
+
+        // Optionally, close the question if a chosen answer is set
+        $question->is_closed = true;
+        $question->save();
+
+        return redirect()->back()->with('success', 'Answer chosen successfully!');
+    }
+
+
+
+
 
     public function deleteQuestion($id)
     {

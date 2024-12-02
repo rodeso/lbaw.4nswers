@@ -159,40 +159,42 @@
                 @endforeach
             </div>
         </div>
-        <!-- Author's Actions Icon -->
-        @if (auth()->id() === $question->author->id)
-            <div class="relative">
-                <!-- Button to open the menu -->
+        <div class="relative">
+            <!-- Button to open the menu -->
+            <button 
+                class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                aria-label="Options"
+                onclick="toggleQuestionOptionsMenu({{ $question->id }})"
+            >
+                ...
+            </button>
+
+            <!-- Options Menu -->
+            <div 
+                id="question-options-menu-{{ $question->id }}" 
+                class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+            >
+                <!-- Close Button -->
                 <button 
-                    class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
-                    aria-label="Options"
-                    onclick="toggleOptionsMenu({{ $question->id }})"
+                    class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                    aria-label="Close Options"
+                    onclick="toggleQuestionOptionsMenu({{ $question->id }})"
                 >
-                    ...
+                    ✕
                 </button>
 
-                <!-- Options Menu -->
-                <div 
-                    id="options-menu-{{ $question->id }}" 
-                    class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
-                >
-                    <!-- Close Button -->
-                    <button 
-                        class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
-                        aria-label="Close Options"
-                        onclick="toggleOptionsMenu({{ $question->id }})"
-                    >
-                        ✕
-                    </button>
-
-                    <!-- Menu Content -->
-                    <ul class="mt-8 space-y-4 text-base font-semibold">
+                <!-- Menu Content -->
+                <ul class="mt-8 space-y-4 text-base font-semibold">
+                    @if (auth()->id() === $question->author->id)
+                        <!-- Menu for the Author of the Question -->
                         <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                             <a href="{{ route('question.edit', $question->id) }}"> Edit </a>
                         </li>
-                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                            <a href="#"> Close Question </a>
-                        </li>
+                        @if (!$question->closed)
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="#"> Close Question </a>
+                            </li>
+                        @endif
                         <!-- Delete button with confirmation -->
                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                             <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
@@ -203,17 +205,40 @@
                                 </button>
                             </form>
                         </li>
-                    </ul>
-                </div>
+                    @elseif (auth()->user()->is_admin)
+                        <!-- Menu for Admins -->
+                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete Question</button>
+                            </form>
+                        </li>
+                    @elseif (auth()->user()->is_moderator)
+                        <!-- Menu for Moderators -->
+                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete Question</button>
+                            </form>
+                        </li>
+                    @else
+                        <!-- Menu for the General Public -->
+                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                            <a href="#">Report Question</a>
+                        </li>
+                    @endif
+                </ul>
             </div>
+        </div>
 
-            <!-- JavaScript to toggle the menu -->
-            <script>
-                function toggleOptionsMenu(questionId) {
-                    const menu = document.getElementById(`options-menu-${questionId}`);
-                    menu.classList.toggle('hidden');
-                }
-            </script>
-        @endif
-    </div>
+        <!-- JavaScript to toggle the menu -->
+        <script>
+            function toggleQuestionOptionsMenu(questionId) {
+                const menu = document.getElementById(`question-options-menu-${questionId}`);
+                menu.classList.toggle('hidden');
+            }
+        </script>
+
 </section>
