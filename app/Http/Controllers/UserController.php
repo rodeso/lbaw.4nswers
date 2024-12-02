@@ -57,8 +57,16 @@ class UserController extends Controller
     }
     public function show($id)
     {
+        if (!is_numeric($id)) {
+            return redirect()->route('home')->with('alert', 'Invalid user ID.');
+        }
+
         // Fetch user by ID
-        $user = User::findOrFail($id); // Returns 404 if user not found
+        $user = User::find($id); // Returns 404 if user not found
+
+        if (!$user) {
+            return redirect()->route('home')->with('alert', 'User not found.');
+        }
 
         // Fetch user's questions
         $questions = Question::with(['tags', 'post'])

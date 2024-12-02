@@ -62,6 +62,9 @@ Route::post('/question/{questionId}/choose-answer/{answerId}', [PostController::
 // Post Answer
 Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');
 
+// Post Comment
+Route::post('/answers/{answerId}/comments', [PostController::class, 'storeComment'])->name('comments.store');
+
 // Edit Answer
 Route::get('/answers/{id}/edit', [PostController::class, 'showEditAnswer'])->name('answer.edit');
 Route::put('/answers/{id}/update', [PostController::class, 'updateAnswer'])->name('answer.update');
