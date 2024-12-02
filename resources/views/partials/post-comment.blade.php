@@ -69,13 +69,13 @@
                                             <button type="submit">Delete</button>
                                         </form>
                                     </li>
-                                @endif
-
-                                @else
+                                @elseif (!auth()->user()->is_admin && auth()->id() !== $comment->author->id)
                                     <!-- Actions for regular users -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href=""> Report </a>
+                                        <a href=""> Report Comment</a>
                                     </li>
+                                @endif
+
                             </ul>
                         </div>
                     </div>
