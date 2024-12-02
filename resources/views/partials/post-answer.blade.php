@@ -239,13 +239,23 @@
                 This answer was chosen by the questioner!
             </div>
         @endif
+        <!-- Only show the "Show Comments" button if there are comments -->
+        @if($answer->comments->isNotEmpty())
+            <!-- Button to Toggle Comments -->
+            <button 
+                id="toggleCommentsButton-{{ $answer->id }}" 
+                onclick="toggleCommentsVisibility({{ $answer->id }})" 
+                class="bg-[color:#4B1414] text-sm text-white px-2 py-1 rounded-lg hover:bg-white hover:text-[color:#4B1414] transition font-semibold">
+                Hide Comments
+            </button>
+        @endif
         <!-- Comment Form Section inside Answer Block -->
         @if(!$question->closed)
             @auth
             <button 
                 id="toggleCommentButton-{{ $answer->id }}"
                 onclick="toggleCommentForm({{ $answer->id }})" 
-                class="bg-[color:#4B1414] text-white px-2 py-1 rounded-lg hover:bg-white hover:text-[color:#4B1414] transition font-semibold"
+                class="bg-[color:#4B1414] text-sm text-white px-2 py-1 rounded-lg hover:bg-white hover:text-[color:#4B1414] transition font-semibold"
             >
                 Comment here!
             </button>
@@ -276,6 +286,8 @@
 
 @endforeach
 
+
+
 <!-- JavaScript to toggle the comment form visibility -->
 <script>
     function toggleCommentForm(answerId) {
@@ -290,6 +302,23 @@
             button.textContent = "Comment here!";
         } else {
             button.textContent = "Close Comment Form.";
+        }
+    }
+</script>
+<!-- JavaScript to Toggle Comments Visibility -->
+<script>
+    function toggleCommentsVisibility(answerId) {
+        const commentsSection = document.getElementById('commentsSection-' + answerId);
+        const toggleButton = document.getElementById('toggleCommentsButton-' + answerId);
+        
+        // Toggle visibility of the comments section
+        commentsSection.classList.toggle('hidden');
+        
+        // Update button text based on the visibility of comments
+        if (commentsSection.classList.contains('hidden')) {
+            toggleButton.textContent = "Show Comments";
+        } else {
+            toggleButton.textContent = "Hide Comments";
         }
     }
 </script>
