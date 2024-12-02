@@ -228,7 +228,6 @@
                 </script>
             @endif
         </div>
-
         <!-- Highlight for chosen answer -->
         @if($answer->chosen)
             <div class="text-green-700 font-bold text-center mt-4">
@@ -238,6 +237,6 @@
     </section>
 @endforeach
 
-
+@include('partials.post-comment')
 
 </section>
