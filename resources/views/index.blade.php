@@ -10,6 +10,7 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 relative">
 
+    <!-- Alert Message -->
     @if (session('alert'))
         <script>
             alert("{{ session('alert') }}");
