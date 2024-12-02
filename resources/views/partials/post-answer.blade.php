@@ -101,8 +101,15 @@
                 </div>
                 <p class="text-lg 
                     @if($answer->chosen) text-white @else text-white @endif">
-                    Answered by {{ $answer->author->nickname }}
+                    Answered by 
+                    <a 
+                        href="{{ Auth::id() === $answer->author->id ? route('profile') : route('user.profile', ['id' => $answer->author->id]) }}" 
+                        class="hover:text-gray-500"
+                    >
+                        {{ $answer->author->nickname }}
+                    </a>
                 </p>
+
             </div>
             <div 
                 class="relative w-80 h-12 bg-white text-center flex items-end justify-end text-[color:#4B1414]"
