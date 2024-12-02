@@ -15,6 +15,10 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You are already logged in!');
+        }
         return view('auth.login');
     }
 

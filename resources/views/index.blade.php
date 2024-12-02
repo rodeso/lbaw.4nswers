@@ -10,6 +10,12 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 relative">
 
+    @if (session('alert'))
+        <script>
+            alert("{{ session('alert') }}");
+        </script>
+    @endif
+
     <!-- Main Page Wrapper -->
     <div class="flex flex-col min-h-screen">
         <!-- Header -->
