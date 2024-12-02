@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\UserFollowsTag;
 use App\Models\PopularityVote;
 use App\Models\AuraVote;
+use App\Models\Comment;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,9 @@ class PostController extends Controller
             'answers.post',
             'answers.author',
             'answers.post.moderatorNotifications',
+            'answers.comments' => function ($query) {
+                $query->with(['post', 'author']);  // This is fine since comment has an author and post
+            }
         ])
         ->find($id);
 
@@ -46,12 +50,12 @@ class PostController extends Controller
                 ->where('is_positive', false)
                 ->count();
         }
-
+    
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
             : collect();
-
+    
         // Get the user's vote (if they have voted)
         $userVote = null;
         if (auth()->check()) {
@@ -59,64 +63,15 @@ class PostController extends Controller
                 ->where('question_id', $id)
                 ->value('is_positive');
         }
-
+    
         // Pass data to view
         return view('post', compact('question', 'user_tags', 'userVote'));
     }
- 
     
 
-    public function showNewQuestion()
-    {
-        // Tags that user follows
-        $user_tags = Auth::user()
-            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
-            : collect(); // Return an empty collection if logged in user is null
-        
-        // Extract all the tags
-        $tags = Tag::all();
-    
-        // Pass the tags to the view
-        return view('new-question', compact('tags', 'user_tags'));
-    }
-
-    public function storeAnswer(Request $request)
-    {
-        $validated = $request->validate([
-            'body' => 'required|string|max:4096',
-            'question_id' => 'required|exists:question,id',
-        ]);
-
-        // Fetch the question to check if it's closed
-        $question = Question::find($validated['question_id']);
-
-        if ($question->closed) {
-            // If the question is closed, redirect with an error message
-            return redirect()
-                ->route('question.show', ['id' => $validated['question_id']])
-                ->with('error', 'The question is closed and cannot accept new answers.');
-        }
-
-        // Create the post associated with the answer
-        $post = Post::create([
-            'body' => $request->body,
-            'time_stamp' => now(),
-        ]);
-
-        // Create the answer with the post_id
-        $answer = new Answer([
-            'body' => $validated['body'],
-            'author_id' => Auth::id(),
-            'question_id' => $validated['question_id'],
-            'post_id' => $post->id,
-        ]);
-        
-        // Save the answer
-        $answer->save();
-
-        // Redirect or return success response
-        return redirect()->route('question.show', ['id' => $validated['question_id']]);
-    }
+    /*
+    Store -------------------------------------------------------------------------------------------------------------------------
+    */
 
     public function storeQuestion(Request $request)
     {
@@ -180,6 +135,86 @@ class PostController extends Controller
         return redirect()->route('question.show', $question->id)->with('success', 'Your question has been posted successfully.');
     }
 
+    public function storeAnswer(Request $request)
+    {
+        $validated = $request->validate([
+            'body' => 'required|string|max:4096',
+            'question_id' => 'required|exists:question,id',
+        ]);
+
+        // Fetch the question to check if it's closed
+        $question = Question::find($validated['question_id']);
+
+        if ($question->closed) {
+            // If the question is closed, redirect with an error message
+            return redirect()
+                ->route('question.show', ['id' => $validated['question_id']])
+                ->with('error', 'The question is closed and cannot accept new answers.');
+        }
+
+        // Create the post associated with the answer
+        $post = Post::create([
+            'body' => $request->body,
+            'time_stamp' => now(),
+        ]);
+
+        // Create the answer with the post_id
+        $answer = new Answer([
+            'body' => $validated['body'],
+            'author_id' => Auth::id(),
+            'question_id' => $validated['question_id'],
+            'post_id' => $post->id,
+        ]);
+        
+        // Save the answer
+        $answer->save();
+
+        // Redirect or return success response
+        return redirect()->route('question.show', ['id' => $validated['question_id']]);
+    }
+
+    public function storeComment(Request $request, $answerId)
+    {
+        $validated = $request->validate([
+            'body' => 'required|string|max:4096',
+        ]);
+
+        $answer = Answer::findOrFail($answerId);
+
+        // Create the post associated with the comment
+        $post = Post::create([
+            'body' => $validated['body'],
+            'time_stamp' => now(),
+        ]);
+
+        // Create the comment
+        $comment = Comment::create([
+            'answer_id' => $answerId,
+            'author_id' => Auth::id(),
+            'post_id' => $post->id,
+        ]);
+
+        return redirect()->back()->with('success', 'Comment added successfully!');
+    }
+
+    /*
+    Show -------------------------------------------------------------------------------------------------------------------------
+    */
+
+    public function showNewQuestion()
+    {
+        // Tags that user follows
+        $user_tags = Auth::user()
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
+            : collect(); // Return an empty collection if logged in user is null
+        
+        // Extract all the tags
+        $tags = Tag::all();
+    
+        // Pass the tags to the view
+        return view('new-question', compact('tags', 'user_tags'));
+    }
+
     public function showEditQuestion($id)
     {
         $question = Question::with('tags')->findOrFail($id);
@@ -222,6 +257,9 @@ class PostController extends Controller
         return view('edit-answer', compact('user_tags', 'answer', 'post'));
     }
 
+    /*
+    Votes -------------------------------------------------------------------------------------------------------------------------
+    */
 
     public function vote(Request $request, $questionId)
     {
@@ -280,7 +318,6 @@ class PostController extends Controller
         
         return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
     }
-
 
     public function auraVote(Request $request, $answerId)
     {
@@ -346,7 +383,10 @@ class PostController extends Controller
         return response()->json(['totalAura' => $totalAura]);
     }
 
-    
+    /*
+    Update -------------------------------------------------------------------------------------------------------------------------
+    */
+
     public function updateQuestion(Request $request, $id)
     {
         // Validate input
@@ -389,6 +429,9 @@ class PostController extends Controller
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
     }
 
+    /*
+    Delete -------------------------------------------------------------------------------------------------------------------------
+    */
 
     public function deleteQuestion($id)
     {
