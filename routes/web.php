@@ -54,6 +54,7 @@ Route::get('/questions/{id}', [PostController::class, 'show'])->name('question.s
 Route::get('/questions/{id}/edit', [PostController::class, 'showEditQuestion'])->name('question.edit');
 Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])->name('question.update');
 Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
+Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->name('question.close');
 
 //Choose Best Answer
 Route::post('/question/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');

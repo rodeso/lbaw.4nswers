@@ -198,7 +198,10 @@
                             </li>
                             @if (!$question->closed)
                                 <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                    <a href="#">Close Question</a>
+                                    <form action="{{ route('question.close', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to close this question?');">
+                                        @csrf
+                                        <button type="submit" class="text-left w-full">Close Question</button>
+                                    </form>
                                 </li>
                             @endif
                             @if (!auth()->user()->is_mod)

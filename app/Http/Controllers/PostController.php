@@ -427,6 +427,22 @@ class PostController extends Controller
 
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
     }
+    public function closeQuestion($id)
+    {
+        // Retrieve the question
+        $question = Question::findOrFail($id);
+
+        // Check if the authenticated user is the author or an admin
+        if (Auth::id() !== $question->author_id && !Auth::user()->is_mod) {
+            return redirect()->route('question.show', $id)->with('error', 'You are not authorized to close this question.');
+        }
+
+        // Close the question
+        $question->closed = true;
+        $question->save();
+
+        return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
+    }
 
     public function chooseAnswer(Request $request, $questionId, $answerId)
     {
