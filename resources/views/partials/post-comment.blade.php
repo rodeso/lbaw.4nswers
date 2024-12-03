@@ -60,7 +60,7 @@
                                 @if (auth()->user()->is_mod)
                                     <!-- Actions for admins and moderators -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href="{{ route('comment.moderate', $comment->id) }}">Alert</a>
+                                        <a href="">Alert</a>
                                     </li>
                                     <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">

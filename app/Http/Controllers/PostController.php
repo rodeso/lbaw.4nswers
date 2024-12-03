@@ -462,7 +462,7 @@ class PostController extends Controller
         $answer->save();
 
         // Optionally, close the question if a chosen answer is set
-        $question->is_closed = true;
+        $question->closed = true;
         $question->save();
 
         return redirect()->back()->with('success', 'Answer chosen successfully!');
