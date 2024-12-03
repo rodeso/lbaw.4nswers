@@ -37,6 +37,14 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    /**
+     * Access moderator notification through post
+     */
+    public function moderatorNotification()
+    {
+        return $this->post->hasOne(ModeratorNotification::class, 'post_id');
+    }
 }
 
 

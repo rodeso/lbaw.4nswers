@@ -81,7 +81,6 @@
                     </div>
                     @endauth
                 </header>
-
                 <!-- Comment Body and Metadata -->
                 <div class="flex justify-between items-stretch rounded-md">
                     <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
@@ -92,6 +91,13 @@
                     <p class="text-sm text-gray-700 font-semibold">
                         Commented {{ $comment->post->time_stamp->diffForHumans() }}!
                     </p>
+                    <div class="flex flex-wrap items-center space-x-2">
+                        @foreach ($comment->post->moderatorNotifications as $commentModNotification)
+                            <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                                {{ $commentModNotification->reason }}
+                            </span>
+                        @endforeach
+                    </div>
                 </div>
             </section>
         </section>

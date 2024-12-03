@@ -166,7 +166,7 @@
                     .catch(error => console.error('Error:', error));
             }
         </script>
-        <!-- Time Posting & Moderator Tags -->
+        <!-- Time Posting, Moderator Flags & Menu-->
         <div class="flex items-center space-x-4 mt-4 justify-between">
             <div class="flex items-center space-x-4 mt-4">
                 <p class="text-sm text-gray-700 font-semibold">

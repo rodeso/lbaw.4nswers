@@ -37,7 +37,10 @@ class Question extends Model
     {
         return $this->hasMany(PopularityVote::class);
     }
-
+    public function moderatorNotification()
+    {
+        return $this->post->hasOne(ModeratorNotification::class, 'post_id');
+    }
     
 
 }

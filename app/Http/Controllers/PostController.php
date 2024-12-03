@@ -68,7 +68,6 @@ class PostController extends Controller
         return view('post', compact('question', 'user_tags', 'userVote'));
     }
     
-
     /*
     Store -------------------------------------------------------------------------------------------------------------------------
     */
@@ -468,11 +467,9 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Answer chosen successfully!');
     }
 
-
     /*
     Delete -------------------------------------------------------------------------------------------------------------------------
     */
-
 
     public function deleteQuestion($id)
     {

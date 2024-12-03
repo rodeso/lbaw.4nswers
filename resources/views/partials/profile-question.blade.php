@@ -54,16 +54,21 @@
         <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mt-4 break-words">
             {{ $question->post->body }}
         </p>
-        <!-- Time Posting & Question Tags -->
+        <!-- Time Posting, Question Tags & Moderator Flags -->
         <div class="flex items-center space-x-4 mt-4">
             <!-- Time of Posting -->
             <p class="text-sm text-gray-700 font-semibold">
                 Asked {{ $question->post->time_stamp->diffForHumans() }}!
             </p>
-            <!-- Question Tags -->
+            <!-- Question Tags & Moderator Flags -->
             <div class="flex flex-wrap items-center space-x-2">
                 @foreach ($question->tags as $tag)
                     <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
+                @endforeach
+                @foreach ($question->post->moderatorNotifications as $questionModNotification)
+                    <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
+                        {{ $questionModNotification->reason }}
+                    </span>
                 @endforeach
             </div>
         </div>
