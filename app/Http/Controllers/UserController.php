@@ -11,6 +11,7 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Tag;
 use App\Models\User;
+use App\Models\Comment;
 
 class UserController extends Controller
 {
@@ -19,23 +20,26 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $userId = Auth::id(); // Get the logged-in user's ID
+
+        // Fetch user's questions with associated tags and post details
         $questions = Question::with(['tags', 'post'])
-        ->withCount([
-            'popularityVotes as positive_votes' => function ($query) {
-                $query->where('is_positive', true);
-            },
-            'popularityVotes as negative_votes' => function ($query) {
-                $query->where('is_positive', false);
-            },
-        ])
-        ->where('author_id', $userId) // Filter questions by user ID
-        ->get();
+            ->withCount([
+                'popularityVotes as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'popularityVotes as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
+            ->where('author_id', $userId) // Filter questions by user ID
+            ->get();
 
         // Calculate the vote difference for each question
         foreach ($questions as $question) {
             $question->vote_difference = $question->positive_votes - $question->negative_votes;
         }
-        $tags = Tag::all();
+
+        // Fetch user's answers with vote counts
         $answers = Answer::withCount([
             'auraVote as positive_votes' => function ($query) {
                 $query->where('is_positive', true);
@@ -47,27 +51,35 @@ class UserController extends Controller
         ->where('author_id', $userId) // Filter answers by user ID
         ->get();
 
-        // Calculate the vote difference for each question
+        // Calculate the vote difference for each answer
         foreach ($answers as $answer) {
             $answer->vote_difference = $answer->positive_votes - $answer->negative_votes;
         }
-        
-         // Filter answer by user ID 
-        return view('profile', compact('user','questions', 'tags','answers'));
+
+        // Fetch user's comments with associated posts
+        $comments = Comment::with(['post', 'answer.question']) // Include related post and question
+            ->where('author_id', $userId) // Filter comments by user ID
+            ->get();
+
+        $tags = Tag::all();
+
+        // Return data to the profile view
+        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments'));
     }
+
     public function show($id)
     {
         if (!is_numeric($id)) {
             return redirect()->route('home')->with('alert', 'Invalid user ID.');
         }
-
+    
         // Fetch user by ID
         $user = User::find($id); // Returns 404 if user not found
-
+    
         if (!$user) {
             return redirect()->route('home')->with('alert', 'User not found.');
         }
-
+    
         // Fetch user's questions
         $questions = Question::with(['tags', 'post'])
             ->withCount([
@@ -80,12 +92,12 @@ class UserController extends Controller
             ])
             ->where('author_id', $id) // Filter by the requested user's ID
             ->get();
-
+    
         // Calculate the vote difference for each question
         foreach ($questions as $question) {
             $question->vote_difference = $question->positive_votes - $question->negative_votes;
         }
-
+    
         // Fetch user's answers
         $answers = Answer::withCount([
             'auraVote as positive_votes' => function ($query) {
@@ -97,17 +109,24 @@ class UserController extends Controller
         ])
             ->where('author_id', $id) // Filter answers by user ID
             ->get();
-
+    
         // Calculate the vote difference for each answer
         foreach ($answers as $answer) {
             $answer->vote_difference = $answer->positive_votes - $answer->negative_votes;
         }
-
-        $tags = Tag::all(); // Tags are optional; include if needed
-
+    
+        // Fetch user's comments
+        $comments = Comment::with(['post', 'answer.question'])
+            ->where('author_id', $id) // Filter comments by user ID
+            ->get();
+    
+        // Fetch all tags (if needed for the view)
+        $tags = Tag::all();
+    
         // Return the profile view with user data
-        return view('profile', compact('user', 'questions', 'tags', 'answers'));
+        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments'));
     }
+    
 
 
     // Show the profile edit form
@@ -166,7 +185,6 @@ class UserController extends Controller
         // Redirect back to the profile page with a success message
         return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
-
 
     // Update the user's password
     public function updatepassword(Request $request)

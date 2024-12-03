@@ -26,15 +26,29 @@
             <!-- Centered Content Section -->
             <section class="w-3/5 space-y-8">
                 <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Questions placed:</h1>
-                    @foreach ($questions as $question)
-                        @include('partials.profile-question')
-                    @endforeach
+                    @if($questions->isNotEmpty())
+                        @foreach ($questions as $question)
+                            @include('partials.profile-question')
+                        @endforeach
+                    @else
+                        <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No questions placed yet!</p>
+                    @endif
                 <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Answers given:</h1>
-                    @foreach ($answers as $answer)
-                        @include('partials.profile-answer')
-                    @endforeach
+                    @if($answers->isNotEmpty())
+                        @foreach ($answers as $answer)
+                            @include('partials.profile-answer')
+                        @endforeach
+                    @else
+                        <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No answers given yet!</p>
+                    @endif
                 <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Comments made:</h1>
-                    <h2>Comments</h2>
+                    @if($comments->isNotEmpty())
+                        @foreach ($comments as $comment)
+                            @include('partials.profile-comment')
+                        @endforeach
+                    @else
+                        <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No comments made yet!</p>
+                    @endif
             </section>
         </main>
 

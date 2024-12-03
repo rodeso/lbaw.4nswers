@@ -31,7 +31,7 @@
             </div>
             <!-- Time Posting & Answer Tags -->
             <div class="flex items-center space-x-4 mt-4">
-                <p class="text-sm text-gray-700 font-semibold">
+                <p class="text-sm text-gray-700 font-semibold break-words">
                     Answered to: {{ $answer->question->title }}
                 </p>
                 <div class="flex flex-wrap items-center space-x-2">
