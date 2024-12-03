@@ -18,67 +18,73 @@
                     </div>
                     <!-- Action Menu -->
                     @auth
-                    <div class="relative">
-                        <button 
-                            class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
-                            aria-label="Options"
-                            onclick="toggleCommentOptionsMenu({{ $comment->id }})"
-                        >
-                            ...
-                        </button>
-
-                        <!-- Options Menu -->
-                        <div 
-                            id="comment-options-menu-{{ $comment->id }}" 
-                            class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
-                        >
-                            <!-- Close Button -->
+                        <div class="relative">
                             <button 
-                                class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
-                                aria-label="Close Options"
+                                class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                                aria-label="Options"
                                 onclick="toggleCommentOptionsMenu({{ $comment->id }})"
                             >
-                                ✕
+                                ...
                             </button>
 
-                            <!-- Dynamic Menu Content -->
-                            <ul class="mt-8 space-y-4 text-base font-semibold">
-                                @if (auth()->id() === $comment->author->id)
-                                    <!-- Actions for the comment author -->
-                                    <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href=""> Edit </a>
-                                    </li>
-                                    <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                        <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">Delete</button>
-                                        </form>
-                                    </li>
-                                @endif
+                            <!-- Options Menu -->
+                            <div 
+                                id="comment-options-menu-{{ $comment->id }}" 
+                                class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+                            >
+                                <!-- Close Button -->
+                                <button 
+                                    class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                                    aria-label="Close Options"
+                                    onclick="toggleCommentOptionsMenu({{ $comment->id }})"
+                                >
+                                    ✕
+                                </button>
 
-                                @if (auth()->user()->is_mod)
-                                    <!-- Actions for admins and moderators -->
-                                    <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href="">Alert</a>
-                                    </li>
-                                    <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                        <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">Delete</button>
-                                        </form>
-                                    </li>
-                                @elseif (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
-                                    <!-- Actions for regular users -->
-                                    <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href=""> Report Comment</a>
-                                    </li>
-                                @endif
+                                <!-- Dynamic Menu Content -->
+                                <ul class="mt-8 space-y-4 text-base font-semibold">
+                                    @if (auth()->id() === $comment->author->id)
+                                        <!-- Actions for the Comment Author -->
+                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                            <a href="#">Edit Comment</a>
+                                        </li>
+                                        @if (!auth()->user()->is_mod)
+                                            <!-- Only non-moderators see this delete button -->
+                                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                                <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Delete Comment</button>
+                                                </form>
+                                            </li>
+                                        @endif
+                                    @endif
 
-                            </ul>
+                                    @if (auth()->user()->is_mod)
+                                        <!-- Actions for Moderators (Not the Comment Author) -->
+                                        @if (auth()->id() !== $comment->author->id)
+                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                            <a href="#">Create Alert</a>
+                                        </li>
+                                        @endif
+                                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                            <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">Delete Comment</button>
+                                            </form>
+                                        </li>
+                                    @endif
+
+                                    @if (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
+                                        <!-- Actions for Regular Users -->
+                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                            <a href="#">Report Comment</a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     @endauth
                 </header>
                 <!-- Comment Body and Metadata -->

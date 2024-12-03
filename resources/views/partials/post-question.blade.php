@@ -165,72 +165,79 @@
             </div>
         </div>
         @auth
-        <div class="relative">
-            <!-- Button to open the menu -->
-            <button 
-                class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
-                aria-label="Options"
-                onclick="toggleQuestionOptionsMenu({{ $question->id }})"
-            >
-                ...
-            </button>
-
-            <!-- Options Menu -->
-            <div 
-                id="question-options-menu-{{ $question->id }}" 
-                class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
-            >
-                <!-- Close Button -->
+            <div class="relative">
+                <!-- Button to open the menu -->
                 <button 
-                    class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
-                    aria-label="Close Options"
+                    class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
+                    aria-label="Options"
                     onclick="toggleQuestionOptionsMenu({{ $question->id }})"
                 >
-                    ✕
+                    ...
                 </button>
 
-                <!-- Menu Content -->
-                <ul class="mt-8 space-y-4 text-base font-semibold">
-                    @if (auth()->id() === $question->author->id)
-                        <!-- Menu for the Author of the Question -->
-                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                            <a href="{{ route('question.edit', $question->id) }}"> Edit </a>
-                        </li>
-                        @if (!$question->closed)
+                <!-- Options Menu -->
+                <div 
+                    id="question-options-menu-{{ $question->id }}" 
+                    class="hidden fixed top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-[color:#4E0F35] rounded-lg text-white shadow-lg p-6 z-50"
+                >
+                    <!-- Close Button -->
+                    <button 
+                        class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-lg font-bold bg-[color:#4B1414] hover:bg-gray-700 rounded-full focus:outline-none"
+                        aria-label="Close Options"
+                        onclick="toggleQuestionOptionsMenu({{ $question->id }})"
+                    >
+                        ✕
+                    </button>
+
+                    <!-- Menu Content -->
+                    <ul class="mt-8 space-y-4 text-base font-semibold">
+                        @if (auth()->id() === $question->author->id)
+                            <!-- Actions for the Author of the Question -->
                             <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                <a href="#"> Close Question </a>
+                                <a href="{{ route('question.edit', $question->id) }}">Edit Question</a>
+                            </li>
+                            @if (!$question->closed)
+                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                    <a href="#">Close Question</a>
+                                </li>
+                            @endif
+                            @if (!auth()->user()->is_mod)
+                                <!-- Delete button for authors who are not moderators -->
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                    <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit">Delete Question</button>
+                                    </form>
+                                </li>
+                            @endif
+                        @endif
+
+                        @if (auth()->user()->is_mod )
+                            <!-- Actions for Moderators -->
+                            @if (auth()->id() !== $question->author->id)
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="#">Create Alert</a>
+                            </li>
+                            @endif
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Delete Question</button>
+                                </form>
                             </li>
                         @endif
-                        <!-- Delete button with confirmation -->
-                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">
-                                    Delete
-                                </button>
-                            </form>
-                        </li>
-                    @elseif (auth()->user()->is_mod)
-                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                            <a href="">Alert</a>
-                        </li>
-                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                            <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete Question</button>
-                            </form>
-                        </li>
-                    @else
-                        <!-- Menu for the General Public -->
-                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                            <a href="#">Report Question</a>
-                        </li>
-                    @endif
-                </ul>
+
+                        @if (!auth()->user()->is_mod && auth()->id() !== $question->author->id)
+                            <!-- Actions for Regular Users -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <a href="#">Report Question</a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
             </div>
-        </div>
         @endauth
         <!-- JavaScript to toggle the menu -->
         <script>
