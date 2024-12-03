@@ -16,8 +16,8 @@
                             </a>
                         </p>
                     </div>
-
                     <!-- Action Menu -->
+                    @auth
                     <div class="relative">
                         <button 
                             class="w-10 h-10 flex items-center justify-center text-white bg-[color:#4B1414] rounded-full hover:bg-gray-700 focus:outline-none"
@@ -79,6 +79,7 @@
                             </ul>
                         </div>
                     </div>
+                    @endauth
                 </header>
 
                 <!-- Comment Body and Metadata -->

@@ -159,6 +159,7 @@
                 @endforeach
             </div>
         </div>
+        @auth
         <div class="relative">
             <!-- Button to open the menu -->
             <button 
@@ -225,7 +226,7 @@
                 </ul>
             </div>
         </div>
-
+        @endauth
         <!-- JavaScript to toggle the menu -->
         <script>
             function toggleQuestionOptionsMenu(questionId) {

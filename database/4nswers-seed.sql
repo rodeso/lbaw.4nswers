@@ -172,6 +172,10 @@ VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsB
 ('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30', 'profile_pictures/X6rPuddaSb616CKoQ7W8tvMil6gicxNonLBpNVDJ.jpg'),
 ('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg');
 
+INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, is_mod)
+VALUES ('Moderator', 'Mod', 'modemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', TRUE);
+
+
 INSERT INTO tag(name, description)
 VALUES ('computers', 'all things related to the little machines that we control (or atleast think we do)'),
 ('cookies', 'from the savoury to the yummy, all things cookies'),

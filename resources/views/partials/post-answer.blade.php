@@ -123,6 +123,7 @@
             <p class="text-gray-600 border-2 border-[color:#4B1414] rounded-md p-2 mr-3 flex-grow break-words">
                 {{ $answer->post->body }}
             </p>
+            @auth
             <div class="flex flex-col items-center space-y-1">
                 <!-- Upvote Button -->
                 <button 
@@ -142,6 +143,7 @@
                     ▼
                 </button>
             </div>
+            @endauth
         </div>
         <script>
             function handleAuraVote(answerId, voteType) {
@@ -178,6 +180,7 @@
                     @endforeach
                 </div>
             </div>
+            @auth
             <div class="relative">
                 <!-- Button to open the menu -->
                 <button 
@@ -251,6 +254,7 @@
                     </ul>
                 </div>
             </div>
+            @endauth
 
             <!-- JavaScript to toggle the menu -->
             <script>
