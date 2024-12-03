@@ -1,13 +1,13 @@
-<a href="{{ route('question.show', $comment->answer->question->id) }}">
-    <section class="w-full space-y-6 pl-28" >
+<a href="{{ route('question.show', $comment->answer->question->id) }}" class="block no-underline">
+    <section class="w-full space-y-6 pl-28">
         <section class="w-full rounded-lg shadow-md p-6 space-y-3 bg-[color:#C18A8A]">
             <!-- Comment Header -->
             <header class="flex items-center justify-between bg-[color:#4B1414]">
-                <p class="text-lg text-white">
+                <p class="text-lg text-white pl-2">
                     Commented by 
-                    <a>
-                    {{ $comment->author->nickname }}
-                    </a>
+                    <span>
+                        {{ $comment->author->nickname }}
+                    </span>
                 </p>
             </header>
             <!-- Comment Body and Metadata -->
@@ -31,3 +31,4 @@
         </section>
     </section>
 </a>
+
