@@ -202,6 +202,11 @@ class PostController extends Controller
 
     public function showNewQuestion()
     {
+        if (!Auth::check()) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You must be logged in to post a new question!');
+        }
+
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
