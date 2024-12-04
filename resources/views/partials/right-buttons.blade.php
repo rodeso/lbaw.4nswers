@@ -6,11 +6,20 @@
             Search
         </button>
     </li>
+    @auth
     <li>
         <button class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
-            <a href="/new-question">Post a Question</a>
+            <a href=" {{ route('new-question') }}">Post a Question</a>
         </button>
     </li>
+    @endauth
+    @guest
+    <li>
+        <button class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
+            <a href="/login">Login to Post</a>
+        </button>
+    </li>
+    @endguest
 </ul>
 
 <!-- Floating Search Bar -->

@@ -57,7 +57,7 @@ Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'
 Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->name('question.close');
 
 //Choose Best Answer
-Route::post('/question/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');
+Route::post('/questions/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');
 
 
 // Post Answer
@@ -72,7 +72,7 @@ Route::put('/answers/{id}/update', [PostController::class, 'updateAnswer'])->nam
 Route::delete('/answers/{id}/delete', [PostController::class, 'deleteAnswer'])->name('answer.delete');
 
 // Posting Question
-Route::post('/new-question', [PostController::class, 'storeQuestion'])->name('question.store');
+Route::post('/questions', [PostController::class, 'storeQuestion'])->name('question.store');
 Route::get('/new-question', [PostController::class, 'showNewQuestion'])->name('new-question');
 
 // Yeah Vote
