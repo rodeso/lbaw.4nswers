@@ -106,5 +106,4 @@
         </button>
     </div>
     <!-- Squircle decorations -->
-    <div class="absolute inset-0 -z-10 squircle opacity-20"></div>
 </header>
