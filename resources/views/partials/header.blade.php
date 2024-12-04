@@ -9,8 +9,8 @@
 
         if (isLoggedIn) {
             if (drawer) {
-                // If the drawer exists, remove it
-                drawer.remove();
+                drawer.classList.add("translate-x-full");
+                setTimeout(() => drawer.remove(), 300); // Wait for animation to complete before removing
             } else {
                 // Otherwise, open the drawer
                 openDrawerMenu(userNickname);
@@ -22,7 +22,7 @@
 
     const openDrawerMenu = (nickname) => {
         const drawer = document.createElement("div");
-        drawer.className = "drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4";
+        drawer.className = "drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4 transform transition-transform translate-x-full";
         drawer.innerHTML = `
             <div>
                 <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
@@ -30,7 +30,6 @@
                 <ul class="mt-4">
                     <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
                     <a href="/profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
-                    <a href="/edit-profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Edit Profile</li></a>
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
                     <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
@@ -44,7 +43,13 @@
             </div>
         `;
         document.body.appendChild(drawer);
+
+        // Trigger the slide-in animation
+        setTimeout(() => {
+            drawer.classList.remove("translate-x-full");
+        }, 10); // Small delay to ensure the class change triggers the animation
     };
+
 });
 </script>
 <style>
@@ -75,6 +80,18 @@
     .scrolling-text:hover {
         animation-play-state: paused;
     }
+    .drawer-menu {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .drawer-menu.translate-x-full {
+        transform: translateX(100%);
+    }
+
+    .drawer-menu:not(.translate-x-full) {
+        transform: translateX(0);
+    }
+
 </style>
 <header class="fixed top-0 left-0 w-full bg-[color:#4E0F35] text-white py-2 flex justify-between items-center z-10">
     <div class="flex items-center space-x-4 mx-auto relative">
@@ -105,5 +122,4 @@
             </svg>
         </button>
     </div>
-    <!-- Squircle decorations -->
 </header>
