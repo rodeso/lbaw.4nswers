@@ -63,18 +63,36 @@
                                     @if (auth()->user()->is_mod)
                                         <!-- Actions for Moderators (Not the Comment Author) -->
                                         @if (auth()->id() !== $comment->author->id)
-                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                            <a href="#">Create Alert</a>
-                                        </li>
+                                            <!-- Flag Comment -->
+                                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                                <a 
+                                                    href="{{ route('posts.flag', $comment->post_id) }}" 
+                                                    class="block text-white"
+                                                    title="Flag this comment for moderation"
+                                                >
+                                                    Flag This Comment
+                                                </a>
+                                            </li>
                                         @endif
+                                        <!-- Delete Comment -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                            <form 
+                                                action="" 
+                                                method="POST" 
+                                                onsubmit="return confirm('Are you sure you want to delete this comment?');"
+                                            >
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit">Delete Comment</button>
+                                                <button 
+                                                    type="submit" 
+                                                    class="block text-white w-full text-left"
+                                                >
+                                                    Delete Comment
+                                                </button>
                                             </form>
                                         </li>
                                     @endif
+
 
                                     @if (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
                                         <!-- Actions for Regular Users -->

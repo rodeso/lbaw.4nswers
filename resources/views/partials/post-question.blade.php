@@ -216,13 +216,14 @@
                             @endif
                         @endif
 
+                        
                         <!-- Actions for Moderators -->
                         @if (auth()->user()->is_mod)
-                            <!-- Flag Question -->
+                            <!-- Flag Post -->
                             @if (auth()->id() !== $question->author->id)
                                 <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                     <a 
-                                        href="{{ route('questions.flag', $question->id) }}" 
+                                        href="{{ route('posts.flag', $question->post_id) }}" 
                                         class="block text-white"
                                         title="Flag this question for moderation"
                                     >
@@ -230,6 +231,7 @@
                                     </a>
                                 </li>
                             @endif
+
                             <!-- Delete button for moderators -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form 
@@ -248,6 +250,7 @@
                                 </form>
                             </li>
                         @endif
+
 
 
 

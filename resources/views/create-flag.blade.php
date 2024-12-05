@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
-    <title>4NSWERS - Flag Question</title>
+    <title>4NSWERS - Flag Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .scroll-banner::-webkit-scrollbar {
@@ -35,16 +35,18 @@
                         <div class="relative flex items-center space-x-16">
                             <div class="absolute w-14 h-14 bg-gray-300 rounded-2xl -left-1">
                                 <img 
-                                    src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
+                                    src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('profile_pictures/default.png') }}" 
                                     alt="Profile Picture" 
                                     class="absolute w-14 h-14 bg-gray-300 rounded-2xl"
                                 />
                             </div>
-                            <p class="text-lg text-white">Flagging as {{ Auth::user()->nickname }}</p>
+                            <p class="text-lg text-white">
+                                Flagging as {{ Auth::user()->nickname }}
+                            </p>
                         </div>
                     </header>
                     <form 
-                        action="{{ route('questions.flag.submit', $question->id) }}" 
+                        action="{{ route('posts.flag.submit', $post->id) }}" 
                         method="POST" 
                         class="space-y-6"
                     >
@@ -94,14 +96,9 @@
                             >
                                 Submit Flag
                             </button>
-                            <a 
-                                href="{{ route('question.show', $question->id) }}" 
-                                class="p-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition"
-                            >
-                                Cancel
-                            </a>
                         </div>
                     </form>
+
                 </section>
             </section>
         </main>
