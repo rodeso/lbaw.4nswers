@@ -4,14 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
-
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HallOfFameController;
 use App\Http\Controllers\TermsConditionsController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Controllers\SearchController;
 
@@ -56,9 +55,13 @@ Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])-
 Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
 Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->name('question.close');
 
+// Flags
+Route::get('/posts/{id}/flag', [NotificationController::class, 'showFlagForm'])->name('posts.flag');
+Route::post('/posts/{id}/flag', [NotificationController::class, 'flagPost'])->name('posts.flag.submit');
+
+
 //Choose Best Answer
 Route::post('/questions/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');
-
 
 // Post Answer
 Route::post('/answers', [PostController::class, 'storeAnswer'])->name('answer.store');

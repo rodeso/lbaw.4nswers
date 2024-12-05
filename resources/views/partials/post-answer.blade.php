@@ -243,18 +243,36 @@
                             @if (auth()->user()->is_mod)
                                 <!-- Moderator-Specific Actions -->
                                 @if (auth()->id() !== $answer->author->id)
+                                    <!-- Flag Answer -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                        <a href="#">Create Alert</a>
+                                        <a 
+                                            href="{{ route('posts.flag', $answer->post_id) }}" 
+                                            class="block text-white"
+                                            title="Flag this answer for moderation"
+                                        >
+                                            Flag This Answer
+                                        </a>
                                     </li>
                                 @endif
+                                <!-- Delete Answer -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                    <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
+                                    <form 
+                                        action="{{ route('answer.delete', $answer->id) }}" 
+                                        method="POST" 
+                                        onsubmit="return confirm('Are you sure you want to delete this answer?');"
+                                    >
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit">Delete Answer</button>
+                                        <button 
+                                            type="submit" 
+                                            class="block text-white w-full text-left"
+                                        >
+                                            Delete Answer
+                                        </button>
                                     </form>
                                 </li>
                             @endif
+                            
                         </ul>
                     </div>
                 </div>
