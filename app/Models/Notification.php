@@ -12,6 +12,8 @@ class Notification extends Model
     protected $table = 'notification';
     protected $fillable = ['content', 'time_stamp', 'post_id', 'user_id'];
 
+    public $timestamps = false; // Disable automatic timestamps
+
     public function post()
     {
         return $this->belongsTo(Post::class, 'post_id');

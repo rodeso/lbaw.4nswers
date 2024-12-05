@@ -216,21 +216,40 @@
                             @endif
                         @endif
 
-                        @if (auth()->user()->is_mod )
-                            <!-- Actions for Moderators -->
+                        <!-- Actions for Moderators -->
+                        @if (auth()->user()->is_mod)
+                            <!-- Flag Question -->
                             @if (auth()->id() !== $question->author->id)
-                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                <a href="#">Create Alert</a>
-                            </li>
+                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                    <a 
+                                        href="{{ route('questions.flag', $question->id) }}" 
+                                        class="block text-white"
+                                        title="Flag this question for moderation"
+                                    >
+                                        Flag This Question
+                                    </a>
+                                </li>
                             @endif
+                            <!-- Delete button for moderators -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                <form 
+                                    action="{{ route('question.delete', $question->id) }}" 
+                                    method="POST" 
+                                    onsubmit="return confirm('Are you sure you want to delete this question?');"
+                                >
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit">Delete Question</button>
+                                    <button 
+                                        type="submit" 
+                                        class="block text-white w-full text-left"
+                                    >
+                                        Delete Question
+                                    </button>
                                 </form>
                             </li>
                         @endif
+
+
 
                         @if (!auth()->user()->is_mod && auth()->id() !== $question->author->id)
                             <!-- Actions for Regular Users -->
