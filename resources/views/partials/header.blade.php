@@ -28,9 +28,14 @@
                 <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
                 <h2 class="text-xl font-bold">${nickname} Menu</h2>
                 <ul class="mt-4">
-                    <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
-                    <a href="/profile"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
+                    <a href={{ route('user.profile', ['id' => Auth::id()]) }}><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
+                    @if (Auth::user()->is_admin)
+                    <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
+                    @endif
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
+
+                    <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
+                    
                     <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
                     <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
                 </ul>
