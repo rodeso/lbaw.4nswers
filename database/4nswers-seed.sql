@@ -280,21 +280,20 @@ I hope this introduction makes some sense!
 ');
 
 INSERT INTO answer(chosen, question_id, author_id, post_id)
-VALUES (FALSE, 1, 4, 15),
-(TRUE, 2, 7, 16),
-(FALSE, 3, 3, 17),
-(FALSE, 4, 1, 18),
-(TRUE, 5, 3, 19),
-(FALSE, 6, 6, 20),
-(FALSE, 7, 6, 21),
-(FALSE, 8, 5, 22),
-(FALSE, 9, 5, 23),
-(TRUE, 10, 3, 24),
-(FALSE, 11, 10, 25),
-(TRUE, 12, 9, 26),
-(FALSE, 13, 8, 27),
-(FALSE, 14, 1, 28),
-(FALSE, 14, 9, 29),
+VALUES (FALSE, 1, 4, 16),
+(TRUE, 2, 7, 17),
+(FALSE, 3, 3, 18),
+(FALSE, 4, 1, 19),
+(TRUE, 5, 3, 20),
+(FALSE, 6, 6, 21),
+(FALSE, 7, 6, 22),
+(FALSE, 8, 5, 23),
+(FALSE, 9, 5, 24),
+(TRUE, 10, 3, 25),
+(FALSE, 11, 10, 26),
+(TRUE, 12, 9, 27),
+(FALSE, 13, 8, 28),
+(FALSE, 14, 1, 29),
 (FALSE, 15, 11, 30);
 
 
