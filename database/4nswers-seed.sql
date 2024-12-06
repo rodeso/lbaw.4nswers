@@ -169,7 +169,8 @@ VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsB
 ('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19', 'profile_pictures/rGVQeyrqfMFkqjkdL2gpnkI8RjjwiTHI5EklbwNA.png', FALSE),
 ('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26', 'profile_pictures/K1LVtEeG8IIh1RZaYxKSWCDtUDFoaFnynfZDUIJv.jpg', TRUE),
 ('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30', 'profile_pictures/X6rPuddaSb616CKoQ7W8tvMil6gicxNonLBpNVDJ.jpg', FALSE),
-('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg', FALSE);
+('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg', FALSE),
+('Rafael', 'Rafa', 'rafaelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-12-22', 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht9llkev.png', FALSE);
 
 INSERT INTO admin (id, admin_start)
 VALUES 
@@ -187,7 +188,8 @@ VALUES ('computers', 'all things related to the little machines that we control 
 ('colors', 'roses are red, violets are blue, join us if you love colors too'),
 ('gaming', 'from the classics to the new releases, all things gaming'),
 ('airplanes', 'we love to fly!'),
-('music', 'all bangers included from mozart to ksi');
+('music', 'all bangers included from mozart to ksi'),
+('math', 'from the simple to the complex, all things math');
 
 INSERT INTO post(body, time_stamp)
 VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-05-31 21:00:00'),
@@ -203,7 +205,8 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('For me its Airbus A380 all the way, what about you?', '2024-11-09 14:00:00'),
 ('I am flying to Madrid next week, any tips and suggestions?', '2023-12-30 00:00:00'),
 ('Primavera Sound is coming up, anyone else excited?', '2024-09-16 00:00:00'),
-('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00');
+('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00'),
+('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
@@ -217,10 +220,11 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('HELP what are the 7 colors of the rainbow??', 'Red', '2022-02-04 00:00:00', 3, 8),
 ('Any grand champs to duo with?', 'Green', '2024-11-28 00:00:00', 6, 9),
 ('Any tips for a noob in LoL?', 'Green', '2024-01-04 00:00:00', 7, 10),
-('Are you a Boing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-10 00:00:00', 4, 11),
+('Are you a Boeing 747 or an Airbus A380 type of guy?', 'Yellow', '2024-11-10 00:00:00', 4, 11),
 ('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
-('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14);
+('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14),
+('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15);
 
 
 
@@ -238,7 +242,8 @@ VALUES (1, 1),
 (11, 6),
 (12, 6),
 (13, 7),
-(14, 7);
+(14, 7),
+(15, 8);
 
 INSERT INTO post(body)
 VALUES ('Have you tried turning it off and on again?'),
@@ -254,7 +259,25 @@ VALUES ('Have you tried turning it off and on again?'),
 ('I love the Airbus A380, its a beautiful plane'),
 ('I live in Madrid, I have some tips for you'),
 ('IM SO EXCITED, its gonna be hype'),
-('I love pop music, its the best genre out there');
+('I love pop music, its the best genre out there'),
+('Say you have a sound coming from the speaker.
+
+You then set up, lets get a nice round number here, 1024 harmonic oscillators that resonate to specific frequency ranges.
+
+Play the sound for, say, a second.
+
+Oscillators begin to resonate to the sound coming from the speaker. After the said second you read how much every oscillator is resonating. As a result you get a discrete fourier transform, meaning you get a chart of how much each of the frequency ranges contributed to the sound coming from the speaker.
+
+Instead of visualising the sound as amount of air pressure caused by the waveform, changing in time slots, you visualized it as a series of intensities of the frequency ranges.
+
+Of course in explaining the DFT, the speakers part is not really appropriate since you have to work on sampled input. So in this case the 1024 digital "oscillators" should actually be measured after 1/44th of a second, given the audio is sampled at the rate of 44kHz.
+
+Fast Fourier Transform is an algorithm to perform a Discrete Fourier Transform thats pretty easy for computers to run on an incoming signal. It imposes some constraints you have to work with in your implementation (e.g. the number of samples has to be a power of 2), because it uses some clever tricks to drastically reduce the amount of calculation performed on the sample buffer.
+
+There is really no need to go deeper, since the two links I gave provide a pretty clear explanation. And note that its impossible to go from theory to implementation without knowing the math behind it.
+
+I hope this introduction makes some sense!
+');
 
 INSERT INTO answer(chosen, question_id, author_id, post_id)
 VALUES (FALSE, 1, 4, 15),
@@ -270,7 +293,10 @@ VALUES (FALSE, 1, 4, 15),
 (FALSE, 11, 10, 25),
 (TRUE, 12, 9, 26),
 (FALSE, 13, 8, 27),
-(FALSE, 14, 1, 28);
+(FALSE, 14, 1, 28),
+(FALSE, 14, 9, 29),
+(FALSE, 15, 11, 30);
+
 
 
 
@@ -310,7 +336,9 @@ VALUES (1,1),
 (10,1),
 (10,2),
 (10,4),
-(10,7);
+(10,7),
+(11,6),
+(11,8);
 
 
 CREATE OR REPLACE FUNCTION update_post_edit_time()
