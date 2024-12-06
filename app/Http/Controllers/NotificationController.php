@@ -26,13 +26,13 @@ class NotificationController extends Controller
             'reason' => 'required|string|max:255',
             'content' => 'required|string|max:4096',
         ]);
-    
+
         // Find the post by ID
         $post = Post::findOrFail($id);
-    
+
         // Determine the post type by checking its relationships
         $questionId = null;
-    
+
         // If the post is a question, get the question ID
         if ($post->question) {
             $questionId = $post->question->id ?? null;
@@ -50,25 +50,46 @@ class NotificationController extends Controller
         if (!$questionId) {
             return redirect()->back()->withErrors(['error' => 'Unable to determine the associated question.']);
         }
-    
-        // Create a new notification
-        $notification = Notification::create([
-            'content' => $request->content,
-            'time_stamp' => now(),
-            'post_id' => $post->id,
-            'user_id' => auth()->id(), // Logged-in moderator's ID
-        ]);
-    
-        // Create a moderator notification
-        ModeratorNotification::create([
-            'notification_id' => $notification->id,
-            'reason' => $request->reason,
-        ]);
-    
+
+        // Check if a flag (notification) already exists for this post
+        $existingNotification = Notification::where('post_id', $post->id)->first();
+
+        if ($existingNotification) {
+            // Update the existing notification
+            $existingNotification->update([
+                'content' => $request->content,
+                'time_stamp' => now(),
+                'user_id' => auth()->id(),
+            ]);
+
+            // Update the moderator notification reason
+            $moderatorNotification = $existingNotification->moderatorNotification;
+            if ($moderatorNotification) {
+                $moderatorNotification->update([
+                    'reason' => $request->reason,
+                ]);
+            }
+        } else {
+            // Create a new notification
+            $notification = Notification::create([
+                'content' => $request->content,
+                'time_stamp' => now(),
+                'post_id' => $post->id,
+                'user_id' => auth()->id(),
+            ]);
+
+            // Create a moderator notification
+            ModeratorNotification::create([
+                'notification_id' => $notification->id,
+                'reason' => $request->reason,
+            ]);
+        }
+
         // Redirect to the associated question page
         return redirect()->route('question.show', $questionId)
-                         ->with('success', 'Post flagged successfully.');
+                        ->with('success', 'Post flagged successfully.');
     }
+
     
     
 }
