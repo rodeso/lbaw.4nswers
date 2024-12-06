@@ -37,7 +37,7 @@
 
                         <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
                         
-                        <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
+                        <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
                         <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
                     @else
                         <a href="{{ route('login') }}">

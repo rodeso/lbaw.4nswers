@@ -11,6 +11,7 @@ use App\Http\Controllers\ForYouController;
 use App\Http\Controllers\HallOfFameController;
 use App\Http\Controllers\TermsConditionsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AboutUsController;
 
 use App\Http\Controllers\SearchController;
 
@@ -38,6 +39,9 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 
 // Terms & Conditions
 Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
+
+// About Us
+Route::get('/about-us', [AboutUsController::class, 'about'])->name('about.us');
 
 // Popular, Urgent, New
 Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
