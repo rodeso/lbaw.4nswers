@@ -42,6 +42,12 @@ class Post extends Model
         return $this->hasOne(Answer::class, 'post_id');
     }
 
+    // Relationship to a Comment (if the Post is a Comment)
+    public function comment()
+    {
+        return $this->hasOne(Comment::class);
+    }
+
     // Relationship to Notifications
     public function notifications()
     {

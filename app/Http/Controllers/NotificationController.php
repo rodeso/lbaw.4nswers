@@ -35,15 +35,20 @@ class NotificationController extends Controller
     
         // If the post is a question, get the question ID
         if ($post->question) {
-            $questionId = $post->question->id;
+            $questionId = $post->question->id ?? null;
         }
         // If the post is an answer, get the associated question ID
         elseif ($post->answer) {
-            $questionId = $post->answer->question_id;
+            $questionId = $post->answer->question_id ?? null;
         }
         // If the post is a comment, get the associated answer's question ID
         elseif ($post->comment) {
-            $questionId = $post->comment->answer->question_id;
+            $questionId = $post->comment->answer->question->id ?? null;
+        }
+
+        // If no question ID is found, throw an error
+        if (!$questionId) {
+            return redirect()->back()->withErrors(['error' => 'Unable to determine the associated question.']);
         }
     
         // Create a new notification
@@ -64,9 +69,6 @@ class NotificationController extends Controller
         return redirect()->route('question.show', $questionId)
                          ->with('success', 'Post flagged successfully.');
     }
-    
-
-
     
     
 }
