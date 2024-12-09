@@ -73,6 +73,25 @@
                                                     Flag This Comment
                                                 </a>
                                             </li>
+                                            <!-- Delete Flag Button -->
+                                            @if ($comment->post->notifications->isNotEmpty())
+                                                <li class="w-full text-left px-4 py-2 hover:bg-red-700 rounded">
+                                                    <form 
+                                                        action="{{ route('posts.flag.delete', $comment->post->id) }}" 
+                                                        method="POST" 
+                                                        onsubmit="return confirm('Are you sure you want to delete this flag?');"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button 
+                                                            type="submit" 
+                                                            class="block text-white w-full text-left"
+                                                        >
+                                                            Delete Flag
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            @endif
                                         @endif
                                         <!-- Delete Comment -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">

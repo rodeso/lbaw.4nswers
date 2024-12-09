@@ -62,7 +62,7 @@ Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->
 // Flags
 Route::get('/posts/{id}/flag', [NotificationController::class, 'showFlagForm'])->name('posts.flag');
 Route::post('/posts/{id}/flag', [NotificationController::class, 'flagPost'])->name('posts.flag.submit');
-
+Route::delete('/posts/{id}/flag', [NotificationController::class, 'deleteFlag'])->name('posts.flag.delete');
 
 //Choose Best Answer
 Route::post('/questions/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');

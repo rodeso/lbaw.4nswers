@@ -219,8 +219,8 @@
                         
                         <!-- Actions for Moderators -->
                         @if (auth()->user()->is_mod)
-                            <!-- Flag Post -->
                             @if (auth()->id() !== $question->author->id)
+                                <!-- Flag Post -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
                                     <a 
                                         href="{{ route('posts.flag', $question->post_id) }}" 
@@ -230,8 +230,26 @@
                                         Flag This Question
                                     </a>
                                 </li>
+                                <!-- Delete Flag -->
+                                @if ($question->post->notifications->isNotEmpty())
+                                    <li class="w-full text-left px-4 py-2 hover:bg-red-700 rounded">
+                                        <form 
+                                            action="{{ route('posts.flag.delete', $question->post->id) }}" 
+                                            method="POST" 
+                                            onsubmit="return confirm('Are you sure you want to delete this flag?');"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <button 
+                                                type="submit" 
+                                                class="block text-white w-full text-left"
+                                            >
+                                                Delete Flag
+                                            </button>
+                                        </form>
+                                    </li>
+                                @endif
                             @endif
-
                             <!-- Delete button for moderators -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form 

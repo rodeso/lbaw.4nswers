@@ -19,7 +19,6 @@ class NotificationController extends Controller
         return view('create-flag', compact('post'));
     }
     
-
     public function flagPost(Request $request, $id)
     {
         $request->validate([
@@ -90,6 +89,27 @@ class NotificationController extends Controller
                         ->with('success', 'Post flagged successfully.');
     }
 
-    
-    
+    public function deleteFlag($id)
+    {
+        // Find the existing notification for the given post ID
+        $notification = Notification::where('post_id', $id)->first();
+
+        if (!$notification) {
+            // If no notification is found, redirect back with an error message
+            return redirect()->back()->withErrors(['error' => 'No flag exists for this post.']);
+        }
+
+        // Delete the related moderator notification first (if it exists)
+        $moderatorNotification = $notification->moderatorNotification;
+        if ($moderatorNotification) {
+            $moderatorNotification->delete();
+        }
+
+        // Delete the notification itself
+        $notification->delete();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Flag deleted successfully.');
+    }
+
 }
