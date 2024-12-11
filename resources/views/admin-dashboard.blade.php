@@ -28,15 +28,15 @@
         @include('partials.header')
 
         <!-- Floating Side Panel (Left) -->
-        @include('partials.left-panel')
+        @include('partials.left-panel-admin')
 
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Posts Section -->
-            <section class="w-3/5 space-y-8 grid place-items-center h-full">
-                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Admins:</h1>
+            <section class="w-3/5 space-y-8 grid place-items-center h-full text-white">
+                <h1 class="text-2xl font-bold w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Admins:</h1>
                 @foreach ($users as $user)
                     @if ($user->is_admin)
                         @if ($user->id !== 0)
@@ -44,7 +44,7 @@
                         @endif
                     @endif
                 @endforeach
-                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Moderators:</h1>
+                <h1 class="text-2xl font-bold w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Moderators:</h1>
                 @foreach ($users as $user)
                     @if (!$user->is_admin && $user->is_mod)
                         @if ($user->id !== 0)
@@ -52,7 +52,7 @@
                         @endif
                     @endif
                 @endforeach
-                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Blocked Users:</h1>
+                <h1 class="text-2xl font-bold w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Blocked Users:</h1>
                 @foreach ($users as $user)
                     @if (!$user->is_admin && !$user->is_mod && $user->is_blocked)
                         @if ($user->id !== 0)
@@ -60,7 +60,7 @@
                         @endif
                     @endif
                 @endforeach
-                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Other Users:</h1>
+                <h1 class="text-2xl font-bold w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Other Users:</h1>
                 @foreach ($users as $user)
                     @if (!$user->is_admin && !$user->is_mod && !$user->is_blocked)
                         @if ($user->id !== 0)

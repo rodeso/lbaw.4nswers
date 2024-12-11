@@ -9,7 +9,7 @@
                     class="w-full h-full object-cover"
                 />
             </div>
-            <div class="relative flex items-center w-full p-4 ml-4 mr-4 bg-[color:#4B1414] rounded-md">
+            <div class="relative flex items-center w-full p-4 ml-4 mr-4 text-white bg-[color:#4B1414] rounded-md font-bold">
                 <a 
                     href="{{ Auth::id() === $user->id ? route('profile') : route('user.profile', ['id' => $user->id]) }}" 
                     class="text-2xl ml-12 text-white hover:text-gray-500"
