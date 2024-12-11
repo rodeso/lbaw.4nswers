@@ -39,8 +39,8 @@
             <section class="w-3/5 space-y-8 grid place-items-center h-full">
                 @foreach ($users as $user)
                     @if ($count < 16)
-                        @php $count++; @endphp
                         @if ($user->id !== 0)
+                            @php $count++; @endphp
                             @include('partials.user-card')
                         @endif
                     @endif
