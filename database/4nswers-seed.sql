@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS popularity_vote;
 DROP TABLE IF EXISTS aura_vote;
 DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS moderator_notification;
+DROP TABLE IF EXISTS administrator_notification;
 DROP TABLE IF EXISTS vote_notification;
 DROP TABLE IF EXISTS helpful_notification;
 DROP TABLE IF EXISTS answer_notification;
@@ -140,18 +141,24 @@ CREATE TABLE IF NOT EXISTS moderator_notification (
 );
 
 -- R15
+CREATE TABLE IF NOT EXISTS administrator_notification (
+  notification_id SERIAL PRIMARY KEY REFERENCES notification(id) ON DELETE CASCADE NOT NULL,
+  report TEXT NOT NULL
+);
+
+-- R16
 CREATE TABLE IF NOT EXISTS user_follows_tag (
   user_id INTEGER REFERENCES lbaw24112.user(id) ON DELETE CASCADE NOT NULL,
   tag_id INTEGER REFERENCES tag(id) ON DELETE CASCADE NOT NULL
 );
 
--- R16
+-- R17
 CREATE TABLE IF NOT EXISTS user_follows_question (
   user_id INTEGER REFERENCES lbaw24112.user(id) ON DELETE CASCADE NOT NULL,
   question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL
 );
 
--- R17
+-- R18
 CREATE TABLE IF NOT EXISTS question_tags (
   question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL,
   tag_id INTEGER REFERENCES tag(id) ON DELETE CASCADE NOT NULL
