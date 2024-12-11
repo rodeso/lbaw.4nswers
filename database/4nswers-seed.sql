@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS popularity_vote;
 DROP TABLE IF EXISTS aura_vote;
 DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS moderator_notification;
-DROP TABLE IF EXISTS administrator_notification;
+DROP TABLE IF EXISTS report_notification;
 DROP TABLE IF EXISTS vote_notification;
 DROP TABLE IF EXISTS helpful_notification;
 DROP TABLE IF EXISTS answer_notification;
@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS lbaw24112.user (
   profile_picture VARCHAR DEFAULT 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png' NOT NULL,
   created DATE DEFAULT CURRENT_DATE NOT NULL,
   deleted BOOLEAN DEFAULT FALSE NOT NULL,
-  is_mod BOOLEAN DEFAULT FALSE NOT NULL
+  is_mod BOOLEAN DEFAULT FALSE NOT NULL,
+  is_blocked BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 -- R02
@@ -141,7 +142,7 @@ CREATE TABLE IF NOT EXISTS moderator_notification (
 );
 
 -- R15
-CREATE TABLE IF NOT EXISTS administrator_notification (
+CREATE TABLE IF NOT EXISTS report_notification (
   notification_id SERIAL PRIMARY KEY REFERENCES notification(id) ON DELETE CASCADE NOT NULL,
   report TEXT NOT NULL
 );
