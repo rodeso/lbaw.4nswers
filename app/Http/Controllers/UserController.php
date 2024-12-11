@@ -214,4 +214,36 @@ class UserController extends Controller
         // Redirect back to the profile page with a success message
         return redirect()->route('profile')->with('success', 'Password updated successfully!');
     }
+
+    public function toggleMod($id)
+    {
+        // Ensure the authenticated user has permission to perform this action
+        if (!Auth::user()->is_admin) {
+            return redirect()->back()->with('alert', 'Unauthorized action.');
+        }
+
+        $user = User::findOrFail($id);
+
+        // Toggle the mod status
+        $user->is_mod = !$user->is_mod;
+        $user->save();
+
+        return redirect()->back();
+    }
+    public function toggleBlock($id)
+    {
+        // Ensure the authenticated user has permission to perform this action
+        if (!Auth::user()->is_admin) {
+            return redirect()->back()->with('alert', 'Unauthorized action.');
+        }
+
+        $user = User::findOrFail($id);
+
+        // Toggle the block status
+        $user->is_blocked = !$user->is_blocked;
+        $user->save();
+
+        return redirect()->back();
+    }
+
 }

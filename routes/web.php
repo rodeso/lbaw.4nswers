@@ -41,6 +41,9 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 // Admin Dashboard
 Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
 
+Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
+Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
+
 // Terms & Conditions
 Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
 
