@@ -167,6 +167,10 @@ CREATE TABLE IF NOT EXISTS question_tags (
 
 CREATE INDEX post_body_tsvector_idx ON post USING GIN (to_tsvector('english', body));
 
+
+INSERT INTO lbaw24112.user(id, name, nickname, email, password, birth_date, is_mod)
+VALUES (0, 'DELETED', 'DELETED','DELETEDemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '1111-01-01', FALSE);
+
 INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, profile_picture, is_mod)
 VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23', 'profile_pictures/N0tRfvH1MHP02zNHNNc0cHpJjdNQxckuyoLBqiPv.jpg', TRUE),
 ('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16', 'profile_pictures/rJ2LsD8YY4ywMKx1UtbnJfXWWlXHKHtmrmSw60gW.jpg', TRUE),
@@ -180,13 +184,13 @@ VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsB
 ('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg', FALSE),
 ('Rafael', 'Rafa', 'rafaelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-12-22', 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht9llkev.png', FALSE);
 
+
 INSERT INTO admin (id, admin_start)
 VALUES 
 (1, '2024-12-03'),
 (2, '2024-12-01'),
 (3, '2024-11-25'),
 (4, '2024-11-30');
-
 
 
 INSERT INTO tag(name, description)
@@ -198,6 +202,7 @@ VALUES ('computers', 'all things related to the little machines that we control 
 ('airplanes', 'we love to fly!'),
 ('music', 'all bangers included from mozart to ksi'),
 ('math', 'from the simple to the complex, all things math');
+
 
 INSERT INTO post(body, time_stamp)
 VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-05-31 21:00:00'),
@@ -233,7 +238,6 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
 ('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14),
 ('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15);
-
 
 
 INSERT INTO question_tags(question_id, tag_id)
@@ -303,8 +307,6 @@ VALUES (FALSE, 1, 4, 16),
 (FALSE, 13, 8, 28),
 (FALSE, 14, 1, 29),
 (FALSE, 15, 11, 30);
-
-
 
 
 INSERT INTO user_follows_tag(user_id, tag_id)

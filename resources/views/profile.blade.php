@@ -37,7 +37,7 @@
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Content Section -->
             <section class="w-3/5 space-y-8">
-                <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Questions placed:</h1>
+                <h1 id="questions-section" class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Questions placed:</h1>
                     @if($questions->isNotEmpty())
                         @foreach ($questions as $question)
                             @include('partials.profile-question')
@@ -45,7 +45,7 @@
                     @else
                         <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No questions placed yet!</p>
                     @endif
-                <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Answers given:</h1>
+                <h1 id="answers-section" class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Answers given:</h1>
                     @if($answers->isNotEmpty())
                         @foreach ($answers as $answer)
                             @include('partials.profile-answer')
@@ -53,7 +53,7 @@
                     @else
                         <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No answers given yet!</p>
                     @endif
-                <h1 class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Comments made:</h1>
+                <h1 id="comments-section" class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Comments made:</h1>
                     @if($comments->isNotEmpty())
                         @foreach ($comments as $comment)
                             @include('partials.profile-comment')
@@ -70,4 +70,26 @@
     </div>
 
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const scrollLinks = document.querySelectorAll('a[href^="#"]');
+        
+        scrollLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 </html>

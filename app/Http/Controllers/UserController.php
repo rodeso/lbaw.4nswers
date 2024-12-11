@@ -69,7 +69,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        if (!is_numeric($id)) {
+        if (!is_numeric($id) || $id <= 0) {
             return redirect()->route('home')->with('alert', 'Invalid user ID.');
         }
     

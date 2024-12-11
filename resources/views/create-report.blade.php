@@ -41,12 +41,12 @@
                                 />
                             </div>
                             <p class="text-lg text-white">
-                                Flagging as {{ Auth::user()->nickname }}
+                                Reporting as {{ Auth::user()->nickname }}
                             </p>
                         </div>
                     </header>
                     <form 
-                        action="{{ route('posts.flag.submit', $post->id) }}" 
+                        action="{{ route('posts.report.submit', $post->id) }}" 
                         method="POST" 
                         class="space-y-6"
                     >
@@ -54,14 +54,14 @@
                         <!-- Reason Field -->
                         <div class="mb-6">
                             <label for="reason" class="block text-white text-sm font-bold mb-2">
-                                Reason for Flagging
+                                Reason for the Report
                             </label>
                             <input 
                                 type="text" 
                                 name="reason" 
                                 id="reason" 
                                 class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]"
-                                placeholder="Enter the reason for flagging"
+                                placeholder="Enter the reason for the Report"
                                 value="{{ old('reason') }}" 
                                 required
                             >
@@ -94,11 +94,10 @@
                                 type="submit" 
                                 class="p-2 bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
                             >
-                                Submit Flag
+                                Submit Report
                             </button>
                         </div>
                     </form>
-
                 </section>
             </section>
         </main>
@@ -106,6 +105,5 @@
         <!-- Footer -->
         @include('partials.footer')
     </div>
-
 </body>
 </html>

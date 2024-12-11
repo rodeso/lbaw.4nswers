@@ -22,13 +22,6 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 relative">
 
-    <!-- Alert Message -->
-    @if (session('alert'))
-        <script>
-            alert("{{ session('alert') }}");
-        </script>
-    @endif
-
     <!-- Main Page Wrapper -->
     <div class="flex flex-col min-h-screen">
         <!-- Header -->
@@ -51,7 +44,42 @@
         
         <!-- Footer -->
         @include('partials.footer')
+
+        <!-- Alert Message -->
+        <div id="customAlert" class="hidden fixed inset-x-0 top-0 bg-opacity-50 flex justify-center z-50 py-8">
+            <div class="bg-gray-100 rounded-lg shadow-lg p-4 max-w-sm w-full mt-4">
+                <p class="text-gray-800 mb-2 text-lg font-bold">Alert!</p>
+                <p id="alertMessage" class="text-gray-800 mb-2 text-base"></p>
+                <div class="flex justify-end relative"> <!-- Centering parent container -->
+                    <button id="closeAlert" 
+                            class="text-white text-base py-2 px-3 bg-[color:#4B1414] hover:bg-[color:#4B1414] rounded-lg"
+                            style="position: relative; transform: translate(-5px,-5px);">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </body>
+<script>
+    // Check for session alert and show the modal
+    @if (session('alert'))
+        document.addEventListener('DOMContentLoaded', () => {
+            const alertMessage = "{{ session('alert') }}";
+            const customAlert = document.getElementById('customAlert');
+            const alertMessageElement = document.getElementById('alertMessage');
+            const closeAlertButton = document.getElementById('closeAlert');
+
+            // Set alert message and show the modal
+            alertMessageElement.textContent = alertMessage;
+            customAlert.classList.remove('hidden');
+
+            // Close the modal on button click
+            closeAlertButton.addEventListener('click', () => {
+                customAlert.classList.add('hidden');
+            });
+        });
+    @endif
+</script>
 </html>

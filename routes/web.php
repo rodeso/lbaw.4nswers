@@ -66,6 +66,11 @@ Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])-
 Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
 Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->name('question.close');
 
+// Report
+Route::get('/posts/{id}/report', [NotificationController::class, 'showReportForm'])->name('posts.report');
+Route::post('/posts/{id}/report', [NotificationController::class, 'reportPost'])->name('posts.report.submit');
+
+
 // Flags
 Route::get('/posts/{id}/flag', [NotificationController::class, 'showFlagForm'])->name('posts.flag');
 Route::post('/posts/{id}/flag', [NotificationController::class, 'flagPost'])->name('posts.flag.submit');
