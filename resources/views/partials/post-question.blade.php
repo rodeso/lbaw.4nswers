@@ -193,11 +193,11 @@
                     <ul class="mt-8 space-y-4 text-base font-semibold">
                         @if (auth()->id() === $question->author->id)
                             <!-- Actions for the Author of the Question -->
-                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <a href="{{ route('question.edit', $question->id) }}">Edit Question</a>
                             </li>
                             @if (!$question->closed)
-                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <form action="{{ route('question.close', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to close this question?');">
                                         @csrf
                                         <button type="submit" class="text-left w-full">Close Question</button>
@@ -221,7 +221,7 @@
                         @if (auth()->user()->is_mod)
                             @if (auth()->id() !== $question->author->id)
                                 <!-- Flag Post -->
-                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <a 
                                         href="{{ route('posts.flag', $question->post_id) }}" 
                                         class="block text-white"
@@ -232,7 +232,7 @@
                                 </li>
                                 <!-- Delete Flag -->
                                 @if ($question->post->notifications->isNotEmpty())
-                                    <li class="w-full text-left px-4 py-2 hover:bg-red-700 rounded">
+                                    <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <form 
                                             action="{{ route('posts.flag.delete', $question->post->id) }}" 
                                             method="POST" 
@@ -274,8 +274,12 @@
 
                         @if (!auth()->user()->is_mod && auth()->id() !== $question->author->id)
                             <!-- Actions for Regular Users -->
-                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                <a href="#">Report Question</a>
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                            <a 
+                                href="{{ route('posts.report', $question->post_id) }}" 
+                                class="block text-white"
+                                title="Report this question for moderation"
+                            >Report Question</a>
                             </li>
                         @endif
                     </ul>

@@ -45,7 +45,7 @@
                                 <ul class="mt-8 space-y-4 text-base font-semibold">
                                     @if (auth()->id() === $comment->author->id)
                                         <!-- Actions for the Comment Author -->
-                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                             <a href="#">Edit Comment</a>
                                         </li>
                                         @if (!auth()->user()->is_mod)
@@ -64,7 +64,7 @@
                                         <!-- Actions for Moderators (Not the Comment Author) -->
                                         @if (auth()->id() !== $comment->author->id)
                                             <!-- Flag Comment -->
-                                            <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                                 <a 
                                                     href="{{ route('posts.flag', $comment->post_id) }}" 
                                                     class="block text-white"
@@ -75,7 +75,7 @@
                                             </li>
                                             <!-- Delete Flag Button -->
                                             @if ($comment->post->notifications->isNotEmpty())
-                                                <li class="w-full text-left px-4 py-2 hover:bg-red-700 rounded">
+                                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                                     <form 
                                                         action="{{ route('posts.flag.delete', $comment->post->id) }}" 
                                                         method="POST" 
@@ -115,7 +115,7 @@
 
                                     @if (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
                                         <!-- Actions for Regular Users -->
-                                        <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                             <a href="#">Report Comment</a>
                                         </li>
                                     @endif

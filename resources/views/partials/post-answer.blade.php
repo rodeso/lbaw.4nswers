@@ -225,7 +225,7 @@
 
                             @if (auth()->id() === $question->author->id && !$answer->chosen && !$question->closed)
                                 <!-- Actions for the Author of the Question -->
-                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <form action="{{ route('question.chooseAnswer', ['questionId' => $question->id, 'answerId' => $answer->id]) }}" method="POST">
                                         @csrf
                                         <button type="submit">Choose this answer</button>
@@ -235,7 +235,7 @@
 
                             @if (!auth()->user()->is_mod && auth()->id() !== $answer->author->id)
                                 <!-- Actions for Regular Users -->
-                                <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <a href="#">Report Answer</a>
                                 </li>
                             @endif
@@ -244,7 +244,7 @@
                                 <!-- Moderator-Specific Actions -->
                                 @if (auth()->id() !== $answer->author->id)
                                     <!-- Flag Answer -->
-                                    <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
+                                    <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <a 
                                             href="{{ route('posts.flag', $answer->post_id) }}" 
                                             class="block text-white"
@@ -255,7 +255,7 @@
                                     </li>
                                     <!-- Delete Flag Button -->
                                     @if ($answer->post->notifications->isNotEmpty())
-                                        <li class="w-full text-left px-4 py-2 hover:bg-red-700 rounded">
+                                        <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                             <form 
                                                 action="{{ route('posts.flag.delete', $answer->post->id) }}" 
                                                 method="POST" 
