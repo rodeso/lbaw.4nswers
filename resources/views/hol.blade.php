@@ -40,7 +40,9 @@
                 @foreach ($users as $user)
                     @if ($count < 16)
                         @php $count++; @endphp
-                        @include('partials.user-card')
+                        @if ($user->id !== 0)
+                            @include('partials.user-card')
+                        @endif
                     @endif
                 @endforeach
             </section>
