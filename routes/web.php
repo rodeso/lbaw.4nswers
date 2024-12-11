@@ -12,6 +12,7 @@ use App\Http\Controllers\HallOfFameController;
 use App\Http\Controllers\TermsConditionsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AdminDashboardController;
 
 use App\Http\Controllers\SearchController;
 
@@ -36,6 +37,9 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 
 // Hall of Fame
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
+
+// Admin Dashboard
+Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
 
 // Terms & Conditions
 Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
