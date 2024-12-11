@@ -36,8 +36,29 @@
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Posts Section -->
             <section class="w-3/5 space-y-8 grid place-items-center h-full">
+                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Admins:</h1>
                 @foreach ($users as $user)
-                    @include('partials.user-card-admin')
+                    @if ($user->is_admin)
+                        @include('partials.user-card-admin')
+                    @endif
+                @endforeach
+                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Moderators:</h1>
+                @foreach ($users as $user)
+                    @if (!$user->is_admin && $user->is_mod)
+                        @include('partials.user-card-admin')
+                    @endif
+                @endforeach
+                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Blocked Users:</h1>
+                @foreach ($users as $user)
+                    @if (!$user->is_admin && !$user->is_mod && $user->is_blocked)
+                        @include('partials.user-card-admin')
+                    @endif
+                @endforeach
+                <h1 class="text-2xl font-bold text-gray-500 w-[1000px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Other Users:</h1>
+                @foreach ($users as $user)
+                    @if (!$user->is_admin && !$user->is_mod && !$user->is_blocked)
+                        @include('partials.user-card-admin')
+                    @endif
                 @endforeach
             </section>
         </main>

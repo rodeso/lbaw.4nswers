@@ -218,7 +218,7 @@ class UserController extends Controller
     public function toggleMod($id)
     {
         // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
             return redirect()->back()->with('alert', 'Unauthorized action.');
         }
 
@@ -233,7 +233,7 @@ class UserController extends Controller
     public function toggleBlock($id)
     {
         // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin) {
+        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
             return redirect()->back()->with('alert', 'Unauthorized action.');
         }
 
