@@ -66,26 +66,24 @@
                     <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
                     <h2 class="text-xl font-bold">${nickname} Menu</h2>
                     <ul class="mt-4">
-                        @if (Auth::check())
-                            <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
-                            @if (Auth::user()->is_admin)
-                                <a href="{{ route('admin-dashboard') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
-                            @endif
-                            <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
-                            <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
-                            <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
-                            <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
-                        @else
-                            <a href="{{ route('login') }}">
-                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Login</li>
-                            </a>
+                        <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
+                        <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
+
+
+                        <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
+                        <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
+                        <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
+                        
+
+                        @if (Auth::user()->is_admin)
+                            <a href="{{ route('admin-dashboard') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
                         @endif
                     </ul>
                 </div>
                 <div>
                     <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Logout</button>
+                        <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
                     </form>
                 </div>
             `;
