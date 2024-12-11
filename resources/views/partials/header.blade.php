@@ -65,28 +65,36 @@
                 <div>
                     <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
                     <h2 class="text-xl font-bold">${nickname} Menu</h2>
-                    <ul class="mt-4">
-                        <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
-                        <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
+                    @if (Auth::check())
+                        <ul class="mt-4">
+                            <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
+                            <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
 
-                        <hr class="border-gray-600 my-4">
-
-                        <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
-                        <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
-                        <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
-                        
-
-                        @if (Auth::user()->is_admin)
                             <hr class="border-gray-600 my-4">
-                            <a href="{{ route('admin-dashboard') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
-                        @endif
-                    </ul>
+
+                            <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
+                            <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
+                            <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
+                            
+
+                            @if (Auth::user()->is_admin)
+                                <hr class="border-gray-600 my-4">
+                                <a href="{{ route('admin-dashboard') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
+                            @endif
+                        </ul>
+                    @else
+                        <a href="{{ route('login') }}">
+                            <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Login</li>
+                        </a>
+                    @endif
                 </div>
                 <div>
-                    <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
-                    </form>
+                    @if (Auth::check())
+                        <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
+                        </form>
+                    @endif
                 </div>
             `;
             document.body.appendChild(drawer);
