@@ -1,68 +1,123 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-    const userButton = document.getElementById("userButton");
-    const userNickname = "{{ Auth::user()->nickname ?? '' }}";
+        const userButton = document.getElementById("userButton");
+        const notificationButton = document.getElementById("notificationButton");
+        const userNickname = "{{ Auth::user()->nickname ?? '' }}";
 
-    userButton.addEventListener("click", () => {
-        const isLoggedIn = userButton.getAttribute("data-logged-in") === "true";
-        const drawer = document.querySelector(".drawer-menu");
-
-        if (isLoggedIn) {
-            if (drawer) {
+        // Utility function to close all open drawers
+        const closeAllDrawers = () => {
+            const openDrawers = document.querySelectorAll(".drawer-menu");
+            openDrawers.forEach(drawer => {
                 drawer.classList.add("translate-x-full");
                 setTimeout(() => drawer.remove(), 300); // Wait for animation to complete before removing
-            } else {
-                // Otherwise, open the drawer
-                openDrawerMenu(userNickname);
-            }
-        } else {
-            window.location.href = "/login";
-        }
-    });
+            });
+        };
 
-    const openDrawerMenu = (nickname) => {
-        const drawer = document.createElement("div");
-        drawer.className = "drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4 transform transition-transform translate-x-full";
-        drawer.innerHTML = `
-            <div>
-                <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
-                <h2 class="text-xl font-bold">${nickname} Menu</h2>
-                <ul class="mt-4">
-                    @if (Auth::check())
+        // Event Listener for User Button
+        userButton.addEventListener("click", () => {
+            const isLoggedIn = userButton.getAttribute("data-logged-in") === "true";
+
+            // Close other drawers
+            closeAllDrawers();
+
+            if (isLoggedIn) {
+                const drawer = document.querySelector(".user-drawer-menu");
+                if (drawer) {
+                    // If already open, close it
+                    drawer.classList.add("translate-x-full");
+                    setTimeout(() => drawer.remove(), 300);
+                } else {
+                    // Otherwise, open the user drawer
+                    openUserDrawerMenu(userNickname);
+                }
+            } else {
+                window.location.href = "/login";
+            }
+        });
+
+        // Event Listener for Notification Button
+        notificationButton.addEventListener("click", () => {
+            const isLoggedIn = notificationButton.getAttribute("data-logged-in") === "true";
+
+            // Close other drawers
+            closeAllDrawers();
+
+            if (isLoggedIn) {
+                const drawer = document.querySelector(".notification-drawer-menu");
+                if (drawer) {
+                    // If already open, close it
+                    drawer.classList.add("translate-x-full");
+                    setTimeout(() => drawer.remove(), 300);
+                } else {
+                    // Otherwise, open the notification drawer
+                    openNotificationDrawerMenu();
+                }
+            } else {
+                window.location.href = "/login";
+            }
+        });
+
+        // Function to Open User Drawer
+        const openUserDrawerMenu = (nickname) => {
+            const drawer = document.createElement("div");
+            drawer.className = "drawer-menu user-drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4 transform transition-transform translate-x-full";
+            drawer.innerHTML = `
+                <div>
+                    <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
+                    <h2 class="text-xl font-bold">${nickname} Menu</h2>
+                    <ul class="mt-4">
                         <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
                         @if (Auth::user()->is_admin)
                             <a href="{{ route('admin-dashboard') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
                         @endif
                         <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
-
                         <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
-                        
                         <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
                         <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
-                    @else
-                        <a href="{{ route('login') }}">
-                            <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Login</li>
-                        </a>
-                    @endif
-                </ul>
-            </div>
-            <div>
-                <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
-                    @csrf
-                    <button type="submit" class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Logout</button>
-                </form>
-            </div>
-        `;
-        document.body.appendChild(drawer);
+                    </ul>
+                </div>
+                <div>
+                    <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Logout</button>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(drawer);
 
-        // Trigger the slide-in animation
-        setTimeout(() => {
-            drawer.classList.remove("translate-x-full");
-        }, 10); // Small delay to ensure the class change triggers the animation
-    };
+            // Trigger the slide-in animation
+            setTimeout(() => {
+                drawer.classList.remove("translate-x-full");
+            }, 10);
+        };
 
-});
+        // Function to Open Notification Drawer
+        const openNotificationDrawerMenu = () => {
+            const drawer = document.createElement("div");
+            drawer.className = "drawer-menu notification-drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4 transform transition-transform translate-x-full";
+            drawer.innerHTML = `
+                <div>
+                    <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
+                    <h2 class="text-xl font-bold">Notifications</h2>
+                    <ul class="mt-4">
+                        <!-- Notification Items Here -->
+                        <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 1</li>
+                        <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 2</li>
+                        <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 3</li>
+                    </ul>
+                </div>
+            `;
+            document.body.appendChild(drawer);
+
+            // Trigger the slide-in animation
+            setTimeout(() => {
+                drawer.classList.remove("translate-x-full");
+            }, 10);
+        };
+    });
 </script>
+
+
 <style>
     /* Custom scrollbar for the banner */
     .scroll-banner::-webkit-scrollbar {
@@ -121,7 +176,8 @@
 
     <!-- Right Side Buttons -->
     <div class="flex items-center space-x-6 mx-auto relative"> 
-        <button class="bg-[color:#444444] p-2 rounded-full squircle">
+        <button id="notificationButton" class="bg-[color:#444444] p-2 rounded-full squircle"
+            data-logged-in="{{ Auth::check() ? 'true' : 'false' }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.5V11a6 6 0 00-9.33-4.945M9 17h-.01" />
             </svg>
