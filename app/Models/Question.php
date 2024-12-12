@@ -42,5 +42,16 @@ class Question extends Model
         return $this->post->hasOne(ModeratorNotification::class, 'post_id');
     }
     
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows_question', 'question_id', 'user_id');
+    }
+
+    public function isFollowedByUser($userId)
+    {
+        return $this->followers()->where('user_id', $userId)->exists();
+    }
+
+
 
 }

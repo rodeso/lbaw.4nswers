@@ -191,6 +191,17 @@
 
                     <!-- Menu Content -->
                     <ul class="mt-8 space-y-4 text-base font-semibold">
+                        @if (auth()->id() != $question->author->id)
+                            <!-- Actions for Regular Users -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                <form method="POST" id="followForm" action="{{ route('question.follow', $question->id) }}">
+                                    @csrf
+                                    <button>
+                                        {{ $isFollowing ? 'Unfollow Question' : 'Follow Question' }}
+                                    </button>
+                                </form>
+                            </li>
+                        @endif
                         @if (auth()->id() === $question->author->id)
                             <!-- Actions for the Author of the Question -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">

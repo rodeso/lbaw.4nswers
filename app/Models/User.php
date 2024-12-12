@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Question;
 
 class User extends Authenticatable
 {
@@ -64,4 +65,10 @@ class User extends Authenticatable
     {
         return $this->admin !== null;
     }
+
+    public function followedQuestions()
+    {
+        return $this->belongsToMany(Question::class, 'user_follows_question', 'user_id', 'question_id');
+    }
+
 }
