@@ -156,7 +156,8 @@ CREATE TABLE IF NOT EXISTS user_follows_tag (
 -- R17
 CREATE TABLE IF NOT EXISTS user_follows_question (
   user_id INTEGER REFERENCES lbaw24112.user(id) NOT NULL,
-  question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL
+  question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL,
+  PRIMARY KEY (user_id, question_id)
 );
 
 -- R18

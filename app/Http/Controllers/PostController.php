@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Post;
@@ -12,8 +15,8 @@ use App\Models\PopularityVote;
 use App\Models\AuraVote;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
+use App\Models\UserFollowsQuestion;
 
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -79,9 +82,10 @@ class PostController extends Controller
                 ->where('question_id', $id)
                 ->value('is_positive');
         }
+        $isFollowing = auth()->check() && $question->isFollowedByUser(auth()->id());
     
         // Pass data to view
-        return view('post', compact('question', 'user_tags', 'userVote', 'notifications'));
+        return view('post', compact('question', 'user_tags', 'userVote', 'isFollowing', 'notifications'));
     }
     
     /*
@@ -211,6 +215,33 @@ class PostController extends Controller
 
         return redirect()->back()->with('success', 'Comment added successfully!');
     }
+
+    public function followQuestion(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        
+        $question = Question::findOrFail($id);
+
+        // Check if the user already follows the question
+        if ($user->followedQuestions()->where('id', $id)->exists()) {
+            $user->followedQuestions()->detach($question);
+            return redirect()->back()->with('success', 'Question unfollowed!');
+        }
+
+        // Add the relationship
+        $user->followedQuestions()->attach($question);
+
+        return redirect()->back()->with('success', 'Question followed!');
+        
+    }
+
+
+
 
     /*
     Show -------------------------------------------------------------------------------------------------------------------------
