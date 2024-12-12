@@ -83,9 +83,6 @@ document.getElementById('search-input').addEventListener('input', function () {
                             <p class="text-sm text-gray-500">
                                 ${question.post.body.substring(0, 100)}...
                             </p>
-                            <p class="text-xs text-gray-400">
-                                Matched in: ${query.toLowerCase() === question.title.toLowerCase().substring(0, query.length) ? 'Title' : 'Body'}
-                            </p>
                         </a>
                     `;
                     resultsContainer.appendChild(resultItem);
