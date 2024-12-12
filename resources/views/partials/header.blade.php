@@ -115,10 +115,10 @@
                     <h2 class="text-xl font-bold">Notifications</h2>
                     <ul class="mt-4">
                         @if (Auth::check())
-                            <!-- Notification Items Here -->
-                            <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 1</li>
-                            <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 2</li>
-                            <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Notification 3</li>
+                            <li class="py-2 bg-[color:#C18A8A] px-4 rounded">
+                                <div class="font-bold text-lg text-[color:#4B1414]">Title</div>
+                                <div class="text-sm text-black">This is the description of the notification!</div>
+                            </li>
                         @else
                             <a href="{{ route('login') }}">
                                 <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Login</li>
