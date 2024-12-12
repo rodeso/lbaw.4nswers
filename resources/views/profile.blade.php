@@ -64,7 +64,6 @@
             </section>
         </main>
 
-
         <!-- Footer -->
         @include('partials.footer')
     </div>
@@ -91,5 +90,4 @@
         });
     });
 </script>
-
 </html>

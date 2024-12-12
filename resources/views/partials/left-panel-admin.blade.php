@@ -22,10 +22,10 @@
         
         <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">Jump to:</h4>
         <ul class="space-y-2">
-            <li><a href="#" class="pl-4 text-[color:#C18A8A] hover:underline">Admins</a></li>
-            <li><a href="#" class="pl-4 text-[color:#C18A8A] hover:underline">Moderators</a></li>
-            <li><a href="#" class="pl-4 text-[color:#C18A8A] hover:underline">Blocked Users</a></li>
-            <li><a href="#" class="pl-4 text-[color:#C18A8A] hover:underline">Other Users</a></li>
+            <li><a href="#admins" class="pl-4 text-[color:#C18A8A] hover:underline">Admins</a></li>
+            <li><a href="#moderators" class="pl-4 text-[color:#C18A8A] hover:underline">Moderators</a></li>
+            <li><a href="#blocked" class="pl-4 text-[color:#C18A8A] hover:underline">Blocked Users</a></li>
+            <li><a href="#others" class="pl-4 text-[color:#C18A8A] hover:underline">Other Users</a></li>
         </ul>
     </div>
 </aside>
