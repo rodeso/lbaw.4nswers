@@ -249,6 +249,21 @@ class PostController extends Controller
 
     public function showNewQuestion()
     {
+        $loggedUserId = auth()->id(); // Get the logged-in user ID
+        // Fetch notifications where the user is the owner of the related post
+        $notifications = DB::table('vote_notification')
+            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->leftJoin('question', 'post.id', '=', 'question.post_id')
+            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
+            ->where(function ($query) use ($loggedUserId) {
+                $query->where('question.author_id', $loggedUserId)
+                    ->orWhere('answer.author_id', $loggedUserId);
+            })
+            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
+            ->orderBy('notification.time_stamp', 'desc')
+            ->get();
+        
         if (!Auth::check()) {
             // Redirect to home with an alert
             return redirect()->route('home')->with('alert', 'You must be logged in to post a new question!');
@@ -263,11 +278,26 @@ class PostController extends Controller
         $tags = Tag::all();
     
         // Pass the tags to the view
-        return view('new-question', compact('tags', 'user_tags'));
+        return view('new-question', compact('tags', 'user_tags', 'notifications'));
     }
 
     public function showEditQuestion($id)
     {
+        $loggedUserId = auth()->id(); // Get the logged-in user ID
+        // Fetch notifications where the user is the owner of the related post
+        $notifications = DB::table('vote_notification')
+            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->leftJoin('question', 'post.id', '=', 'question.post_id')
+            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
+            ->where(function ($query) use ($loggedUserId) {
+                $query->where('question.author_id', $loggedUserId)
+                    ->orWhere('answer.author_id', $loggedUserId);
+            })
+            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
+            ->orderBy('notification.time_stamp', 'desc')
+            ->get();
+
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question 
@@ -285,11 +315,26 @@ class PostController extends Controller
         // Extract all the tags for selection
         $tags = Tag::all();
 
-        return view('edit-question', compact('tags', 'user_tags', 'question', 'post'));
+        return view('edit-question', compact('tags', 'user_tags', 'question', 'post', 'notifications'));
     }
 
     public function showEditAnswer($id)
     {
+        $loggedUserId = auth()->id(); // Get the logged-in user ID
+        // Fetch notifications where the user is the owner of the related post
+        $notifications = DB::table('vote_notification')
+            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->leftJoin('question', 'post.id', '=', 'question.post_id')
+            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
+            ->where(function ($query) use ($loggedUserId) {
+                $query->where('question.author_id', $loggedUserId)
+                    ->orWhere('answer.author_id', $loggedUserId);
+            })
+            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
+            ->orderBy('notification.time_stamp', 'desc')
+            ->get();
+        
         $answer = Answer::findOrFail($id);
 
         // Check if the logged-in user is the author of the answer 
@@ -305,7 +350,7 @@ class PostController extends Controller
             : collect();
 
 
-        return view('edit-answer', compact('user_tags', 'answer', 'post'));
+        return view('edit-answer', compact('user_tags', 'answer', 'post', 'notifications'));
     }
 
     /*
