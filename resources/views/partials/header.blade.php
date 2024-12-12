@@ -110,15 +110,37 @@
             const drawer = document.createElement("div");
             drawer.className = "drawer-menu notification-drawer-menu fixed top-0 right-0 h-full w-64 bg-[color:#4E0F35] text-white shadow-lg flex flex-col justify-between p-4 transform transition-transform translate-x-full";
             drawer.innerHTML = `
-                <div>
-                    <button class="text-white mb-4" onclick="this.parentElement.parentElement.remove()">Close</button>
-                    <h2 class="text-xl font-bold">Notifications</h2>
-                    <ul class="mt-4">
+                <div class="flex flex-col h-full pt-12">
+                    <h2 class="text-xl font-bold mb-4">Notifications</h2>
+                    <ul class="overflow-auto flex-1">
                         @if (Auth::check())
-                            <li class="py-2 bg-[color:#C18A8A] px-4 rounded">
-                                <div class="font-bold text-lg text-[color:#4B1414]">Title</div>
-                                <div class="text-sm text-black">This is the description of the notification!</div>
-                            </li>
+                            @forelse ($notifications as $notification)
+                                <li class="py-2 bg-[color:#C18A8A] px-4 rounded mb-3">
+                                    <div class="font-bold text-lg text-[color:#4B1414]">
+                                        {{ $notification->content }}
+                                    </div>
+
+                                    <!-- Check if the notification is related to a question -->
+                                    @if ($notification->question_title)
+                                        <div class="text-sm text-black">
+                                            {{ $notification->question_title }}
+                                        </div>
+                                        <a href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Go to Question</a>
+                                    @else
+                                        <!-- Otherwise, it's related to an answer -->
+                                        <div class="text-sm text-black">
+                                            {{ $notification->answer_body }}
+                                        </div>
+                                        <a href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Go to Answer</a>
+                                    @endif
+
+                                    <div class="text-sm text-gray-500">
+                                        {{ $notification->time_stamp }}
+                                    </div>                                 
+                                </li>
+                            @empty
+                                <li>No notifications found.</li>
+                            @endforelse
                         @else
                             <a href="{{ route('login') }}">
                                 <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Login</li>

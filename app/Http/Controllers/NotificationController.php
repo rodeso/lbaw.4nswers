@@ -9,8 +9,12 @@ use App\Models\Post;
 use App\Models\Question;
 use App\Models\ReportNotification;
 
+
 class NotificationController extends Controller
 {
+
+    // Report
+
     public function showReportForm($id)
     {
         // Retrieve the post (question, answer, or comment)
@@ -69,6 +73,7 @@ class NotificationController extends Controller
     }
         
 
+    // Flag
 
     public function showFlagForm($id)
     {

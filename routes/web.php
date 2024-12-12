@@ -70,11 +70,13 @@ Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->
 Route::get('/posts/{id}/report', [NotificationController::class, 'showReportForm'])->name('posts.report');
 Route::post('/posts/{id}/report', [NotificationController::class, 'reportPost'])->name('posts.report.submit');
 
-
 // Flags
 Route::get('/posts/{id}/flag', [NotificationController::class, 'showFlagForm'])->name('posts.flag');
 Route::post('/posts/{id}/flag', [NotificationController::class, 'flagPost'])->name('posts.flag.submit');
 Route::delete('/posts/{id}/flag', [NotificationController::class, 'deleteFlag'])->name('posts.flag.delete');
+
+// Notifications
+Route::get('/notifications', [NotificationController::class, 'getVoteNotifications'])->name('notifications.index');
 
 //Choose Best Answer
 Route::post('/questions/{questionId}/choose-answer/{answerId}', [PostController::class, 'chooseAnswer'])->name('question.chooseAnswer');
