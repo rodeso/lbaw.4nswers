@@ -18,6 +18,9 @@ class UserController extends Controller
     // Show the user's profile
     public function index()
     {
+        if(!Auth::check()) {
+            return redirect()->route('login')->with('alert', 'You need to be logged in to view your profile.');
+        }
         $user = Auth::user();
         $userId = Auth::id(); // Get the logged-in user's ID
 
