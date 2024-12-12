@@ -149,13 +149,13 @@ CREATE TABLE IF NOT EXISTS report_notification (
 
 -- R16
 CREATE TABLE IF NOT EXISTS user_follows_tag (
-  user_id INTEGER REFERENCES lbaw24112.user(id) NOT NULL,
+  user_id INTEGER REFERENCES lbaw24112.user(id) ON DELETE CASCADE NOT NULL,
   tag_id INTEGER REFERENCES tag(id) ON DELETE CASCADE NOT NULL
 );
 
 -- R17
 CREATE TABLE IF NOT EXISTS user_follows_question (
-  user_id INTEGER REFERENCES lbaw24112.user(id) NOT NULL,
+  user_id INTEGER REFERENCES lbaw24112.user(id) ON DELETE CASCADE NOT NULL,
   question_id INTEGER REFERENCES question(id) ON DELETE CASCADE NOT NULL,
   PRIMARY KEY (user_id, question_id)
 );
@@ -492,3 +492,30 @@ CREATE TRIGGER aura_vote_notification
 AFTER INSERT OR UPDATE OR DELETE ON aura_vote
 FOR EACH ROW
 EXECUTE FUNCTION create_vote_notification();
+
+---
+
+-- When a user is deleted it is replaced by the DELETED user
+CREATE OR REPLACE FUNCTION reassign_user_content()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE question
+    SET author_id = 0
+    WHERE author_id = OLD.id;
+
+    UPDATE answer
+    SET author_id = 0
+    WHERE author_id = OLD.id;
+
+    UPDATE comment
+    SET author_id = 0
+    WHERE author_id = OLD.id;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TRIGGER04
+AFTER DELETE ON lbaw24112.user
+FOR EACH ROW
+EXECUTE FUNCTION reassign_user_content();
