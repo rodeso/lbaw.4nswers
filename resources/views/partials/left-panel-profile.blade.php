@@ -47,6 +47,7 @@
             <li><a href="#questions-section" class="pl-4 text-[color:#C18A8A] hover:underline">View Questions</a></li>
             <li><a href="#answers-section" class="pl-4 text-[color:#C18A8A] hover:underline">View Answers</a></li>
             <li><a href="#comments-section" class="pl-4 text-[color:#C18A8A] hover:underline">View Comments</a></li>
+            <li><a href="#followed-question-section" class="pl-4 text-[color:#C18A8A] hover:underline">View Followed</a></li>
         </ul>
     </div>
 </aside>

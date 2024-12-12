@@ -61,6 +61,14 @@
                     @else
                         <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No comments made yet!</p>
                     @endif
+                <h1 id="followed-question-section" class="text-2xl font-bold text-gray-500 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Followed questions:</h1>
+                    @if($followedQuestions->isNotEmpty())
+                        @foreach ($followedQuestions as $question)
+                            @include('partials.profile-question')
+                        @endforeach
+                    @else
+                        <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No followed questions yet!</p>
+                    @endif
             </section>
         </main>
 

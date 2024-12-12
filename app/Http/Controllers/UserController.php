@@ -158,9 +158,25 @@ class UserController extends Controller
     
         // Fetch all tags (if needed for the view)
         $tags = Tag::all();
+
+        // Fetch user's followed questions
+        $followedQuestions = Question::with(['tags', 'post'])
+            ->withCount([
+                'popularityVotes as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'popularityVotes as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
+            ->join('user_follows_question', 'question.id', '=', 'user_follows_question.question_id')
+            ->where('user_follows_question.user_id', $id) // Filter by the requested user's ID
+            ->get();
+            
+
     
         // Return the profile view with user data
-        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications'));
+        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
     
 
