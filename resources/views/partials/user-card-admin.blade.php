@@ -1,4 +1,4 @@
-<section class="w-[1000px] h-[100px]">
+<section class="w-[800px] h-[100px]">
     <!-- Post's Question -->
     <section class="w-auto h-25 bg-[color:#C18A8A] rounded-lg shadow-md p-3 space-y-2">
         <div class="relative flex space-x-[10px] items-center">
@@ -12,48 +12,48 @@
             <div class="relative flex items-center w-full p-4 ml-4 mr-4 text-white bg-[color:#4B1414] rounded-md font-bold">
                 <a 
                     href="{{ Auth::id() === $user->id ? route('profile') : route('user.profile', ['id' => $user->id]) }}" 
-                    class="text-2xl ml-12 text-white hover:text-gray-500"
+                    class="text-xl ml-4 text-white hover:text-gray-500"
                 >
                     {{ $user->nickname }}
                 </a>
                 <div class="absolute right-10 flex">
                     @if (Auth::user()->is_admin)
                         @if ($user->is_admin)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-green-500 rounded-lg">Admin</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-green-500 rounded-lg">Admin</span>
                         @elseif ($user->is_blocked)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
                             <form method="POST" action="{{ route('user.toggleMod', ['id' => $user->id]) }}">
                                 @csrf
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 mr-10 text-xl w-40 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
+                                    class="px-4 py-2 mr-10 text-l w-36 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
                                 >
                                     {{ $user->is_mod ? 'Remove Mod' : 'Make Mod' }}
                                 </button>
                             </form>
                         @endif
                         @if ($user->is_admin || $user->is_mod)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
                             <form method="POST" action="{{ route('user.toggleBlock', ['id' => $user->id]) }}">
                                 @csrf
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 mr-10 text-xl w-40 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    class="px-4 py-2 mr-10 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
                                 >
                                     {{ $user->is_blocked ? 'Unblock User' : 'Block User' }}
                                 </button>
                             </form>
                         @endif
                         @if ($user->is_admin || $user->is_mod)
-                            <span class="px-4 py-2 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                            <span class="px-4 py-2 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
                             <form method="POST" action="">
                                 @csrf
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 text-xl w-40 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    class="px-4 py-2 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
                                 >
                                     Delete User
                                 </button>
@@ -61,26 +61,26 @@
                         @endif
                     @elseif (!Auth::user()->is_admin && Auth::user()->is_mod)
                         @if ($user->is_admin)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-green-500 rounded-lg">Admin</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-green-500 rounded-lg">Admin</span>
                         @elseif ($user->is_mod)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-blue-500 rounded-lg">Moderator</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-blue-500 rounded-lg">Moderator</span>
                         @else
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @endif
                         @if ($user->is_admin || $user->is_mod)
-                            <span class="px-4 py-2 mr-10 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                            <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
                             <form method="POST" action="{{ route('user.toggleBlock', ['id' => $user->id]) }}">
                                 @csrf
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 mr-10 text-xl w-40 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    class="px-4 py-2 mr-10 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
                                 >
                                     {{ $user->is_blocked ? 'Unblock User' : 'Block User' }}
                                 </button>
                             </form>
                         @endif
-                        <span class="px-4 py-2 text-xl w-40 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
+                        <span class="px-4 py-2 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                     @endif
                 </div>
             </div>
