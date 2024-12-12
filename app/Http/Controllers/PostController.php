@@ -14,14 +14,29 @@ use App\Models\UserFollowsTag;
 use App\Models\PopularityVote;
 use App\Models\AuraVote;
 use App\Models\Comment;
+use Illuminate\Support\Facades\DB;
 use App\Models\UserFollowsQuestion;
-
 
 
 class PostController extends Controller
 {
     public function show($id)
-    {
+    {   
+
+        $loggedUserId = auth()->id(); // Get the logged-in user ID
+        // Fetch notifications where the user is the owner of the related post
+        $notifications = DB::table('vote_notification')
+            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->leftJoin('question', 'post.id', '=', 'question.post_id')
+            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
+            ->where(function ($query) use ($loggedUserId) {
+                $query->where('question.author_id', $loggedUserId)
+                    ->orWhere('answer.author_id', $loggedUserId);
+            })
+            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
+            ->orderBy('notification.time_stamp', 'desc')
+            ->get();
 
         if (!is_numeric($id)) {
             return redirect()->route('home')->with('alert', 'Invalid question ID.');
@@ -70,7 +85,7 @@ class PostController extends Controller
         $isFollowing = auth()->check() && $question->isFollowedByUser(auth()->id());
     
         // Pass data to view
-        return view('post', compact('question', 'user_tags', 'userVote', 'isFollowing'));
+        return view('post', compact('question', 'user_tags', 'userVote', 'isFollowing', 'notifications'));
     }
     
     /*

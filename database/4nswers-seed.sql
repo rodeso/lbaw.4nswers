@@ -414,3 +414,81 @@ CREATE TRIGGER TRIGGER03
 AFTER DELETE ON aura_vote
 FOR EACH ROW
 EXECUTE FUNCTION reverse_user_aura();
+
+
+
+CREATE OR REPLACE FUNCTION create_vote_notification() RETURNS TRIGGER AS $$
+DECLARE
+    total_votes INTEGER;
+    post_id INTEGER;
+    threshold INTEGER;
+    thresholds INTEGER[] := ARRAY[1, 5, 10, 20, 50, 100];
+BEGIN
+    IF TG_TABLE_NAME = 'popularity_vote' THEN
+        SELECT
+            question.post_id INTO post_id
+        FROM
+            question
+        WHERE
+            question.id = NEW.question_id;
+
+        SELECT
+            COUNT(CASE WHEN is_positive THEN 1 END) -
+            COUNT(CASE WHEN NOT is_positive THEN 1 END)
+        INTO
+            total_votes
+        FROM
+            popularity_vote
+        WHERE
+            question_id = NEW.question_id;
+
+    ELSIF TG_TABLE_NAME = 'aura_vote' THEN
+        SELECT
+            answer.post_id INTO post_id
+        FROM
+            answer
+        WHERE
+            answer.id = NEW.answer_id;
+
+        SELECT
+            COUNT(CASE WHEN is_positive THEN 1 END) -
+            COUNT(CASE WHEN NOT is_positive THEN 1 END)
+        INTO
+            total_votes
+        FROM
+            aura_vote
+        WHERE
+            answer_id = NEW.answer_id;
+    END IF;
+
+    FOREACH threshold IN ARRAY thresholds LOOP
+        IF total_votes = threshold THEN
+            -- Insert a new notification
+            INSERT INTO notification (content, time_stamp, post_id, user_id)
+            VALUES (
+                threshold || ' votes reached!',
+                CURRENT_TIMESTAMP,
+                post_id,
+                COALESCE(NEW.user_id, OLD.user_id)
+            )
+            RETURNING id INTO threshold;
+
+            INSERT INTO vote_notification (notification_id, votes)
+            VALUES (threshold, total_votes);
+            RETURN NULL;
+        END IF;
+    END LOOP;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER popularity_vote_notification
+AFTER INSERT OR UPDATE OR DELETE ON popularity_vote
+FOR EACH ROW
+EXECUTE FUNCTION create_vote_notification();
+
+CREATE TRIGGER aura_vote_notification
+AFTER INSERT OR UPDATE OR DELETE ON aura_vote
+FOR EACH ROW
+EXECUTE FUNCTION create_vote_notification();
