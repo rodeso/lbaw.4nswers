@@ -28,7 +28,7 @@
         @include('partials.header')
 
         <!-- Floating Side Panel (Left) -->
-        @include('partials.left-panel-admin')
+        @include('partials.left-panel-admin-tags')
 
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
