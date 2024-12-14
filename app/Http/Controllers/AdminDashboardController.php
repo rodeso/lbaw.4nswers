@@ -57,7 +57,16 @@ class AdminDashboardController extends Controller
 
         $user = Auth::user(); // Get logged-in user
         $users = User::orderBy('aura', 'desc')->get();
-        $tags = Tag::all();
+        $tags = Tag::orderBy('follower_count', 'desc')->get();
         return view('admin-dashboard-tags', compact('user', 'users', 'tags', 'notifications'));
     }
+
+    public function deleteTag($id)
+{
+    $tag = Tag::findOrFail($id);
+    $tag->delete();
+
+    return redirect()->back();
+}
+
 }
