@@ -77,11 +77,11 @@
                             <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
                             
 
-                            @if (Auth::user()->is_admin)
+                            @if (Auth::user()->is_admin || Auth::user()->is_mod)
                                 <hr class="border-gray-600 my-4">
                                 <a href="{{ route('admin-dashboard.users') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
                             @endif
-                            @if (Auth::user()->is_admin)
+                            @if (Auth::user()->is_admin || Auth::user()->is_mod)
                                 <a href="{{ route('admin-dashboard.tags') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard (tags) (this is a placeholder, dk how to put this)</li></a>
                             @endif
                         </ul>

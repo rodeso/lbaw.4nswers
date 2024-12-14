@@ -16,7 +16,15 @@ class AdminDashboardController extends Controller
 {
     public function users()
     {   
-
+        if (!Auth::check()) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You are not logged in!');
+        }
+        $user = Auth::user(); // Get logged-in user
+        if (!$user->is_admin && !$user->is_mod) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You do not have the right permissions!');
+        }
         $loggedUserId = auth()->id(); // Get the logged-in user ID
         // Fetch notifications where the user is the owner of the related post
         $notifications = DB::table('vote_notification')
@@ -32,14 +40,22 @@ class AdminDashboardController extends Controller
             ->orderBy('notification.time_stamp', 'desc')
             ->get();
 
-        $user = Auth::user(); // Get logged-in user
+        
         $users = User::orderBy('aura', 'desc')->get();
         return view('admin-dashboard-users', compact('user', 'users', 'notifications'));
     }
 
     public function tags()
     {   
-
+        if (!Auth::check()) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You are not logged in!');
+        }
+        $user = Auth::user(); // Get logged-in user
+        if (!$user->is_admin && !$user->is_mod) {
+            // Redirect to home with an alert
+            return redirect()->route('home')->with('alert', 'You do not have the right permissions!');
+        }
         $loggedUserId = auth()->id(); // Get the logged-in user ID
         // Fetch notifications where the user is the owner of the related post
         $notifications = DB::table('vote_notification')
@@ -55,7 +71,6 @@ class AdminDashboardController extends Controller
             ->orderBy('notification.time_stamp', 'desc')
             ->get();
 
-        $user = Auth::user(); // Get logged-in user
         $users = User::orderBy('aura', 'desc')->get();
         $tags = Tag::orderBy('follower_count', 'desc')->get();
         return view('admin-dashboard-tags', compact('user', 'users', 'tags', 'notifications'));
