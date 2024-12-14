@@ -39,10 +39,14 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
 
 // Admin Dashboard
-Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
+Route::get('/admin-dashboard/users', [AdminDashboardController::class, 'users'])->name('admin-dashboard.users');
+Route::get('/admin-dashboard/tags', [AdminDashboardController::class, 'tags'])->name('admin-dashboard.tags');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
+
+Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin-dashboard.deleteTag');
+
 
 // Terms & Conditions
 Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
