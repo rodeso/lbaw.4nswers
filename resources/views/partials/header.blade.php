@@ -81,6 +81,9 @@
                                 <hr class="border-gray-600 my-4">
                                 <a href="{{ route('admin-dashboard.users') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
                             @endif
+                            @if (Auth::user()->is_admin)
+                                <a href="{{ route('admin-dashboard.tags') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard (tags) (this is a placeholder, dk how to put this)</li></a>
+                            @endif
                         </ul>
                     @else
                         <a href="{{ route('login') }}">
