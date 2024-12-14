@@ -54,7 +54,8 @@ CREATE TABLE IF NOT EXISTS admin (
 CREATE TABLE IF NOT EXISTS tag (
   id SERIAL PRIMARY KEY UNIQUE NOT NULL,
   name VARCHAR(32) UNIQUE CHECK (LENGTH(name) <= 32) NOT NULL,
-  description TEXT NOT NULL
+  description TEXT NOT NULL,
+  follower_count INTEGER DEFAULT 0 NOT NULL
 );
 
 -- R04
@@ -310,45 +311,7 @@ VALUES (FALSE, 1, 4, 16),
 (FALSE, 15, 11, 30);
 
 
-INSERT INTO user_follows_tag(user_id, tag_id)
-VALUES (1,1),
-(1,2),
-(1,4),
-(1,7),
-(2,1),
-(2,5),
-(2,7),
-(3,1),
-(3,2),
-(3,3),
-(3,5),
-(4,1),
-(4,2),
-(4,6),
-(4,7),
-(5,1),
-(5,5),
-(5,7),
-(6,1),
-(6,3),
-(6,4),
-(6,5),
-(6,6),
-(7,3),
-(7,5),
-(7,6),
-(8,1),
-(8,3),
-(8,7),
-(9,1),
-(9,3),
-(9,5),
-(10,1),
-(10,2),
-(10,4),
-(10,7),
-(11,6),
-(11,8);
+
 
 
 CREATE OR REPLACE FUNCTION update_post_edit_time()
@@ -519,3 +482,80 @@ CREATE TRIGGER TRIGGER04
 AFTER DELETE ON lbaw24112.user
 FOR EACH ROW
 EXECUTE FUNCTION reassign_user_content();
+
+-- Function to increment follower_count
+CREATE OR REPLACE FUNCTION increment_follower_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Increment the follower_count in the tag table
+  UPDATE tag
+  SET follower_count = follower_count + 1
+  WHERE id = NEW.tag_id;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to call the function before inserting into user_follows_tag
+CREATE TRIGGER trigger_increment_follower_count
+AFTER INSERT ON user_follows_tag
+FOR EACH ROW
+EXECUTE FUNCTION increment_follower_count();
+
+INSERT INTO user_follows_tag(user_id, tag_id)
+VALUES (1,1),
+(1,2),
+(1,4),
+(1,7),
+(2,1),
+(2,5),
+(2,7),
+(3,1),
+(3,2),
+(3,3),
+(3,5),
+(4,1),
+(4,2),
+(4,6),
+(4,7),
+(5,1),
+(5,5),
+(5,7),
+(6,1),
+(6,3),
+(6,4),
+(6,5),
+(6,6),
+(7,3),
+(7,5),
+(7,6),
+(8,1),
+(8,3),
+(8,7),
+(9,1),
+(9,3),
+(9,5),
+(10,1),
+(10,2),
+(10,4),
+(10,7),
+(11,6),
+(11,8);
+
+
+CREATE OR REPLACE FUNCTION decrement_follower_count()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Decrement the follower_count in the tags table
+    UPDATE tags
+    SET follower_count = follower_count - 1
+    WHERE id = OLD.tag_id;
+
+    RETURN OLD; -- Return the deleted row
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER on_user_follows_tag_delete
+AFTER DELETE ON user_follows_tag
+FOR EACH ROW
+EXECUTE FUNCTION decrement_follower_count();
