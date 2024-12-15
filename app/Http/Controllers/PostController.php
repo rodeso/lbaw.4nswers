@@ -16,27 +16,16 @@ use App\Models\AuraVote;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 use App\Models\UserFollowsQuestion;
+use App\Models\Notification;
+use App\Models\AnswerNotification;
 
 
 class PostController extends Controller
-{
+{   
     public function show($id)
     {   
 
-        $loggedUserId = auth()->id(); // Get the logged-in user ID
-        // Fetch notifications where the user is the owner of the related post
-        $notifications = DB::table('vote_notification')
-            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
-            ->join('post', 'notification.post_id', '=', 'post.id')
-            ->leftJoin('question', 'post.id', '=', 'question.post_id')
-            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
-            ->where(function ($query) use ($loggedUserId) {
-                $query->where('question.author_id', $loggedUserId)
-                    ->orWhere('answer.author_id', $loggedUserId);
-            })
-            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
-            ->orderBy('notification.time_stamp', 'desc')
-            ->get();
+        $notifications = Controller::getNotifications();
 
         if (!is_numeric($id)) {
             return redirect()->route('home')->with('alert', 'Invalid question ID.');
@@ -87,7 +76,7 @@ class PostController extends Controller
         // Pass data to view
         return view('post', compact('question', 'user_tags', 'userVote', 'isFollowing', 'notifications'));
     }
-    
+
     /*
     Store -------------------------------------------------------------------------------------------------------------------------
     */
@@ -179,18 +168,33 @@ class PostController extends Controller
 
         // Create the answer with the post_id
         $answer = new Answer([
-            'body' => $validated['body'],
             'author_id' => Auth::id(),
             'question_id' => $validated['question_id'],
             'post_id' => $post->id,
         ]);
-        
+
         // Save the answer
         $answer->save();
+
+        // Create a notification for the answer
+        $notification = new Notification([
+            'content' => 'New answer by ' . Auth::user()->nickname, // Example content
+            'time_stamp' => now(),
+            'post_id' => $post->id, // The post associated with the answer
+            'user_id' => Auth::id(), // The user who wrote the answer
+        ]);
+        $notification->save();
+
+        // Create an entry in the answer_notification table
+        $answerNotification = new AnswerNotification([
+            'notification_id' => $notification->id,
+        ]);
+        $answerNotification->save();
 
         // Redirect or return success response
         return redirect()->route('question.show', ['id' => $validated['question_id']]);
     }
+
 
     public function storeComment(Request $request, $answerId)
     {
@@ -240,29 +244,13 @@ class PostController extends Controller
         
     }
 
-
-
-
     /*
     Show -------------------------------------------------------------------------------------------------------------------------
     */
 
     public function showNewQuestion()
     {
-        $loggedUserId = auth()->id(); // Get the logged-in user ID
-        // Fetch notifications where the user is the owner of the related post
-        $notifications = DB::table('vote_notification')
-            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
-            ->join('post', 'notification.post_id', '=', 'post.id')
-            ->leftJoin('question', 'post.id', '=', 'question.post_id')
-            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
-            ->where(function ($query) use ($loggedUserId) {
-                $query->where('question.author_id', $loggedUserId)
-                    ->orWhere('answer.author_id', $loggedUserId);
-            })
-            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
-            ->orderBy('notification.time_stamp', 'desc')
-            ->get();
+        $notifications = Controller::getNotifications();
         
         if (!Auth::check()) {
             // Redirect to home with an alert
@@ -283,20 +271,7 @@ class PostController extends Controller
 
     public function showEditQuestion($id)
     {
-        $loggedUserId = auth()->id(); // Get the logged-in user ID
-        // Fetch notifications where the user is the owner of the related post
-        $notifications = DB::table('vote_notification')
-            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
-            ->join('post', 'notification.post_id', '=', 'post.id')
-            ->leftJoin('question', 'post.id', '=', 'question.post_id')
-            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
-            ->where(function ($query) use ($loggedUserId) {
-                $query->where('question.author_id', $loggedUserId)
-                    ->orWhere('answer.author_id', $loggedUserId);
-            })
-            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
-            ->orderBy('notification.time_stamp', 'desc')
-            ->get();
+        $notifications = Controller::getNotifications();
 
         $question = Question::with('tags')->findOrFail($id);
 
@@ -320,20 +295,7 @@ class PostController extends Controller
 
     public function showEditAnswer($id)
     {
-        $loggedUserId = auth()->id(); // Get the logged-in user ID
-        // Fetch notifications where the user is the owner of the related post
-        $notifications = DB::table('vote_notification')
-            ->join('notification', 'vote_notification.notification_id', '=', 'notification.id')
-            ->join('post', 'notification.post_id', '=', 'post.id')
-            ->leftJoin('question', 'post.id', '=', 'question.post_id')
-            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
-            ->where(function ($query) use ($loggedUserId) {
-                $query->where('question.author_id', $loggedUserId)
-                    ->orWhere('answer.author_id', $loggedUserId);
-            })
-            ->select('notification.id', 'notification.content', 'notification.time_stamp', 'question.id as question_id', 'answer.question_id as answer_question_id', 'question.title as question_title', 'post.body as answer_body')
-            ->orderBy('notification.time_stamp', 'desc')
-            ->get();
+        $notifications = Controller::getNotifications();
         
         $answer = Answer::findOrFail($id);
 
@@ -524,6 +486,7 @@ class PostController extends Controller
 
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
     }
+
     public function closeQuestion($id)
     {
         // Retrieve the question

@@ -123,22 +123,20 @@
                                         {{ $notification->content }}
                                     </div>
 
-                                    <!-- Check if the notification is related to a question -->
-                                    @if ($notification->question_title)
+                                    @if ($notification->question_id)
                                         <div class="text-sm text-black">
-                                            {{ $notification->question_title }}
+                                            On your question: "{{ $notification->question_title }}"
                                         </div>
-                                        <a href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Go to Question</a>
+                                        <a href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
                                     @else
-                                        <!-- Otherwise, it's related to an answer -->
                                         <div class="text-sm text-black">
-                                            {{ $notification->answer_body }}
+                                            On your answer: "{{ $notification->answer_body }}"
                                         </div>
-                                        <a href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Go to Answer</a>
+                                        <a href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
                                     @endif
-
+                                    
                                     <div class="text-sm text-gray-500">
-                                        {{ $notification->time_stamp }}
+                                        {{ $notification->time_stamp->diffForHumans() }}
                                     </div>                                 
                                 </li>
                             @empty

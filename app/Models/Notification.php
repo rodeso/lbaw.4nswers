@@ -12,6 +12,10 @@ class Notification extends Model
     protected $table = 'notification';
     protected $fillable = ['content', 'time_stamp', 'post_id', 'user_id'];
 
+    protected $casts = [
+        'time_stamp' => 'datetime',
+    ];
+
     public $timestamps = false; // Disable automatic timestamps
 
     public function post()
@@ -22,6 +26,11 @@ class Notification extends Model
     public function moderatorNotification()
     {
         return $this->hasOne(ModeratorNotification::class, 'notification_id');
+    }
+
+    public function answerNotification()
+    {
+        return $this->hasOne(AnswerNotification::class, 'notification_id');
     }
 }
 
