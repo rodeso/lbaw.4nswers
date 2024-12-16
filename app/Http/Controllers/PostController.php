@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserFollowsQuestion;
 use App\Models\Notification;
 use App\Models\AnswerNotification;
+use App\Models\HelpfulNotification;
 
 
 class PostController extends Controller
@@ -194,7 +195,6 @@ class PostController extends Controller
         // Redirect or return success response
         return redirect()->route('question.show', ['id' => $validated['question_id']]);
     }
-
 
     public function storeComment(Request $request, $answerId)
     {
@@ -503,45 +503,61 @@ class PostController extends Controller
 
         return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
     }
-
+    
     public function chooseAnswer(Request $request, $questionId, $answerId)
     {
         // Find the question using the passed questionId
         $question = Question::find($questionId);
-        
+    
         // Find the answer using the passed answerId
         $answer = Answer::find($answerId);
-
+    
         // Check if question or answer exists
         if (!$question || !$answer) {
             return redirect()->back()->with('error', 'Question or answer not found.');
         }
-
+    
         // Check if the question is already closed
         if ($question->closed) {
             return redirect()->back()->with('error', 'This question is already closed.');
         }
-
+    
         // Check if the question already has a chosen answer
         if ($question->answers()->where('chosen', true)->exists()) {
             return redirect()->back()->with('error', 'This question already has a chosen answer.');
         }
-
+    
         // Only allow the question author to choose an answer
         if (auth()->id() !== $question->author->id) {
             return redirect()->back()->with('error', 'You are not authorized to mark this answer as chosen.');
         }
-
+    
         // Set this answer as chosen
         $answer->chosen = true;
         $answer->save();
-
+    
         // Optionally, close the question if a chosen answer is set
         $question->closed = true;
         $question->save();
+    
+        // Create the notification
+        $notification = new Notification([
+            'content' => 'Your answer has been chosen!', // Notification message
+            'time_stamp' => now(),
+            'post_id' => $answer->post_id, // The post associated with the chosen answer
+            'user_id' => $question->author_id, // The user who chose the answer (author of the question)
+        ]);
+        $notification->save();
 
+        // Create the helpful_notification
+        $helpfulNotification = new HelpfulNotification([
+            'notification_id' => $notification->id, // Reference to the notification
+        ]);
+        $helpfulNotification->save();
+    
         return redirect()->back()->with('success', 'Answer chosen successfully!');
     }
+    
 
     /*
     Delete -------------------------------------------------------------------------------------------------------------------------

@@ -124,18 +124,18 @@
                                     </div>
 
                                     @if ($notification->question_id)
-                                        <div class="text-sm text-black">
-                                            On your question: "{{ $notification->question_title }}"
+                                        <div class="text-sm text-black mb-3">
+                                            On the question: "{{ $notification->question_title }}"
                                         </div>
-                                        <a href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
+                                        <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
                                     @else
-                                        <div class="text-sm text-black">
-                                            On your answer: "{{ $notification->answer_body }}"
+                                        <div class="text-sm text-black mb-3">
+                                            On the answer: "{{ $notification->answer_body }}"
                                         </div>
-                                        <a href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                        <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
                                     @endif
                                     
-                                    <div class="text-sm text-gray-500">
+                                    <div class="text-sm text-black">
                                         {{ $notification->time_stamp->diffForHumans() }}
                                     </div>                                 
                                 </li>

@@ -21,11 +21,14 @@ class Controller extends BaseController
         // Fetch all notifications
         $voteNotifications = $this->getVoteNotifications($loggedUserId);
         $answerNotifications = $this->getAnswerNotifications($loggedUserId);
+        $helpfulNotifications = $this->getHelpfulNotifications($loggedUserId);
     
         // Combine notifications and sort them
         $notifications = DB::query()
             ->fromSub(
-                $voteNotifications->union($answerNotifications), // Combine all notification queries
+                $voteNotifications
+                    ->union($answerNotifications)
+                    ->union($helpfulNotifications), // Combine all notification queries
                 'combined_notifications'
             )
             ->orderBy('time_stamp', 'desc') // Sort results by timestamp
@@ -86,5 +89,26 @@ class Controller extends BaseController
             );
     }
     
+    /**
+     * Get helpful notifications for the logged-in user.
+     */
+    private function getHelpfulNotifications($loggedUserId)
+    {
+        return DB::table('helpful_notification')
+            ->join('notification', 'helpful_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->join('answer', 'post.id', '=', 'answer.post_id')
+            ->join('question', 'answer.question_id', '=', 'question.id')
+            ->where('answer.author_id', $loggedUserId) // Helpful notifications are for the user who made the answer
+            ->select(
+                'notification.id as notification_id',
+                'notification.content',
+                'notification.time_stamp',
+                'question.id as question_id',
+                'answer.question_id as answer_question_id',
+                'question.title as question_title',
+                'post.body as answer_body'
+            );
+    }
     
 }
