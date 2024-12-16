@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS question_tags (
   tag_id INTEGER REFERENCES tag(id) ON DELETE CASCADE NOT NULL
 );
 
-CREATE INDEX post_body_tsvector_idx ON post USING GIN (to_tsvector('english', body));
+CREATE INDEX tag_name_tsvector_idx ON tag USING GIN (to_tsvector('english', name));
 
 
 INSERT INTO lbaw24112.user(id, name, nickname, email, password, birth_date, is_mod)

@@ -32,5 +32,10 @@ class Notification extends Model
     {
         return $this->hasOne(AnswerNotification::class, 'notification_id');
     }
+
+    public function helpfulNotification()
+    {
+        return $this->hasOne(HelpfulNotification::class, 'notification_id');
+    }
 }
 

@@ -17,15 +17,20 @@ class NotificationController extends Controller
 
     public function showReportForm($id)
     {
+
+        $notifications = Controller::getNotifications();
+
         // Retrieve the post (question, answer, or comment)
         $post = Post::findOrFail($id);
     
         // Pass the post to the view
-        return view('create-report', compact('post'));
+        return view('create-report', compact('post', 'notifications'));
     }
     
     public function reportPost(Request $request, $id)
     {
+        $notifications = Controller::getNotifications();
+
         $request->validate([
             'reason' => 'required|string|max:255',
             'content' => 'required|string|max:4096',
@@ -77,11 +82,14 @@ class NotificationController extends Controller
 
     public function showFlagForm($id)
     {
+
+        $notifications = Controller::getNotifications();
+
         // Retrieve the post (question, answer, or comment)
         $post = Post::findOrFail($id);
     
         // Pass the post to the view
-        return view('create-flag', compact('post'));
+        return view('create-flag', compact('post', 'notifications'));
     }
     
     public function flagPost(Request $request, $id)
@@ -115,26 +123,25 @@ class NotificationController extends Controller
             return redirect()->back()->withErrors(['error' => 'Unable to determine the associated question.']);
         }
 
-        // Check if a flag (notification) already exists for this post
-        $existingNotification = Notification::where('post_id', $post->id)->first();
+        // Check if a ModeratorNotification already exists for this post
+        $existingModeratorNotification = ModeratorNotification::whereHas('notification', function ($query) use ($post) {
+            $query->where('post_id', $post->id);
+        })->first();
 
-        if ($existingNotification) {
-            // Update the existing notification
-            $existingNotification->update([
+        if ($existingModeratorNotification) {
+            // Update the existing ModeratorNotification
+            $existingModeratorNotification->notification->update([
                 'content' => $request->content,
                 'time_stamp' => now(),
                 'user_id' => auth()->id(),
             ]);
 
-            // Update the moderator notification reason
-            $moderatorNotification = $existingNotification->moderatorNotification;
-            if ($moderatorNotification) {
-                $moderatorNotification->update([
-                    'reason' => $request->reason,
-                ]);
-            }
+            // Update the reason in the ModeratorNotification
+            $existingModeratorNotification->update([
+                'reason' => $request->reason,
+            ]);
         } else {
-            // Create a new notification
+            // Create a new Notification
             $notification = Notification::create([
                 'content' => $request->content,
                 'time_stamp' => now(),
@@ -142,12 +149,13 @@ class NotificationController extends Controller
                 'user_id' => auth()->id(),
             ]);
 
-            // Create a moderator notification
+            // Create a new ModeratorNotification
             ModeratorNotification::create([
                 'notification_id' => $notification->id,
                 'reason' => $request->reason,
             ]);
         }
+
 
         // Redirect to the associated question page
         return redirect()->route('question.show', $questionId)
@@ -156,25 +164,25 @@ class NotificationController extends Controller
 
     public function deleteFlag($id)
     {
-        // Find the existing notification for the given post ID
-        $notification = Notification::where('post_id', $id)->first();
+        // Find the ModeratorNotification for the given post ID via its related Notification
+        $moderatorNotification = ModeratorNotification::whereHas('notification', function ($query) use ($id) {
+            $query->where('post_id', $id);
+        })->first();
 
-        if (!$notification) {
-            // If no notification is found, redirect back with an error message
-            return redirect()->back()->withErrors(['error' => 'No flag exists for this post.']);
+        if (!$moderatorNotification) {
+            // If no ModeratorNotification is found, redirect back with an error message
+            return redirect()->back()->withErrors(['error' => 'No moderator flag exists for this post.']);
         }
 
-        // Delete the related moderator notification first (if it exists)
-        $moderatorNotification = $notification->moderatorNotification;
-        if ($moderatorNotification) {
-            $moderatorNotification->delete();
-        }
+        // Delete the ModeratorNotification
+        $moderatorNotification->delete();
 
-        // Delete the notification itself
-        $notification->delete();
+        // Delete the associated Notification
+        $moderatorNotification->notification->delete();
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Flag deleted successfully.');
     }
+
 
 }
