@@ -54,24 +54,6 @@
         </div>
     </section>
     @endauth
-
-    <script>
-        function toggleAnswerForm() {
-            const form = document.getElementById('answerForm');
-            const button = document.getElementById('toggleAnswerButton');
-            
-            // Toggle visibility of the form
-            form.classList.toggle('hidden');
-            
-            // Update button text based on the form's state
-            if (form.classList.contains('hidden')) {
-                button.textContent = "Click here to answer!";
-            } else {
-                button.textContent = "Close Answer Form.";
-            }
-        }
-    </script>
-
     <!-- Message for Unauthenticated Users -->
     @guest
     <section class="w-full bg-[color:#FFEDED] rounded-lg shadow-md p-6 text-center">
@@ -145,27 +127,6 @@
             </div>
             @endauth
         </div>
-        <script>
-            function handleAuraVote(answerId, voteType) {
-                fetch(`/answer/${answerId}/vote`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    },
-                    body: JSON.stringify({ vote: voteType }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update the aura display
-                        const auraElement = document.querySelector(`#aura-${answerId}`);
-                        if (auraElement) {
-                            auraElement.textContent = `Aura: ${data.totalAura}`;
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        </script>
         <!-- Time Posting, Moderator Flags & Menu-->
         <div class="flex items-center space-x-4 mt-4 justify-between">
             <div class="flex items-center space-x-4 mt-4">
@@ -298,13 +259,6 @@
                 </div>
             @endauth
             <!-- JavaScript to toggle the menu -->
-            <script>
-                function toggleAnswerOptionsMenu(answerId) {
-                    const menu = document.getElementById(`answer-options-menu-${answerId}`);
-                    menu.classList.toggle('hidden');
-                }
-            </script>
-
         </div>
         <!-- Highlight for chosen answer -->
         @if($answer->chosen)

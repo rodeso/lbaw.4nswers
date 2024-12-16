@@ -1,3 +1,4 @@
+<!-- DO NOT REMOVE FROM HERE BOTH JS AND CSS BREAK IF MOVED -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const userButton = document.getElementById("userButton");
@@ -202,6 +203,8 @@
     }
 
 </style>
+
+
 <header class="fixed top-0 left-0 w-full bg-[color:#4E0F35] text-white py-2 flex justify-between items-center z-10">
     <div class="flex items-center space-x-4 mx-auto relative">
         <a href="{{ route('home') }}" class="text-2xl font-bold text-[color:#FF006E]">4NSWERS</a>

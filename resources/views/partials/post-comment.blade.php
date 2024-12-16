@@ -146,11 +146,3 @@
         </section>
     @endforeach
 </section>
-
-<!-- JavaScript to toggle the menu -->
-<script>
-    function toggleCommentOptionsMenu(commentId) {
-        const menu = document.getElementById(`comment-options-menu-${commentId}`);
-        menu.classList.toggle('hidden');
-    }
-</script>
