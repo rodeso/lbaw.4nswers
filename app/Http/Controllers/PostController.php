@@ -228,7 +228,6 @@ class PostController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        
         $question = Question::findOrFail($id);
 
         // Check if the user already follows the question
@@ -276,9 +275,7 @@ class PostController extends Controller
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question 
-        if (Auth::id() !== $question->author_id) {
-            return redirect()->route('question.show', ['id' => $id]);
-        }
+        $this->authorize('update', $question);
 
         $post = Post::findOrFail($question->post_id);
 
@@ -299,10 +296,7 @@ class PostController extends Controller
         
         $answer = Answer::findOrFail($id);
 
-        // Check if the logged-in user is the author of the answer 
-        /*if (Auth::id() !== $answer->author_id) {
-            return redirect()->route('question.show', ['id' => $id]);
-        }*/
+        $this->authorize('update', $answer);
 
         $post = Post::findOrFail($answer->post_id);
 
@@ -322,6 +316,7 @@ class PostController extends Controller
     public function vote(Request $request, $questionId)
     {
         $userId = auth()->id();
+
         // Fetch the question to check if it's closed
         $question = Question::find($questionId);
 
@@ -493,9 +488,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        if (Auth::id() !== $question->author_id && !Auth::user()->is_mod) {
-            return redirect()->route('question.show', $id)->with('error', 'You are not authorized to close this question.');
-        }
+        $this->authorize('close', $question);
 
         // Close the question
         $question->closed = true;
@@ -528,9 +521,7 @@ class PostController extends Controller
         }
 
         // Only allow the question author to choose an answer
-        if (auth()->id() !== $question->author->id) {
-            return redirect()->back()->with('error', 'You are not authorized to mark this answer as chosen.');
-        }
+        $this->authorize('update', $question);
 
         // Set this answer as chosen
         $answer->chosen = true;
@@ -553,9 +544,7 @@ class PostController extends Controller
         $question = Question::with(['answers', 'tags'])->findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        if (Auth::id() !== $question->author_id && !Auth::user()->is_mod) {
-            return redirect()->route('question.show', $id)->with('error', 'You are not authorized to delete this question.');
-        }
+        $this->authorize('delete', $question);
 
         // Delete related answers
         foreach ($question->answers as $answer) {
@@ -584,9 +573,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        if (Auth::id() !== $answer->author_id && !Auth::user()->is_mod) {
-            return redirect()->route('question.show', $answer->question->id)->with('error', 'You are not authorized to delete this answer.');
-        }
+        $this->authorize('delete', $answer);
 
         $post = $answer->post;
         $post->delete(); // Delete the post
