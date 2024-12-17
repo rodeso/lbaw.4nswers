@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <title>4NSWERS - Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('js/profile.js') }}"></script>
     <style>
         .scroll-banner::-webkit-scrollbar {
             display: none;
@@ -77,25 +78,4 @@
     </div>
 
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const scrollLinks = document.querySelectorAll('a[href^="#"]');
-        
-        scrollLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    });
-</script>
 </html>

@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
     <title>4NSWERS - Post Question</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src= "{{ asset('js/posting.js') }}"></script>
     <style>
         .scroll-banner::-webkit-scrollbar {
             display: none;
