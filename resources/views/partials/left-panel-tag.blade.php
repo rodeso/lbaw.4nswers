@@ -5,15 +5,51 @@
         <h2 class="text-lg font-bold text-center">{{ $tag->name }}</h2>
         <p class="text-sm text-center">{{ $tag->description }}</p>
         <p class="text-sm text-center">Followed by: {{ $tag->follower_count }}</p>
-        <form method="POST" action="{{ route('admin-dashboard.deleteTag', $tag->id) }}">
+        <form method="POST" action="{{ route('tags.toggle-follow', $tag->id) }}">
             @csrf
-            @method('POST')
             <button 
-                type="submit" 
+                id="follow-toggle" 
                 class="px-4 py-2 text-l w-24 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                type="submit"
             >
-                Follow
+                {{ $tag->is_following ? 'Unfollow' : 'Follow' }}
             </button>
         </form>
     </div>
 </aside>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const tagId = {{ $tag->id }};
+        const button = $('#follow-toggle');
+
+        button.on('click', function (e) {
+            e.preventDefault(); // Prevent the default behavior
+
+            const isFollowing = button.text().trim() === 'Unfollow';
+            const url = `/tags/${tagId}/toggle-follow`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                success: function (response) {
+                    if (response.status === 'followed') {
+                        button.text('Unfollow');
+                        button.removeClass('btn-primary').addClass('btn-danger');
+                    } else if (response.status === 'unfollowed') {
+                        button.text('Follow');
+                        button.removeClass('btn-danger').addClass('btn-primary');
+                    }
+                },
+                error: function () {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
+</script>
