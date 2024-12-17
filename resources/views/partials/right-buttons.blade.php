@@ -33,12 +33,30 @@
             class="w-full p-2 border border-gray-300 rounded-md"
             placeholder="Search posts..."
         />
+        <!-- Tag Filter Dropdown -->
+        <div id="tag-dropdown" class="relative w-1/5">
+            <button
+                id="tag-dropdown-btn"
+                class="w-full p-2 border border-gray-300 rounded-md text-left"
+            >
+                All Tags
+            </button>
+            <div id="tag-dropdown-menu" class="absolute left-0 w-full bg-white shadow-lg rounded-md mt-2 hidden z-10">
+                <div
+                    class="p-2 cursor-pointer hover:bg-gray-100 rounded-md"
+                    data-tag-id=""
+                >
+                    All Tags
+                </div>
+            </div>
+        </div>
         <button id="search-close" class="ml-4 text-gray-500 hover:text-gray-800">
             ✖
         </button>
     </div>
     <div id="search-results" class="absolute bg-white w-full p-4 rounded-lg shadow-md hidden">
-    <!-- Results will be dynamically added here -->
+        <!-- Results will be dynamically added here -->
     </div>
 </div>
+
 

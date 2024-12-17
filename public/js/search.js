@@ -1,58 +1,125 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+    const searchButton = document.getElementById("search-button");
+    const searchResults = document.getElementById("search-results");
+    const tagDropdownBtn = document.getElementById("tag-dropdown-btn");
+    const tagDropdownMenu = document.getElementById("tag-dropdown-menu");
+    const searchClose = document.getElementById("search-close");
+    let selectedTagId = ""; // Default to no tag
+    let debounceTimeout;
 
+    // Function to fetch tags and populate the dropdown
+    const fetchTags = async () => {
+        try {
+            const response = await fetch("/api/tags/fetch"); // Adjust endpoint
+            if (!response.ok) throw new Error("Failed to fetch tags");
 
-document.getElementById('search-button').addEventListener('click', () => {
-    document.getElementById('search-container').classList.remove('hidden');
-});
+            const tags = await response.json();
 
-document.getElementById('search-close').addEventListener('click', () => {
-    document.getElementById('search-container').classList.add('hidden');
-});
+            // Populate dropdown
+            tagDropdownMenu.innerHTML = ""; // Clear existing options
+            tags.forEach(tag => {
+                const tagOption = document.createElement("div");
+                tagOption.className = "p-2 cursor-pointer hover:bg-gray-100 rounded-md";
+                tagOption.setAttribute("data-tag-id", tag.id);
+                tagOption.textContent = tag.name;
+                tagDropdownMenu.appendChild(tagOption);
+            });
 
-//AJAX
+            // Add event listener for tag selection
+            tagDropdownMenu.addEventListener("click", (e) => {
+                const selectedTag = e.target;
+                selectedTagId = selectedTag.getAttribute("data-tag-id");
+                tagDropdownBtn.textContent = selectedTag.textContent;
+                tagDropdownMenu.classList.add("hidden");
+                // Trigger a search with the new tag
+                if (searchInput.value.trim().length > 2) {
+                    fetchSearchResults(searchInput.value.trim(), selectedTagId);
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching tags:", error);
+        }
+    };
 
-document.getElementById('search-input').addEventListener('input', function () {
-    const query = this.value.trim();
+    // Function to fetch search results
+    const fetchSearchResults = async (query, tagId) => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            try {
+                const response = await fetch(`/api/search?query=${encodeURIComponent(query)}&tag=${encodeURIComponent(tagId)}`);
+                if (!response.ok) throw new Error("Failed to fetch search results");
 
-    if (query.length < 3) {
-        document.getElementById('search-results').classList.add('hidden');
-        return;
-    }
+                const results = await response.json();
 
-    fetch(`/api/search?query=${encodeURIComponent(query)}`) // Use the API endpoint
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch search results');
+                // Clear previous results
+                searchResults.innerHTML = "";
+
+                if (results.length > 0) {
+                    searchResults.classList.remove("hidden");
+                    results.forEach(result => {
+                        const resultItem = document.createElement("div");
+                        resultItem.className = "py-2 border-b border-gray-300";
+                        resultItem.innerHTML = `
+                            <a href="/questions/${result.id}" class="block hover:bg-gray-100 rounded-md p-2">
+                                <p class="font-bold">${result.title}</p>
+                                <p class="text-sm text-gray-500">
+                                    ${result.post.body.substring(0, 100)}...
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    ${result.tags.map(tag => `#${tag.name}`).join(" ")}
+                                </p>
+                            </a>
+                        `;
+                        searchResults.appendChild(resultItem);
+                    });
+                } else {
+                    searchResults.classList.add("hidden");
+                }
+            } catch (error) {
+                console.error("Error fetching search results:", error);
             }
-            return response.json();
-        })
-        .then(data => {
-            const resultsContainer = document.getElementById('search-results');
-            resultsContainer.innerHTML = ''; // Clear previous results
+        }, 300); // Debounce delay
+    };
 
-            if (data.length === 0) {
-                resultsContainer.innerHTML = '<p class="text-gray-500">No results found.</p>';
-            } else {
-                data.forEach(question => {
-                    const resultItem = document.createElement('div');
-                    resultItem.classList.add('p-2', 'border-b', 'border-gray-300');
-                    resultItem.innerHTML = `
-                        <a href="/questions/${question.id}" class="block hover:bg-gray-100 rounded-md p-2">
-                            <p class="font-bold">${question.title}</p>
-                            <p class="text-sm text-gray-500">
-                                ${question.post.body.substring(0, 100)}...
-                            </p>
-                        </a>
-                    `;
-                    resultsContainer.appendChild(resultItem);
-                });
-            }
+    // Fetch tags on page load
+    await fetchTags();
 
-            resultsContainer.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error('Error fetching search results:', error);
-        });
+    // Event Listener for Search Input
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim();
+        if (query.length > 2) {
+            fetchSearchResults(query, selectedTagId);
+        } else {
+            searchResults.classList.add("hidden");
+        }
+    });
+
+    // Toggle tag dropdown menu
+    tagDropdownBtn.addEventListener("click", () => {
+        tagDropdownMenu.classList.toggle("hidden");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!tagDropdownMenu.contains(e.target) && e.target !== tagDropdownBtn) {
+            tagDropdownMenu.classList.add("hidden");
+        }
+    });
+
+    // Close button to hide the search container
+    searchClose.addEventListener("click", () => {
+        searchInput.value = "";
+        searchResults.innerHTML = "";
+        selectedTagId = "";
+        tagDropdownBtn.textContent = "All Tags";
+        searchContainer.classList.add("hidden");
+    });
+
+    // Event Listener for Search Button
+    searchButton.addEventListener("click", () => {
+        searchContainer.classList.toggle("hidden");
+    });
+    
 });
-
-
-

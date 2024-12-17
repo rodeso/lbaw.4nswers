@@ -168,6 +168,7 @@ CREATE TABLE IF NOT EXISTS question_tags (
 );
 
 CREATE INDEX tag_name_tsvector_idx ON tag USING GIN (to_tsvector('english', name));
+CREATE INDEX user_name_tsvector_idx ON lbaw24112.user USING GIN (to_tsvector('simple', name));
 
 
 INSERT INTO lbaw24112.user(id, name, nickname, email, password, birth_date, is_mod)
