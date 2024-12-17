@@ -1,3 +1,4 @@
+<!-- CSS dependent om the JS DOM -->
 <style>
     .tag {
         cursor: pointer;

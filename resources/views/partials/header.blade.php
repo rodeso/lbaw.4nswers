@@ -231,6 +231,11 @@
         transform: translateX(0);
     }
 
+    .squircle {
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), transparent);
+            clip-path: path("M20,2 Q38,2,38,20 Q38,38,20,38 Q2,38,2,20 Q2,2,20,2 Z");
+        }
+
 </style>
 
 
@@ -253,8 +258,8 @@
     <div class="flex items-center space-x-6 mx-auto relative"> 
         <button id="notificationButton" class="bg-[color:#444444] p-2 rounded-full squircle"
             data-logged-in="{{ Auth::check() ? 'true' : 'false' }}">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.5V11a6 6 0 00-9.33-4.945M9 17h-.01" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z" />
             </svg>
         </button>
         <button id="userButton" class="bg-[color:#444444] p-2 rounded-full squircle"
