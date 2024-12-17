@@ -155,7 +155,9 @@
             <!-- Question Tags & Moderator Flags-->
             <div class="flex flex-wrap items-center space-x-2">
                 @foreach ($question->tags as $tag)
-                    <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
+                    <a href="{{ route('tag', ['id' => $tag->id]) }}">
+                        <span class="bg-[color:#FCF403] text-black-800 text-sm font-bold px-2 py-1 rounded">{{ $tag->name }}</span>
+                    </a>
                 @endforeach
                 @foreach ($question->post->moderatorNotifications as $questionModNotification)
                     <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
