@@ -100,6 +100,9 @@ Route::get('/answers/{id}/edit', [PostController::class, 'showEditAnswer'])->nam
 Route::put('/answers/{id}/update', [PostController::class, 'updateAnswer'])->name('answer.update');
 Route::delete('/answers/{id}/delete', [PostController::class, 'deleteAnswer'])->name('answer.delete');
 
+// Edit Comment
+Route::delete('/comments/{id}/delete', [PostController::class, 'deleteComment'])->name('comment.delete');
+
 // Posting Question
 Route::post('/questions', [PostController::class, 'storeQuestion'])->name('question.store');
 Route::get('/new-question', [PostController::class, 'showNewQuestion'])->name('new-question');

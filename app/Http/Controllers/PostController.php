@@ -600,6 +600,22 @@ class PostController extends Controller
         return redirect()->route('question.show', $answer->question->id)->with('success', 'The answer has been deleted successfully.');
     }
 
+    public function deleteComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+
+        // Check if the authenticated user is the author or an admin
+        $this->authorize('delete', $comment);
+
+        $post = $comment->post;
+        $post->delete(); // Delete the post
+
+        $comment->delete(); // Delete the comment
+
+        // Redirect to a suitable page with success message
+        return redirect()->route('question.show', $comment->answer->question->id)->with('success', 'The answer has been deleted successfully.');
+    }
+
 
 }
 

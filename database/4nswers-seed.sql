@@ -226,6 +226,8 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00'),
 ('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
+INSERT INTO post(body, time_stamp, edit_time)
+VALUES ('teste de edit', '2024-08-28 00:00:00', '2024-12-17 22:00:00');
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
 VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
@@ -242,7 +244,8 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
 ('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14),
-('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15);
+('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15),
+('teste de edit', 'Green', '2024-12-18 22:00:00', 2, 16);
 
 
 INSERT INTO question_tags(question_id, tag_id)
@@ -260,7 +263,9 @@ VALUES (1, 1),
 (12, 6),
 (13, 7),
 (14, 7),
-(15, 8);
+(15, 8),
+(16, 4);
+
 
 INSERT INTO post(body)
 VALUES ('Have you tried turning it off and on again?'),

@@ -95,19 +95,10 @@
                                         @endif
                                         <!-- Delete Comment -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <form 
-                                                action="" 
-                                                method="POST" 
-                                                onsubmit="return confirm('Are you sure you want to delete this comment?');"
-                                            >
+                                            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button 
-                                                    type="submit" 
-                                                    class="block text-white w-full text-left"
-                                                >
-                                                    Delete Comment
-                                                </button>
+                                                <button type="submit">Delete Comment</button>
                                             </form>
                                         </li>
                                     @endif
@@ -116,7 +107,12 @@
                                     @if (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
                                         <!-- Actions for Regular Users -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <a href="#">Report Comment</a>
+                                        <a 
+                                        href="{{ route('posts.report', $question->post_id) }}" 
+                                        class="block text-white"
+                                        title="Report this question for moderation"
+                                        >
+                                            Report Comment</a>
                                         </li>
                                     @endif
                                 </ul>
