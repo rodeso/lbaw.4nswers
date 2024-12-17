@@ -68,23 +68,41 @@
                     <h2 class="text-xl font-bold">${nickname} Menu</h2>
                     @if (Auth::check())
                         <ul class="mt-4">
-                            <a href="{{ route('user.profile', ['id' => Auth::id()]) }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li></a>
-                            <a href=""><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li></a>
+                            <a href="{{ route('user.profile', ['id' => Auth::id()]) }}">
+                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Profile</li>
+                            </a>
+                            <a href="">
+                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Settings</li>
+                            </a>
+                            <hr class="border-gray-600 my-4">
+                            <a href="{{ route('hall-of-fame') }}">
+                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li>
+                            </a>
+                            <a href="{{ route('about.us') }}">
+                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li>
+                            </a>
+                            <a href="{{ route('terms-and-conditions') }}">
+                                <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li>
+                            </a>
 
                             <hr class="border-gray-600 my-4">
-
-                            <a href="{{ route('hall-of-fame') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Hall of Fame</li></a>
-                            <a href="{{ route('about.us') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">About Us</li></a>
-                            <a href="{{ route('terms-and-conditions') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li></a>
-                            
-
-                            @if (Auth::user()->is_admin || Auth::user()->is_mod)
-                                <hr class="border-gray-600 my-4">
-                                <a href="{{ route('admin-dashboard.users') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard</li></a>
-                            @endif
-                            @if (Auth::user()->is_admin || Auth::user()->is_mod)
-                                <a href="{{ route('admin-dashboard.tags') }}"><li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Admin Dashboard (tags) (this is a placeholder, dk how to put this)</li></a>
-                            @endif
+                            <li 
+                                id="adminDashboardBtn" 
+                                class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded cursor-pointer"
+                            >
+                                Admin Dashboard
+                            </li>
+                            <ul id="adminDropdown" class="hidden ml-4 space-y-2">
+                                <a href="{{ route('admin-dashboard.users') }}">
+                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Users</li>
+                                </a>
+                                <a href="">
+                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Posts</li>
+                                </a>
+                                <a href="{{ route('admin-dashboard.tags') }}">
+                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Tags</li>
+                                </a>
+                            </ul>
                         </ul>
                     @else
                         <a href="{{ route('login') }}">
@@ -93,21 +111,27 @@
                     @endif
                 </div>
                 <div>
-                    @if (Auth::check())
-                        <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
-                        </form>
-                    @endif
+                    <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
+                    </form>
                 </div>
             `;
             document.body.appendChild(drawer);
+
+            // Add toggle functionality to the Admin Dashboard button
+            const adminDashboardBtn = document.getElementById("adminDashboardBtn");
+            const adminDropdown = document.getElementById("adminDropdown");
+            adminDashboardBtn.addEventListener("click", () => {
+                adminDropdown.classList.toggle("hidden");
+            });
 
             // Trigger the slide-in animation
             setTimeout(() => {
                 drawer.classList.remove("translate-x-full");
             }, 10);
         };
+
 
         // Function to Open Notification Drawer
         const openNotificationDrawerMenu = () => {
