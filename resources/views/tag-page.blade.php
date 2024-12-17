@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('rose.ico') }}?v=1.0">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <title>4NSWERS - Profile</title>
+    <title>4NSWERS - {{ $tag->name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .scroll-banner::-webkit-scrollbar {
