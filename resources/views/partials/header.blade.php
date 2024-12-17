@@ -58,6 +58,19 @@
             }
         });
 
+        // Event Listener for Admin Dashboard Button
+        document.addEventListener("DOMContentLoaded", () => {
+            const adminDashboardBtn = document.getElementById("adminDashboardBtn");
+            const adminDropdown = document.getElementById("adminDropdown");
+
+            if (adminDashboardBtn && adminDropdown) {
+                adminDashboardBtn.addEventListener("click", () => {
+                    adminDropdown.classList.toggle("hidden");
+                });
+            }
+        });
+
+
         // Function to Open User Drawer
         const openUserDrawerMenu = (nickname) => {
             const drawer = document.createElement("div");
@@ -122,13 +135,6 @@
                 </div>
             `;
             document.body.appendChild(drawer);
-
-            // Add toggle functionality to the Admin Dashboard button
-            const adminDashboardBtn = document.getElementById("adminDashboardBtn");
-            const adminDropdown = document.getElementById("adminDropdown");
-            adminDashboardBtn.addEventListener("click", () => {
-                adminDropdown.classList.toggle("hidden");
-            });
 
             // Trigger the slide-in animation
             setTimeout(() => {
