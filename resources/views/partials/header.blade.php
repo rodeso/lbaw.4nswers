@@ -85,24 +85,26 @@
                                 <li class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Terms & Conditions</li>
                             </a>
 
-                            <hr class="border-gray-600 my-4">
-                            <li 
-                                id="adminDashboardBtn" 
-                                class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded cursor-pointer"
-                            >
-                                Admin Dashboard
-                            </li>
-                            <ul id="adminDropdown" class="hidden ml-4 space-y-2">
-                                <a href="{{ route('admin-dashboard.users') }}">
-                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Users</li>
-                                </a>
-                                <a href="">
-                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Posts</li>
-                                </a>
-                                <a href="{{ route('admin-dashboard.tags') }}">
-                                    <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Tags</li>
-                                </a>
-                            </ul>
+                            @if (Auth::user()->is_admin || Auth::user()->is_mod)
+                                <hr class="border-gray-600 my-4">
+                                <li 
+                                    id="adminDashboardBtn" 
+                                    class="py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded cursor-pointer"
+                                >
+                                    Admin Dashboard
+                                </li>
+                                <ul id="adminDropdown" class="hidden ml-4 space-y-2">
+                                    <a href="{{ route('admin-dashboard.users') }}">
+                                        <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Users</li>
+                                    </a>
+                                    <a href="">
+                                        <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Posts</li>
+                                    </a>
+                                    <a href="{{ route('admin-dashboard.tags') }}">
+                                        <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Tags</li>
+                                    </a>
+                                </ul>
+                            @endif
                         </ul>
                     @else
                         <a href="{{ route('login') }}">
@@ -111,10 +113,12 @@
                     @endif
                 </div>
                 <div>
-                    <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
-                    </form>
+                    @if (Auth::check())
+                        <form id="logoutForm" method="GET" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="w-full text-left py-2 px-4 hover:bg-[color:#FF006E] rounded">Logout</button>
+                        </form>
+                    @endif
                 </div>
             `;
             document.body.appendChild(drawer);
