@@ -58,7 +58,11 @@ class TagPageController extends Controller
                 $query->where('tag_id', $id); // Filter questions that have the selected tag
             })
             ->get();
-    
+            
+        $questions = $questions->sortByDesc(function ($question) {
+            return $question->positive_votes - $question->negative_votes; // Sorting by vote difference
+        });
+
         // Calculate the vote difference for each question
         foreach ($questions as $question) {
             $question->vote_difference = $question->positive_votes - $question->negative_votes;
