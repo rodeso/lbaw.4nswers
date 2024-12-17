@@ -21,9 +21,9 @@ class SearchController extends Controller
         $questions = Question::where(function ($q) use ($query) {
             if ($query) {
                 // Filter by title or body
-                $q->where('title', 'ILIKE', "%$query%")
+                $q->whereRaw("to_tsvector('english', title) @@ plainto_tsquery('english', ?)", [$query])
                   ->orWhereHas('post', function ($postQuery) use ($query) {
-                      $postQuery->where('body', 'ILIKE', "%$query%");
+                      $postQuery->whereRaw("to_tsvector('english', body) @@ plainto_tsquery('english', ?)", [$query]);
                   });
             }
         })

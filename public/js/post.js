@@ -113,3 +113,34 @@ function toggleAnswerForm() {
         button.textContent = "Close Answer Form.";
     }
 }
+
+// Toggle Comment Form
+function toggleCommentForm(answerId) {
+    const form = document.getElementById('commentForm-' + answerId);
+    const button = document.getElementById('toggleCommentButton-' + answerId);
+    
+    // Toggle visibility of the form
+    form.classList.toggle('hidden');
+    
+    // Update button text based on the form's state
+    if (form.classList.contains('hidden')) {
+        button.textContent = "Comment here!";
+    } else {
+        button.textContent = "Close Comment Form.";
+    }
+}
+
+function toggleCommentsVisibility(answerId) {
+    const commentsSection = document.getElementById('commentsSection-' + answerId);
+    const toggleButton = document.getElementById('toggleCommentsButton-' + answerId);
+    
+    // Toggle visibility of the comments section
+    commentsSection.classList.toggle('hidden');
+    
+    // Update button text based on the visibility of comments
+    if (commentsSection.classList.contains('hidden')) {
+        toggleButton.textContent = "Show Comments";
+    } else {
+        toggleButton.textContent = "Hide Comments";
+    }
+}
