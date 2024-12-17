@@ -13,6 +13,7 @@ use App\Http\Controllers\TermsConditionsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\TagPageController;
 
 use App\Http\Controllers\SearchController;
 
@@ -114,6 +115,14 @@ Route::get('/profile', [UserController::class, 'index'])->name('profile');
 
 // User Profiles
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
+
+
+// Tag Page
+Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
+Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');
+Route::get('/tags/{id}/is-following', [TagPageController::class, 'isFollowing']);
+
+
 
 //Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');

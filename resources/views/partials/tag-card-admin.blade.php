@@ -3,7 +3,7 @@
         <div class="relative flex justify-between space-x-[10px] items-center">
             <div class="relative flex items-center justify-between w-full p-4 text-white bg-[color:#4B1414] rounded-md font-bold">
 
-                <span class="px-4 py-2 text-l w-28 text-center text-white bg-green-500 rounded-lg">{{ $tag->name }}</span>
+                <a href="{{ route('tag', ['id' => $tag->id]) }}"><span class="px-4 py-2 text-l w-28 text-center text-white bg-green-500 rounded-lg">{{ $tag->name }}</span></a>
             
                 <span class="px-4 py-2 text-l flex-1 mx-4 text-center text-white bg-gray-700 rounded-lg">{{ $tag->description }}</span>
         
