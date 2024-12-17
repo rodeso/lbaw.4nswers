@@ -18,38 +18,3 @@
     </div>
 </aside>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        const tagId = {{ $tag->id }};
-        const button = $('#follow-toggle');
-
-        button.on('click', function (e) {
-            e.preventDefault(); // Prevent the default behavior
-
-            const isFollowing = button.text().trim() === 'Unfollow';
-            const url = `/tags/${tagId}/toggle-follow`;
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                success: function (response) {
-                    if (response.status === 'followed') {
-                        button.text('Unfollow');
-                        button.removeClass('btn-primary').addClass('btn-danger');
-                    } else if (response.status === 'unfollowed') {
-                        button.text('Follow');
-                        button.removeClass('btn-danger').addClass('btn-primary');
-                    }
-                },
-                error: function () {
-                    alert('An error occurred. Please try again.');
-                }
-            });
-        });
-    });
-</script>

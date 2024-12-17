@@ -14,9 +14,7 @@ use App\Models\Comment;
 
 class TagPageController extends Controller
 {
-    public function index($id)
-    {   
-
+    public function index($id) {   
         $loggedUserId = auth()->id(); // Get the logged-in user ID
         $user = User::find($loggedUserId); // Get the logged-in user
         // Fetch notifications where the user is the owner of the related post
@@ -77,57 +75,43 @@ class TagPageController extends Controller
             ->exists();
 
         $tag->is_following = $isFollowing;
-
     
         // Return the profile view with user data
         return view('tag-page', compact('user', 'questions', 'tags', 'tag', 'notifications'));
     }
 
-        public function toggleFollow(Request $request, $id)
-    {
+    public function toggleFollow(Request $request, $id) {
         $userId = auth()->id(); // Get the logged-in user ID
-
+    
         if (!is_numeric($id) || $id <= 0) {
-            return response()->json(['error' => 'Invalid tag ID.'], 400);
+            return redirect()->route('home')->with('alert', 'Invalid ID!');
         }
-
+    
         $tag = Tag::find($id); // Fetch the tag
-
+    
         if (!$tag) {
-            return response()->json(['error' => 'Tag not found.'], 404);
+            return redirect()->route('home')->with('alert', 'Tag not found!');
         }
-
+    
         // Check if the user already follows the tag
         $alreadyFollowing = DB::table('user_follows_tag')
             ->where('user_id', $userId)
             ->where('tag_id', $id)
             ->exists();
-
+    
         if ($alreadyFollowing) {
             // Unfollow the tag
             DB::table('user_follows_tag')
                 ->where('user_id', $userId)
                 ->where('tag_id', $id)
                 ->delete();
-            return response()->json(['message' => 'Unfollowed the tag.', 'status' => 'unfollowed']);
         } else {
             // Follow the tag
             DB::table('user_follows_tag')->insert([
                 'user_id' => $userId,
                 'tag_id' => $id,
             ]);
-            return response()->json(['message' => 'Followed the tag.', 'status' => 'followed']);
         }
-    }
-
-        public function isFollowing($id)
-    {
-        $userId = auth()->id();
-        $isFollowing = DB::table('user_follows_tag')
-            ->where('user_id', $userId)
-            ->where('tag_id', $id)
-            ->exists();
-
-        return response()->json(['isFollowing' => $isFollowing]);
+        return redirect()->route('tag', ['id' => $id]);
     }
 }
