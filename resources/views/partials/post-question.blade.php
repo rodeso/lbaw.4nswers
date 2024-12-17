@@ -185,7 +185,7 @@
                                     </a>
                                 </li>
                                 <!-- Delete Flag -->
-                                @if ($question->post->notifications->isNotEmpty())
+                                @if ($question->post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
                                     <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <form 
                                             action="{{ route('posts.flag.delete', $question->post->id) }}" 
