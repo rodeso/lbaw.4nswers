@@ -58,7 +58,7 @@
             <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">Subscribed Tags</h4>
                 @foreach ($user_tags as $tag)
                     <li class="list-none">
-                        <a class="font-bold mb-4 text-[color:#C18A8A] pl-4">
+                        <a href="{{ route('tag', ['id' => $tag->id]) }}" class="font-bold mb-4 text-[color:#C18A8A] pl-4">
                             {{ $tag->name }}
                         </a>
                     </li>
@@ -67,8 +67,7 @@
             <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">No Tags Subscribed</h4>
         @else
         <a href="{{ route('login') }}" class="font-bold mb-4 text-[color:#C18A8A] block pl-4">
-            <span>Login to Subscribe to</span><br>
-            <span>Tags</span>
+            <span>Login to Follow Tags</span>
         </a>
 
         @endif

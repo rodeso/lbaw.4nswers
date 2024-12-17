@@ -550,7 +550,7 @@ CREATE OR REPLACE FUNCTION decrement_follower_count()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Decrement the follower_count in the tags table
-    UPDATE tags
+    UPDATE tag
     SET follower_count = follower_count - 1
     WHERE id = OLD.tag_id;
 
@@ -562,3 +562,4 @@ CREATE TRIGGER on_user_follows_tag_delete
 AFTER DELETE ON user_follows_tag
 FOR EACH ROW
 EXECUTE FUNCTION decrement_follower_count();
+
