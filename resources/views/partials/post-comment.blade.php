@@ -46,12 +46,12 @@
                                     @if (auth()->id() === $comment->author->id)
                                         <!-- Actions for the Comment Author -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <a href="#">Edit Comment</a>
+                                            <a href="{{ route('comment.edit', $comment->id) }}">Edit Comment</a>
                                         </li>
                                         @if (!auth()->user()->is_mod)
                                             <!-- Only non-moderators see this delete button -->
                                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                                <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit">Delete Comment</button>

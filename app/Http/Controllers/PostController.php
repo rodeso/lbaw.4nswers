@@ -309,6 +309,26 @@ class PostController extends Controller
         return view('edit-answer', compact('user_tags', 'answer', 'post', 'notifications'));
     }
 
+    public function showEditComment($id)
+    {
+        $notifications = Controller::getNotifications();
+        
+        $comment = Comment::findOrFail($id);
+
+        $this->authorize('update', $comment);
+
+        $post = Post::findOrFail($comment->post_id);
+
+        // Tags that the user follows
+        $user_tags = Auth::user()
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
+            : collect();
+
+
+        return view('edit-comment', compact('user_tags', 'comment', 'post', 'notifications'));
+    }
+
+
     /*
     Votes -------------------------------------------------------------------------------------------------------------------------
     */
@@ -480,6 +500,22 @@ class PostController extends Controller
         ]);
 
         return redirect()->route('question.show', $answer->question->id)->with('success', 'Answer updated successfully!');
+    }
+
+    public function updateComment(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'body' => 'required|string|max:4096',
+        ]);
+
+        // Find the answer and update it
+        $comment = Comment::findOrFail($id);
+        $post = Post::findOrFail($comment->post_id);
+        $post->update([
+            'body' => $validated['body'],
+        ]);
+
+        return redirect()->route('question.show', $comment->answer->question->id)->with('success', 'Comment updated successfully!');
     }
 
     public function closeQuestion($id)
