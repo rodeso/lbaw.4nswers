@@ -42,6 +42,7 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 // Admin Dashboard
 Route::get('/admin-dashboard/users', [AdminDashboardController::class, 'users'])->name('admin-dashboard.users');
 Route::get('/admin-dashboard/tags', [AdminDashboardController::class, 'tags'])->name('admin-dashboard.tags');
+Route::get('/admin-dashboard/posts', [AdminDashboardController::class, 'posts'])->name('admin-dashboard.posts');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
@@ -119,7 +120,7 @@ Route::get('/profile', [UserController::class, 'index'])->name('profile');
 // User Profiles
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
 
-
+// Follow User
 // Tag Page
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
 Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');
