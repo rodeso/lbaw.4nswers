@@ -157,7 +157,11 @@
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <a href="{{ route('question.edit', $question->id) }}">Edit Question</a>
                             </li>
-                            
+                            <!-- Edit Tags -->
+                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
+                            </li>
+
                             @if (!$question->closed)
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <form action="{{ route('question.close', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to close this question?');">
@@ -168,9 +172,6 @@
                             @endif
                             @if (!auth()->user()->is_mod)
                                 <!-- Delete button for authors who are not moderators -->
-                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
-                                </li>
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
                                         @csrf
@@ -185,6 +186,10 @@
                         <!-- Actions for Moderators -->
                         @if (auth()->user()->is_mod)
                             @if (auth()->id() !== $question->author->id)
+                                <!-- Edit Tags button for moderators -->
+                                <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
+                                    <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
+                                </li>
                                 <!-- Flag Post -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <a 
@@ -215,10 +220,6 @@
                                     </li>
                                 @endif
                             @endif
-                            <!-- Edit Tags button for moderators -->
-                            <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
-                            </li>
                             <!-- Delete button for moderators --> 
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                 <form 

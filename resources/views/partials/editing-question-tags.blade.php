@@ -58,26 +58,32 @@
 
         <!-- Add New Tags -->
         <div class="space-y-2">
-            <label for="new-tags" class="text-white">Add New Tags</label>
-            <div class="flex space-x-2">
-                <input 
-                    type="text" 
-                    id="new-tag-name" 
-                    placeholder="Tag Name" 
-                    class="w-full p-2 bg-[color:#4B1414] text-white rounded-lg"
-                />
-                <input 
-                    type="text" 
-                    id="new-tag-description" 
-                    placeholder="Description" 
-                    class="w-full p-2 bg-[color:#4B1414] text-white rounded-lg"
-                />
-                <button type="button" id="add-new-tag" class="p-2 bg-[color:#4B1414] text-white rounded-lg">
-                    Add
-                </button>
+                <!-- Input for new tags -->
+                <div class="flex items-center space-x-4">
+                    <input 
+                        type="text" 
+                        id="new-tag-name" 
+                        class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]" 
+                        placeholder="New Tag Name"
+                    >
+                    <input 
+                        type="text" 
+                        id="new-tag-description" 
+                        class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]" 
+                        placeholder="Tag Description"
+                    >
+                </div>
+                <!-- Add Tag Button -->
+                <div class="flex justify-center">
+                    <button 
+                        type="button" 
+                        id="add-new-tag" 
+                        class="w-[12rem] px-6 py-2 text-sm bg-[color:#4B1414] text-white rounded hover:bg-[color:#FF006E] transition"
+                    >
+                        Add Tag
+                    </button>
+                </div>
             </div>
-        </div>
-
         <!-- Submit Button -->
         <button type="submit" class="w-full p-2 bg-[color:#4B1414] text-white rounded-lg">Save Changes</button>
     </form>
