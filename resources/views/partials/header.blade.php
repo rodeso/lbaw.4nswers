@@ -152,66 +152,117 @@
                     <ul class="overflow-auto flex-1">
                         @if (Auth::check())
                             @forelse ($notifications as $notification)
-                                <li class="py-2 bg-[color:#C18A8A] px-4 rounded mb-3">
 
-                                    @if (!$notification->reason)
+                                @if (!$notification->report)
 
-                                        <div class="font-bold text-lg text-[color:#4B1414]">
-                                            {{ $notification->content }}
+                                    <li class="py-2 bg-[color:#C18A8A] px-4 rounded mb-3">
+
+                                        @if ((!$notification->reason) && (!$notification->report))
+
+                                            <div class="font-bold text-lg text-[color:#4B1414] break-words">
+                                                {{ $notification->content }}
+                                            </div>
+                                            @if ($notification->question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the question: "{{ $notification->question_title }}"
+                                                </div>
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @elseif ($notification->answer_question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the answer: "{{ $notification->post_body }}"
+                                                </div>
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @elseif ($notification->comment_question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the comment: "{{ $notification->post_body }}"
+                                                </div>
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @endif
+                                            <div class="text-sm text-black">
+                                                {{ $notification->time_stamp->diffForHumans() }}
+                                            </div>                                          
+
+                                        @elseif (($notification->reason) && (!$notification->report))
+
+                                            <div class="font-bold text-lg text-[color:#4B1414] break-words">
+                                                Moderation flagged you with "{{ $notification->reason }}"!
+                                            </div>
+                                            @if ($notification->question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the question: "{{ $notification->question_title }}"
+                                                </div>
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    Description: {{ $notification->content }}
+                                                </div>                                            
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @elseif ($notification->answer_question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the answer: "{{ $notification->post_body }}"
+                                                </div>
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    Description: {{ $notification->content }}
+                                                </div>
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @elseif ($notification->comment_question_id)
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    On the comment: "{{ $notification->post_body }}"
+                                                </div>
+                                                <div class="text-sm text-black mb-3 break-words">
+                                                    Description: {{ $notification->content }}
+                                                </div>
+                                                <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            @endif
+                                            <div class="text-sm text-black">
+                                                {{ $notification->time_stamp->diffForHumans() }}
+                                            </div>                                          
+
+                                        @endif
+                                                                        
+                                    </li>
+
+                                @elseif ($notification->report && (Auth::user()->is_admin || Auth::user()->is_mod))
+
+                                    <li class="py-2 bg-[color:#C18A8A] px-4 rounded mb-3">
+
+                                        <div class="font-bold text-lg text-[color:#4B1414] break-words">
+                                            A report has been issued!
                                         </div>
                                         @if ($notification->question_id)
-                                            <div class="text-sm text-black mb-3">
+                                            <div class="text-sm text-black mb-3 break-words">
                                                 On the question: "{{ $notification->question_title }}"
                                             </div>
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            <div class="text-sm text-black mb-3 break-words">
+                                                Report: {{ $notification->report }}
+                                            </div>                                         
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Go to Question.</a><br>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" class="text-blue-500">Go to Posts' Dashboard.</a>
                                         @elseif ($notification->answer_question_id)
-                                            <div class="text-sm text-black mb-3">
+                                            <div class="text-sm text-black mb-3 break-words">
                                                 On the answer: "{{ $notification->post_body }}"
                                             </div>
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            <div class="text-sm text-black mb-3 break-words">
+                                                Report: {{ $notification->report }}
+                                            </div>
+                                            <a class="font-bold text-[color:#4B1414}" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Go to Answer.</a><br>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" class="text-blue-500">Go to Posts' Dashboard.</a>
                                         @elseif ($notification->comment_question_id)
-                                            <div class="text-sm text-black mb-3">
+                                            <div class="text-sm text-black mb-3 break-words">
                                                 On the comment: "{{ $notification->post_body }}"
                                             </div>
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                            <div class="text-sm text-black mb-3 break-words">
+                                                Report: {{ $notification->report }}
+                                            </div>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Go to Comment.</a><br>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" class="text-blue-500">Go to Posts' Dashboard.</a>                    
                                         @endif
+                                        <div class="text-sm text-black">
+                                            {{ $notification->time_stamp->diffForHumans() }}
+                                        </div> 
+                                                                        
+                                    </li>
+                                    
+                                @endif
 
-                                    @else
-
-                                        <div class="font-bold text-lg text-[color:#4B1414]">
-                                            Moderation flagged you with "{{ $notification->reason }}"!
-                                        </div>
-                                        @if ($notification->question_id)
-                                            <div class="text-sm text-black mb-3">
-                                                On the question: "{{ $notification->question_title }}"
-                                            </div>
-                                            <div class="text-sm text-black mb-3">
-                                                Description: {{ $notification->content }}
-                                            </div>                                            
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
-                                        @elseif ($notification->answer_question_id)
-                                            <div class="text-sm text-black mb-3">
-                                                On the answer: "{{ $notification->post_body }}"
-                                            </div>
-                                            <div class="text-sm text-black mb-3">
-                                                Description: {{ $notification->content }}
-                                            </div>
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
-                                        @elseif ($notification->comment_question_id)
-                                            <div class="text-sm text-black mb-3">
-                                                On the comment: "{{ $notification->post_body }}"
-                                            </div>
-                                            <div class="text-sm text-black mb-3">
-                                                Description: {{ $notification->content }}
-                                            </div>
-                                            <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Check it out!</a>
-                                        @endif
-
-                                    @endif
-                                    <div class="text-sm text-black">
-                                        {{ $notification->time_stamp->diffForHumans() }}
-                                    </div>                                                                         
-                                </li>
                             @empty
                                 <li>No notifications found.</li>
                             @endforelse
