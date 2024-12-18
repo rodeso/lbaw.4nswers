@@ -130,9 +130,14 @@
         <!-- Time Posting, Moderator Flags & Menu-->
         <div class="flex items-center space-x-4 mt-4 justify-between">
             <div class="flex items-center space-x-4 mt-4">
-                <p class="text-sm text-gray-700 font-semibold">
-                    Answered {{ $answer->post->time_stamp->diffForHumans() }}!
-                </p>
+                <div>
+                    <p class="text-sm text-gray-700 font-semibold">
+                        Answered {{ $answer->post->time_stamp->diffForHumans() }}! &emsp;
+                        @if ($answer->post->edit_time)
+                            Edited {{ $answer->post->edit_time->diffForHumans() }}!
+                        @endif
+                    </p>
+                </div>
                 <div class="flex flex-wrap items-center space-x-2">
                     @foreach ($answer->post->moderatorNotifications as $modNotification)
                         <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
