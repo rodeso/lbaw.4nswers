@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Policies;
-
+use App\Models\Question;
 use App\Models\User;
 
 class QuestionPolicy
