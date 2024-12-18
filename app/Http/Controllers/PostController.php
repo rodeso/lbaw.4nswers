@@ -50,14 +50,12 @@ class PostController extends Controller
             return redirect()->route('home')->with('alert', 'Question not found.');
         }
 
+        $sortedAnswers = $question->answers->sortByDesc(function ($answer) {
+            return $answer->aura = PostController::aura($answer->id);
+        });
         // Calculate aura for each answer
-        foreach ($question->answers as $answer) {
-            $answer->aura = AuraVote::where('answer_id', $answer->id)
-                ->where('is_positive', true)
-                ->count() 
-                - AuraVote::where('answer_id', $answer->id)
-                ->where('is_positive', false)
-                ->count();
+        foreach ($sortedAnswers as $answer) {
+            $answer->aura = PostController::aura($answer->id);
         }
     
         // Tags that user follows
@@ -75,7 +73,7 @@ class PostController extends Controller
         $isFollowing = auth()->check() && $question->isFollowedByUser(auth()->id());
     
         // Pass data to view
-        return view('post', compact('question', 'user_tags', 'userVote', 'isFollowing', 'notifications'));
+        return view('post', compact('question', 'sortedAnswers', 'user_tags', 'userVote', 'isFollowing', 'notifications'));
     }
 
     /*
@@ -454,6 +452,16 @@ class PostController extends Controller
             ->count();
 
         return response()->json(['totalAura' => $totalAura]);
+    }
+
+    public function aura($answerId)
+    {
+        return AuraVote::where('answer_id', $answerId)
+            ->where('is_positive', true)
+            ->count()
+            - AuraVote::where('answer_id', $answerId)
+            ->where('is_positive', false)
+            ->count();
     }
 
     /*

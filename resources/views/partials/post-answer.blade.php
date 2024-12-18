@@ -66,7 +66,7 @@
 @endif
 
 <!-- Answers -->
-@foreach ($question->answers as $answer)
+@foreach ($sortedAnswers as $answer)
     <section 
         class="w-full rounded-lg shadow-md p-6 space-y-3 
         @if($answer->chosen) bg-green-200 border-4 border-green-600 @else bg-[color:#C18A8A] @endif">
