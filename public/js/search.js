@@ -114,7 +114,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchResults.innerHTML = "";
         selectedTagId = "";
         tagDropdownBtn.textContent = "All Tags";
-        searchContainer.classList.add("hidden");
     });
 
     // Event Listener for Search Button
