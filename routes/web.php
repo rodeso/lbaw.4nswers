@@ -72,6 +72,10 @@ Route::put('/questions/{id}/update', [PostController::class, 'updateQuestion'])-
 Route::delete('/questions/{id}/delete', [PostController::class, 'deleteQuestion'])->name('question.delete');
 Route::post('/questions/{id}/close', [PostController::class, 'closeQuestion'])->name('question.close');
 
+// Edit Question Tags
+Route::get('/questions/{id}/edit-tags', [PostController::class, 'showEditTags'])->name('question.edit-tags');
+Route::put('/questions/{id}/update-tags', [PostController::class, 'updateTags'])->name('question.update-tags');
+
 // Follow Question
 Route::post('/questions/{id}/follow', [PostController::class, 'followQuestion'])->name('question.follow');
 

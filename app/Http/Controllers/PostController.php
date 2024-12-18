@@ -288,6 +288,26 @@ class PostController extends Controller
         return view('edit-question', compact('tags', 'user_tags', 'question', 'post', 'notifications'));
     }
 
+    public function showEditTags($id)
+    {
+        $notifications = Controller::getNotifications();
+
+        $question = Question::with('tags')->findOrFail($id);
+
+        // Check if the logged-in user is the author of the question 
+        $this->authorize('update', $question);
+
+        // Tags that the user follows
+        $user_tags = Auth::user()
+            ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
+            : collect();
+
+        // Extract all the tags for selection
+        $tags = Tag::all();
+
+        return view('edit-question-tags', compact('tags', 'user_tags', 'question', 'notifications'));
+    }
+
     public function showEditAnswer($id)
     {
         $notifications = Controller::getNotifications();
@@ -492,6 +512,55 @@ class PostController extends Controller
         ]);
 
         return redirect()->route('question.show', $question->id)->with('success', 'Question updated successfully!');
+    }
+
+    public function updateTags(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'selected_tags' => 'nullable|string', // Comma-separated tag IDs
+            'new_tags' => 'nullable|string', // JSON string of new tag objects
+        ]);
+
+        // Retrieve the question
+        $question = Question::findOrFail($id);
+
+        // Ensure the user has permission to update this question
+        $this->authorize('update', $question);
+
+        // Process selected existing tags
+        $selectedTagIds = [];
+        if (!empty($validated['selected_tags'])) {
+            $selectedTagIds = array_filter(explode(',', $validated['selected_tags']), function ($tagId) {
+                return !empty($tagId) && is_numeric($tagId);
+            });
+        }
+
+        // Detach all current tags
+        $question->tags()->detach();
+
+        // Attach the selected existing tags
+        if (!empty($selectedTagIds)) {
+            $question->tags()->attach($selectedTagIds);
+        }
+
+        // Handle creation of new tags
+        $newTags = [];
+        if (!empty($validated['new_tags'])) {
+            $newTags = json_decode($validated['new_tags'], true);
+        }
+
+        foreach ($newTags as $newTag) {
+            if (!empty($newTag['name']) && !empty($newTag['description'])) {
+                $createdTag = Tag::create([
+                    'name' => $newTag['name'],
+                    'description' => $newTag['description'],
+                ]);
+                $question->tags()->attach($createdTag->id); // Attach the newly created tag
+            }
+        }
+
+        return redirect()->route('question.show', $question->id)
+            ->with('success', 'Tags updated successfully!');
     }
 
     public function updateAnswer(Request $request, $id)

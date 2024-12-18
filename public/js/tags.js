@@ -6,8 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const newTagDescriptionField = document.getElementById('new-tag-description');
     const addNewTagButton = document.getElementById('add-new-tag');
 
-    let selectedTags = []; // Array to store selected tag IDs
     let newTags = []; // Array to store new tags as objects with name and description
+    let selectedTags = selectedTagsInput.value ? selectedTagsInput.value.split(',').filter(tagId => tagId) : [];
+
+
+    // Set initial state of existing tags based on the hidden input
+    if (selectedTagsInput.value) {
+        selectedTags = selectedTagsInput.value.split(',').filter(tagId => tagId);
+        selectedTags.forEach(tagId => {
+            const tagElement = tagsContainer.querySelector(`[data-id="${tagId}"]`);
+            if (tagElement) {
+                tagElement.classList.add('bg-[color:#FCF403]'); // Highlight selected
+                tagElement.classList.remove('bg-gray-300'); // Remove unselected class
+            }
+        });
+    }
 
     // Toggle selection of existing tags
     tagsContainer.addEventListener('click', (e) => {
