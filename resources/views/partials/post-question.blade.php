@@ -92,16 +92,14 @@
     <div class="flex items-center space-x-4 mt-4 justify-between">
         <div class= "flex items-center space-x-4 mt-4">
             <!-- Time of Posting -->
-            
+            <div>
                 <p class="text-sm text-gray-700 font-semibold">
-                    Asked {{ $question->post->time_stamp->diffForHumans() }}!
-                </p>
-                @if ($question->post->edit_time)
-                    <p class="text-sm text-gray-700 font-semibold">
+                    Asked {{ $question->post->time_stamp->diffForHumans() }}! &emsp;
+                    @if ($question->post->edit_time)
                         Edited {{ $question->post->edit_time->diffForHumans() }}!
-                    </p>
-                @endif
-            
+                    @endif
+                </p>
+            </div>
             <!-- Question Tags & Moderator Flags-->
             <div class="flex flex-wrap items-center space-x-2">
                 @foreach ($question->tags as $tag)

@@ -46,12 +46,12 @@
                                     @if (auth()->id() === $comment->author->id)
                                         <!-- Actions for the Comment Author -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <a href="#">Edit Comment</a>
+                                            <a href="{{ route('comment.edit', $comment->id) }}">Edit Comment</a>
                                         </li>
                                         @if (!auth()->user()->is_mod)
                                             <!-- Only non-moderators see this delete button -->
                                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                                <form action="" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                                <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit">Delete Comment</button>
@@ -127,9 +127,14 @@
                     </p>
                 </div>
                 <div class="flex items-center space-x-4 mt-4 justify-between">
-                    <p class="text-sm text-gray-700 font-semibold">
-                        Commented {{ $comment->post->time_stamp->diffForHumans() }}!
-                    </p>
+                    <div>
+                        <p class="text-sm text-gray-700 font-semibold">
+                            Commented {{ $comment->post->time_stamp->diffForHumans() }}! &emsp;
+                            @if ($comment->post->edit_time)
+                                Edited {{ $comment->post->edit_time->diffForHumans() }}!
+                             @endif
+                        </p>
+                    </div>
                     <div class="flex flex-wrap items-center space-x-2">
                         @foreach ($comment->post->moderatorNotifications as $commentModNotification)
                             <span class="bg-red-400 text-black text-sm font-bold px-2 py-1 rounded">
