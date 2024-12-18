@@ -127,9 +127,13 @@
             // Add toggle functionality to the Admin Dashboard button
             const adminDashboardBtn = document.getElementById("adminDashboardBtn");
             const adminDropdown = document.getElementById("adminDropdown");
-            adminDashboardBtn.addEventListener("click", () => {
-                adminDropdown.classList.toggle("hidden");
-            });
+
+            // Check if the button exists before adding the event listener
+            if (adminDashboardBtn) {
+                adminDashboardBtn.addEventListener("click", () => {
+                    adminDropdown.classList.toggle("hidden");
+                });
+            }
 
             // Trigger the slide-in animation
             setTimeout(() => {
