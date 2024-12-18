@@ -30,7 +30,7 @@
                 alt="Profile Picture"
                 class="w-14 h-14 rounded-full"
             />
-            <p class="text-lg text-white">Asking as {{ Auth::user()->nickname }}</p>
+            <p class="text-lg text-white">Editing as {{ Auth::user()->nickname }}</p>
         </div>
     </header>
 
