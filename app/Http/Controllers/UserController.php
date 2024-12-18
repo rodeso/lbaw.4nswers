@@ -13,6 +13,7 @@ use App\Models\Answer;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\AuraVote;
 
 class UserController extends Controller
 {
@@ -70,8 +71,22 @@ class UserController extends Controller
 
         $tags = Tag::all();
 
+        // Fetch user's followed questions
+        $followedQuestions = Question::with(['tags', 'post'])
+            ->withCount([
+                'popularityVotes as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'popularityVotes as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
+            ->join('user_follows_question', 'question.id', '=', 'user_follows_question.question_id')
+            ->where('user_follows_question.user_id', $userId) // Filter by the requested user's ID
+            ->get();
+
         // Return data to the profile view
-        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications'));
+        return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
 
     public function show($id)
@@ -277,6 +292,23 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back();
+    }
+
+    public function deleteUser($id) 
+    {
+        $user = User::findOrFail($id);
+
+        if (Auth::id() !== $user->id && !Auth::user()->is_admin) {
+            return redirect()->route('home')->with('error', 'You are not authorized to delete this user.');
+        }      
+
+        $user->delete();
+
+        if (Auth::id() === $user->id) {
+            Auth::logout();
+        }
+        
+        return redirect()->route('home')->with('success', 'The user has been deleted successfully.');
     }
 
 }

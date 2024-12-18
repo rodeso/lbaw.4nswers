@@ -36,10 +36,18 @@
         </ul>
     </div>
     <!-- Delete Account Button -->
-    <div class="mt-4 pt-2">
-        <button class="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-6 rounded shadow-lg w-full">
-            Delete Account
-        </button>
+   <div class="mt-4 pt-2">
+        <form action="{{ route('user.delete', Auth::id()) }}" method="POST" class="w-full">
+            @csrf
+            @method('DELETE')
+            <button 
+                type="submit" 
+                class="text-white bg-red-600 hover:bg-red-700 font-bold py-2 px-6 rounded shadow-lg w-full"
+                onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')"
+            >
+                Delete Account
+            </button>
+        </form>
     </div>
 </aside>
 

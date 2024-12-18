@@ -122,6 +122,9 @@ Route::get('/profile', [UserController::class, 'index'])->name('profile');
 // User Profiles
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
 
+// Delete User
+Route::delete('/user/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
+
 // Follow User
 // Tag Page
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
