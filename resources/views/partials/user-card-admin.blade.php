@@ -49,15 +49,17 @@
                         @if ($user->is_admin || $user->is_mod)
                             <span class="px-4 py-2 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
-                            <form method="POST" action="">
+                            <form action="{{ route('user.delete', $user->id) }}" method="POST" class="w-full">
                                 @csrf
+                                @method('DELETE')
                                 <button 
                                     type="submit" 
                                     class="px-4 py-2 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    onclick="return confirm('Are you sure you want to delete this account? This action cannot be undone.')"
                                 >
-                                    Delete User
+                                    Delete Account
                                 </button>
-                            </form>
+                            </form>     
                         @endif
                     @elseif (!Auth::user()->is_admin && Auth::user()->is_mod)
                         @if ($user->is_admin)
