@@ -22,13 +22,15 @@ class Controller extends BaseController
         $voteNotifications = $this->getVoteNotifications($loggedUserId);
         $answerNotifications = $this->getAnswerNotifications($loggedUserId);
         $helpfulNotifications = $this->getHelpfulNotifications($loggedUserId);
+        $moderatorNotifications = $this->getModeratorNotifications($loggedUserId);
     
         // Combine notifications and sort them
         $notifications = DB::query()
             ->fromSub(
                 $voteNotifications
                     ->union($answerNotifications)
-                    ->union($helpfulNotifications), // Combine all notification queries
+                    ->union($helpfulNotifications)
+                    ->union($moderatorNotifications), // Combine all notification queries
                 'combined_notifications'
             )
             ->orderBy('time_stamp', 'desc') // Sort results by timestamp
@@ -60,10 +62,12 @@ class Controller extends BaseController
                 'notification.id as notification_id',
                 'notification.content',
                 'notification.time_stamp',
-                'question.id as question_id',
-                'answer.question_id as answer_question_id',
+                'question.id as question_id', // Question ID if the notification is for a question
+                'answer.question_id as answer_question_id', // Question ID of the answer if the notification is for an answer
+                DB::raw('CAST(NULL AS INTEGER) as comment_question_id'), // Not used in vote notifications
                 'question.title as question_title', // Question title for questions
-                'post.body as answer_body' // Post body for answers
+                'post.body as post_body', // Post body for answers
+                DB::raw('CAST(NULL AS TEXT) as reason') // Not used in vote notifications
             );
     }
 
@@ -82,10 +86,12 @@ class Controller extends BaseController
                 'notification.id as notification_id',
                 'notification.content',
                 'notification.time_stamp',
-                'question.id as question_id',
-                'answer.question_id as answer_question_id',
+                'question.id as question_id', // Question ID that received the new answer
+                DB::raw('CAST(NULL AS INTEGER) as answer_question_id'), // Not used in answer notifications
+                DB::raw('CAST(NULL AS INTEGER) as comment_question_id'), // Not used in answer notifications
                 'question.title as question_title', // Question title related to the answer
-                'post.body as answer_body' // Answer body
+                DB::raw('CAST(NULL AS TEXT) as post_body'), // Not used in answer notifications
+                DB::raw('CAST(NULL AS TEXT) as reason') // Not used in answer notifications
             );
     }
     
@@ -104,10 +110,42 @@ class Controller extends BaseController
                 'notification.id as notification_id',
                 'notification.content',
                 'notification.time_stamp',
-                'question.id as question_id',
-                'answer.question_id as answer_question_id',
-                'question.title as question_title',
-                'post.body as answer_body'
+                'question.id as question_id', // Question ID related to the chosen answer
+                DB::raw('CAST(NULL AS INTEGER) as answer_question_id'), // Not used in helpful notifications
+                DB::raw('CAST(NULL AS INTEGER) as comment_question_id'), // Not used in helpful notifications
+                'question.title as question_title', // Question title related to the chosen answer
+                DB::raw('CAST(NULL AS TEXT) as post_body'), // Not used in helpful notifications
+                DB::raw('CAST(NULL AS TEXT) as reason') // Not used in helpful notifications
+            );
+    }
+
+    /**
+     * Get moderator notifications for the logged-in user.
+     */
+    private function getModeratorNotifications($loggedUserId)
+    {
+        return DB::table('moderator_notification')
+            ->join('notification', 'moderator_notification.notification_id', '=', 'notification.id')
+            ->join('post', 'notification.post_id', '=', 'post.id')
+            ->leftJoin('question', 'post.id', '=', 'question.post_id')
+            ->leftJoin('answer', 'post.id', '=', 'answer.post_id')
+            ->leftJoin('comment', 'post.id', '=', 'comment.post_id')
+            ->leftJoin('answer as comment_answer', 'comment.answer_id', '=', 'comment_answer.id') // Join to access question via answer
+            ->where(function ($query) use ($loggedUserId) {
+                $query->where('question.author_id', $loggedUserId)
+                    ->orWhere('answer.author_id', $loggedUserId)
+                    ->orWhere('comment.author_id', $loggedUserId);
+            })
+            ->select(
+                'notification.id as notification_id',
+                'notification.content', // Flag description
+                'notification.time_stamp',
+                'question.id as question_id', // Question ID if the flag is for a question
+                'answer.question_id as answer_question_id', // Question ID of the answer if the flag is for an answer
+                'comment_answer.question_id as comment_question_id', // Question ID of the comment if the flag is for a comment
+                'question.title as question_title', // Question title for questions
+                'post.body as post_body', // Post body for answers and comments
+                'moderator_notification.reason as reason' // Reason for the flag
             );
     }
     

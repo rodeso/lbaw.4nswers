@@ -162,11 +162,16 @@
                                             On the question: "{{ $notification->question_title }}"
                                         </div>
                                         <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->question_id]) }}" class="text-blue-500">Check it out!</a>
-                                    @else
+                                    @elseif ($notification->answer_question_id)
                                         <div class="text-sm text-black mb-3">
-                                            On the answer: "{{ $notification->answer_body }}"
+                                            On the answer: "{{ $notification->post_body }}"
                                         </div>
                                         <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" class="text-blue-500">Check it out!</a>
+                                    @elseif ($notification->comment_question_id)
+                                        <div class="text-sm text-black mb-3">
+                                            On the comment: "{{ $notification->post_body }}"
+                                        </div>
+                                        <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" class="text-blue-500">Check it out!</a>
                                     @endif
                                     
                                     <div class="text-sm text-black">
