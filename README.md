@@ -10,21 +10,21 @@
 ## Instructions to run the project
 
 Login to docker registry:
-```
+```bash
 docker login gitlab.up.pt:5050
 ```
 
 Run to start the docker containers:
-```
+```bash
 docker run -d --name lbaw24112 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24112
 ```
 
 Run to update the closed questions every minute:
-```
+```bash
 docker exec -it lbaw24112 php /var/www/artisan schedule:run
 ```
 Run to get profile pictures for users:
-```
+```bash
 docker exec -it lbaw24112 php /var/www/artisan storage:link
 ```
 
@@ -37,4 +37,12 @@ Use the following credentials to login:
 ```
 Email: leonoremail@fake.com
 Password: password123
+```
+
+
+To stop and remove the container:
+
+```bash
+docker stop lbaw24112
+docker rm lbaw24112
 ```

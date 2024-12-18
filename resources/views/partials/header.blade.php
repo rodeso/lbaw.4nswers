@@ -98,7 +98,7 @@
                                     <a href="{{ route('admin-dashboard.users') }}">
                                         <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Users</li>
                                     </a>
-                                    <a href="">
+                                    <a href="{{ route('admin-dashboard.posts') }}">
                                         <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Posts</li>
                                     </a>
                                     <a href="{{ route('admin-dashboard.tags') }}">
