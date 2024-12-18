@@ -294,8 +294,8 @@ class PostController extends Controller
 
         $question = Question::with('tags')->findOrFail($id);
 
-        // Check if the logged-in user is the author of the question 
-        $this->authorize('update', $question);
+        // Check if the logged-in user is the author of the question or a moderator
+        $this->authorize('updateTags', $question);
 
         // Tags that the user follows
         $user_tags = Auth::user()

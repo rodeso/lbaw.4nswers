@@ -136,7 +136,6 @@ Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow
 Route::get('/tags/{id}/is-following', [TagPageController::class, 'isFollowing']);
 
 
-
 //Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 

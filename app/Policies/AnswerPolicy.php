@@ -16,6 +16,6 @@ class AnswerPolicy
     // Can a user delete a answer
     public function delete(User $user, Answer $answer)
     {
-        return $user->id === $answer->author_id || $user()->is_mod;
+        return $user->id === $answer->author_id || $user->is_mod;
     }
 }

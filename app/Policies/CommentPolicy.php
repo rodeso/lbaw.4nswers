@@ -16,6 +16,6 @@ class CommentPolicy
     // Can a user delete a comment
     public function delete(User $user, Comment $comment)
     {
-        return $user->id === $comment->author_id || $user()->is_mod;
+        return $user->id === $comment->author_id || $user->is_mod;
     }
 }
