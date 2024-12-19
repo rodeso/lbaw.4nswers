@@ -57,7 +57,7 @@
                                     class="px-4 py-2 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
                                     onclick="return confirm('Are you sure you want to delete this account? This action cannot be undone.')"
                                 >
-                                    Delete Account
+                                    Delete
                                 </button>
                             </form>     
                         @endif
