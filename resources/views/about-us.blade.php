@@ -46,14 +46,14 @@
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">How It Works</h2>
                 <p class="text-gray-700">
-                    Questions are open for a predetermined amount of time (up to 48 hours) selected by the poster. The question closes when time runs out or when the poster declares an answer as USEFUL. After closure, the post remains accessible but locked for new contributions and votes.
+                    Questions are open for a predetermined amount of time (up to 24 hours) selected by the poster. The question closes when time runs out or when the poster declares an answer as USEFUL. After closure, the post remains accessible but locked for new contributions and votes.
                 </p>
                 <p class="text-gray-700">
                     Moderators may review flagged posts and provide an analysis of answers, alerting the community to incorrect answers. Posts with higher interaction or significant reports are more likely to receive moderation. Moderators can issue alerts and adjust points for flagged content.
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">Becoming a Moderator</h2>
                 <p class="text-gray-700">
-                    Users can become moderators for a tag by earning points and providing accurate answers to posts associated with that tag.
+                    Users can become moderators by earning points and providing accurate answers to posts.
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">Our Mission</h2>
                 <p class="text-gray-700">
