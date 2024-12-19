@@ -500,6 +500,9 @@ class PostController extends Controller
         // Retrieve the question
         $question = Question::findOrFail($id);
 
+        // Ensure the user has permission to update this question
+        $this->authorize('update', $question);
+
         $post = Post::findOrFail($question->post_id);
         $post->update([
             'body' => $validated['body'],
@@ -525,7 +528,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Ensure the user has permission to update this question
-        $this->authorize('update', $question);
+        $this->authorize('updateTags', $question);
 
         // Process selected existing tags
         $selectedTagIds = [];
@@ -571,6 +574,10 @@ class PostController extends Controller
 
         // Find the answer and update it
         $answer = Answer::findOrFail($id);
+
+        // Ensure the user has permission to update this answer
+        $this->authorize('update', $answer);
+
         $post = Post::findOrFail($answer->post_id);
         $post->update([
             'body' => $validated['body'],
@@ -587,6 +594,10 @@ class PostController extends Controller
 
         // Find the answer and update it
         $comment = Comment::findOrFail($id);
+
+        // Ensure the user has permission to update this comment
+        $this->authorize('update', $comment);
+
         $post = Post::findOrFail($comment->post_id);
         $post->update([
             'body' => $validated['body'],

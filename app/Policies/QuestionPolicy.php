@@ -15,7 +15,7 @@ class QuestionPolicy
     // Can a user update tags a question
     public function updateTags(User $user, Question $question)
     {
-        return $user->id === $question->author_id || $user->is_mod;
+        return ($user->id === $question->author_id) || ($user->is_mod);
     }
 
     // Can a user close a question
