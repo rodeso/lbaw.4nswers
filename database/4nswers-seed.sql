@@ -226,9 +226,6 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00'),
 ('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
-INSERT INTO post(body, time_stamp, edit_time)
-VALUES ('teste de edit', '2024-08-28 00:00:00', '2024-12-17 22:00:00');
-
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
 VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
