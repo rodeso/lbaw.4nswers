@@ -241,8 +241,7 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
 ('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14),
-('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15),
-('teste de edit', 'Green', '2024-12-18 22:00:00', 2, 16);
+('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15);
 
 
 INSERT INTO question_tags(question_id, tag_id)
@@ -260,8 +259,7 @@ VALUES (1, 1),
 (12, 6),
 (13, 7),
 (14, 7),
-(15, 8),
-(16, 4);
+(15, 8);
 
 
 INSERT INTO post(body)
