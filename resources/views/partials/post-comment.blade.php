@@ -74,7 +74,7 @@
                                                 </a>
                                             </li>
                                             <!-- Delete Flag Button -->
-                                            @if ($comment>post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
+                                            @if ($comment->post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
                                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                                     <form 
                                                         action="{{ route('posts.flag.delete', $comment->post->id) }}" 
