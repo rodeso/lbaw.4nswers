@@ -92,7 +92,7 @@
 
                     <div class="flex justify-between">
                         <!-- Change Password Button -->
-                        <a href="/edit-password-profile">
+                        <a href="{{ route('password.edit') }}">
                             <button 
                                 type="button" 
                                 class="bg-red-500 text-white py-2 px-6 rounded-full hover:bg-red-600 w-[11rem]"

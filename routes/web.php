@@ -51,10 +51,10 @@ Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->nam
 
 
 // Terms & Conditions
-Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
+Route::get('/terms', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
 
 // About Us
-Route::get('/about-us', [AboutUsController::class, 'about'])->name('about.us');
+Route::get('/about', [AboutUsController::class, 'about'])->name('about.us');
 
 // Popular, Urgent, New
 Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
@@ -127,7 +127,7 @@ Route::get('/profile', [UserController::class, 'index'])->name('profile');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
 
 // Delete User
-Route::delete('/user/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
+Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
 
 // Follow User
 // Tag Page
@@ -141,14 +141,14 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Edit Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-profile', [UserController::class, 'edit'])->name('profile.edit');
-    Route::put('/edit-profile', [UserController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/edit', [UserController::class, 'update'])->name('profile.update');
 });
 
 // Edit Credentials Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-password-profile', [UserController::class, 'editpassword'])->name('profile.editpassword');
-    Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('profile.updatepassword');
+    Route::get('/profile/edit/password', [UserController::class, 'editpassword'])->name('password.edit');
+    Route::put('/profile/edit/password', [UserController::class, 'updatepassword'])->name('password.update');
 });
 
 
