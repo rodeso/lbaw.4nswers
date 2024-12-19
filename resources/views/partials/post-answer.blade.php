@@ -202,7 +202,11 @@
                             @if (!auth()->user()->is_mod && auth()->id() !== $answer->author->id)
                                 <!-- Actions for Regular Users -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                    <a href="#">Report Answer</a>
+                                <a 
+                                    href="{{ route('posts.report', $answer->post_id) }}" 
+                                    class="block text-white"
+                                    title="Report this answer for moderation"
+                                >Report Answer</a>
                                 </li>
                             @endif
 
