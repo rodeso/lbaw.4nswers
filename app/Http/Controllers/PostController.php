@@ -273,7 +273,7 @@ class PostController extends Controller
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question 
-        $this->authorize('update', $question);
+        $this->authorize('update-question', $question);
 
         $post = Post::findOrFail($question->post_id);
 
@@ -295,7 +295,7 @@ class PostController extends Controller
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question or a moderator
-        $this->authorize('updateTags', $question);
+        $this->authorize('updateTags-question', $question);
 
         // Tags that the user follows
         $user_tags = Auth::user()
@@ -314,7 +314,7 @@ class PostController extends Controller
         
         $answer = Answer::findOrFail($id);
 
-        $this->authorize('update', $answer);
+        $this->authorize('update-answer', $answer);
 
         $post = Post::findOrFail($answer->post_id);
 
@@ -333,7 +333,7 @@ class PostController extends Controller
         
         $comment = Comment::findOrFail($id);
 
-        $this->authorize('update', $comment);
+        $this->authorize('update-comment', $comment);
 
         $post = Post::findOrFail($comment->post_id);
 
@@ -501,7 +501,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Ensure the user has permission to update this question
-        $this->authorize('update', $question);
+        $this->authorize('update-question', $question);
 
         $post = Post::findOrFail($question->post_id);
         $post->update([
@@ -528,7 +528,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Ensure the user has permission to update this question
-        $this->authorize('updateTags', $question);
+        $this->authorize('updateTags-question', $question);
 
         // Process selected existing tags
         $selectedTagIds = [];
@@ -576,7 +576,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Ensure the user has permission to update this answer
-        $this->authorize('update', $answer);
+        $this->authorize('update-answer', $answer);
 
         $post = Post::findOrFail($answer->post_id);
         $post->update([
@@ -596,7 +596,7 @@ class PostController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Ensure the user has permission to update this comment
-        $this->authorize('update', $comment);
+        $this->authorize('update-comment', $comment);
 
         $post = Post::findOrFail($comment->post_id);
         $post->update([
@@ -612,7 +612,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('close', $question);
+        $this->authorize('close-question', $question);
 
         // Close the question
         $question->closed = true;
@@ -645,7 +645,7 @@ class PostController extends Controller
         }
     
         // Only allow the question author to choose an answer
-        $this->authorize('update', $question);
+        $this->authorize('update-answer', $question);
 
         // Set this answer as chosen
         $answer->chosen = true;
@@ -684,7 +684,7 @@ class PostController extends Controller
         $question = Question::with(['answers', 'tags'])->findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $question);
+        $this->authorize('delete-question', $question);
 
         // Delete related answers
         foreach ($question->answers as $answer) {
@@ -713,7 +713,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $answer);
+        $this->authorize('delete-answer', $answer);
 
         $post = $answer->post;
         $post->delete(); // Delete the post
@@ -729,7 +729,7 @@ class PostController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $comment);
+        $this->authorize('delete-comment', $comment);
 
         $post = $comment->post;
         $post->delete(); // Delete the post

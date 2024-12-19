@@ -49,7 +49,6 @@ Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->
 
 Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin-dashboard.deleteTag');
 
-
 // Terms & Conditions
 Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
 
@@ -134,7 +133,6 @@ Route::delete('/user/{id}', [UserController::class, 'deleteUser'])->name('user.d
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
 Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');
 Route::get('/tags/{id}/is-following', [TagPageController::class, 'isFollowing']);
-
 
 //Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
