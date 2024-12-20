@@ -23,6 +23,7 @@ use App\Models\HelpfulNotification;
 
 class PostController extends Controller
 {   
+    // Post page
     public function show($id)
     {   
 
@@ -91,6 +92,8 @@ class PostController extends Controller
             'new_tags' => 'nullable|string', // JSON string of new tag objects
         ]);
 
+        $this->authorize('unblocked'); 
+
         // Create the post
         $post = Post::create([
             'body' => $validated['body'],
@@ -149,6 +152,8 @@ class PostController extends Controller
             'question_id' => 'required|exists:question,id',
         ]);
 
+        $this->authorize('unblocked'); 
+
         // Fetch the question to check if it's closed
         $question = Question::find($validated['question_id']);
 
@@ -199,6 +204,8 @@ class PostController extends Controller
         $validated = $request->validate([
             'body' => 'required|string|max:4096',
         ]);
+
+        $this->authorize('unblocked'); 
 
         $answer = Answer::findOrFail($answerId);
 
@@ -253,6 +260,8 @@ class PostController extends Controller
             // Redirect to home with an alert
             return redirect()->route('home')->with('alert', 'You must be logged in to post a new question!');
         }
+
+        $this->authorize('unblocked'); 
 
         // Tags that user follows
         $user_tags = Auth::user()
@@ -353,6 +362,8 @@ class PostController extends Controller
 
     public function vote(Request $request, $questionId)
     {
+        $this->authorize('unblocked'); 
+        
         $userId = auth()->id();
 
         // Fetch the question to check if it's closed
@@ -412,6 +423,8 @@ class PostController extends Controller
 
     public function auraVote(Request $request, $answerId)
     {
+        $this->authorize('unblocked'); 
+
         if (!auth()->check()) {
             return response()->json(['error' => 'You must be logged in to vote'], 403);
         }

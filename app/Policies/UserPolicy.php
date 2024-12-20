@@ -25,4 +25,10 @@ class UserPolicy
         return $user->is_admin;
     }
 
+    // For everone except blocked
+    public function unblocked(User $user)
+    {
+        return !($user->is_blocked);
+    }
+
 }

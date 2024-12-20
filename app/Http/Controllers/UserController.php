@@ -89,6 +89,7 @@ class UserController extends Controller
         return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
 
+    // Other profiles
     public function show($id)
     {   
 

@@ -10,7 +10,7 @@ class CommentPolicy
     // Can a user update a comment
     public function update(User $user, Comment $comment)
     {
-        return $user->id === $comment->author_id;
+        return ($user->id === $comment->author_id) && !($user->is_blocked);
     }
 
     // Can a user delete a comment
