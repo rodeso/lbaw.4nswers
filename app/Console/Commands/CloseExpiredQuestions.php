@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Question;
+use App\Http\Controllers\PostController;
+
 
 class CloseExpiredQuestions extends Command
 {
@@ -24,14 +26,27 @@ class CloseExpiredQuestions extends Command
     /**
      * Execute the console command.
      */
+
     public function handle()
     {
-        // Find questions where time_limit has passed and close is false
+        $questionController = new PostController();
+
+        // Retrieve questions where 'closed' is false and 'time_end' has passed
         $questions = Question::where('closed', false)
             ->where('time_end', '<', now())
-            ->update(['closed' => true]);
+            ->get();
 
-        $this->info("Expired questions successfully closed.");
+        foreach ($questions as $question) {
+            try {
+                $questionController->closeQuestion($question->id); // Invoke closeQuestion
+            } catch (\Exception $e) {
+                $this->error("Failed to close question ID: {$question->id}. Error: {$e->getMessage()}");
+            }
+        }
+
+        $this->info("Expired questions successfully processed.");
     }
+
+
 }
 
