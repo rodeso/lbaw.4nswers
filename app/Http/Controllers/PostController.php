@@ -484,6 +484,16 @@ class PostController extends Controller
             ->count();
     }
 
+    public function popularity($questionId)
+    {
+        return PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', true)
+            ->count()
+            - PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', false)
+            ->count();
+    }
+
     /*
     Update -------------------------------------------------------------------------------------------------------------------------
     */
@@ -608,17 +618,58 @@ class PostController extends Controller
 
     public function closeQuestion($id)
     {
-        // Retrieve the question
-        $question = Question::findOrFail($id);
+        DB::beginTransaction();
+    
+        try {
+            // Retrieve the question
+            $question = Question::findOrFail($id);
+    
+            // Check if the authenticated user is the author or an admin
+            $this->authorize('close', $question);
+    
+            // Get popularity votes
+            $popularVotes = $this->popularity($id);
+    
+            // Get the question's author ID
+            $questionAuthorId = $question->author_id;
 
-        // Check if the authenticated user is the author or an admin
-        $this->authorize('close', $question);
+            // Count answers not authored by the question's author
+            $numAnswers = Answer::where('question_id', $id)
+                ->where('author_id', '!=', $questionAuthorId)
+                ->count();
+    
+            // Initialize aura points
+            $bonusAuraPoints = 0;
 
-        // Close the question
-        $question->closed = true;
-        $question->save();
-
-        return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
+            // Apply the aura point logic
+            if ($popularVotes >= 5) {
+                $bonusAuraPoints += ($popularVotes - 5) * 2;
+            }
+            if ($numAnswers >= 3) {
+                $bonusAuraPoints += ($numAnswers - 3) * 2;
+            }
+    
+            // Update the author's aura if bonusAuraPoints > 0
+            if ($bonusAuraPoints > 0) {
+                $author = $question->author;
+                $author->aura += $bonusAuraPoints;
+                $author->save();
+            }
+    
+            // Close the question
+            $question->closed = true;
+            $question->save();
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+    
+            return redirect()->route('question.show', $id)->with('error', 'Failed to close question!');
+        }
     }
     
     public function chooseAnswer(Request $request, $questionId, $answerId)
