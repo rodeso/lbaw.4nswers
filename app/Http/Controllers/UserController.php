@@ -89,6 +89,7 @@ class UserController extends Controller
         return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
 
+    // Other profiles
     public function show($id)
     {   
 
@@ -168,7 +169,6 @@ class UserController extends Controller
         return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
     
-
 
     // Show the profile edit form
     public function edit()
@@ -264,10 +264,8 @@ class UserController extends Controller
 
     public function toggleMod($id)
     {
-        // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
-            return redirect()->back()->with('alert', 'Unauthorized action.');
-        }
+        // Ensure the authenticated user has permission to perform this action - is mod
+        $this->authorize('moderator');
 
         $user = User::findOrFail($id);
 
@@ -279,11 +277,9 @@ class UserController extends Controller
     }
 
     public function toggleBlock($id)
-    {
-        // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
-            return redirect()->back()->with('alert', 'Unauthorized action.');
-        }
+    { 
+        // Ensure the authenticated user has permission to perform this action - is mod
+        $this->authorize('moderator');
 
         $user = User::findOrFail($id);
 
@@ -296,11 +292,10 @@ class UserController extends Controller
 
     public function deleteUser($id) 
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id); // User that will be deleted
 
-        if (Auth::id() !== $user->id && !Auth::user()->is_admin) {
-            return redirect()->route('home')->with('error', 'You are not authorized to delete this user.');
-        }      
+        // Ensure the authenticated user has permission to perform this action - is the user or is mod
+        $this->authorize('delete-user', $user);   
 
         $user->delete();
 

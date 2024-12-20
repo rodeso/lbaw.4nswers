@@ -10,7 +10,7 @@ class AnswerPolicy
     // Can a user update a answer
     public function update(User $user, Answer $answer)
     {
-        return $user->id === $answer->author_id;
+        return ($user->id === $answer->author_id) && !($user->is_blocked);
     }
 
     // Can a user delete a answer

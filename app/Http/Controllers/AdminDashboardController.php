@@ -14,51 +14,51 @@ use App\Models\User;
 
 class AdminDashboardController extends Controller
 {
-    public function users() {   
+    public function users() 
+    {   
         if (!Auth::check()) {
             // Redirect to home with an alert
             return redirect()->route('home')->with('alert', 'You are not logged in!');
         }
+
         $user = Auth::user(); // Get logged-in user
-        if (!$user->is_admin && !$user->is_mod) {
-            // Redirect to home with an alert
-            return redirect()->route('home')->with('alert', 'You do not have the right permissions!');
-        }
+
+        $this->authorize('moderator');
 
         $notifications = Controller::getNotifications();
         
         $users = User::orderBy('aura', 'desc')->get();
+
         return view('admin-dashboard-users', compact('user', 'users', 'notifications'));
     }
 
-    public function tags() {   
-        if (!Auth::check()) {
-            // Redirect to home with an alert
+    public function tags() 
+    {   
+        if (!Auth::check()) { // Redirect to home with an alert
             return redirect()->route('home')->with('alert', 'You are not logged in!');
         }
+
         $user = Auth::user(); // Get logged-in user
-        if (!$user->is_admin && !$user->is_mod) {
-            // Redirect to home with an alert
-            return redirect()->route('home')->with('alert', 'You do not have the right permissions!');
-        }
+
+        $this->authorize('moderator');
         
         $notifications = Controller::getNotifications();
 
-        $users = User::orderBy('aura', 'desc')->get();
+        $users = User::orderBy('aura', 'desc')->get();~
+
         $tags = Tag::orderBy('follower_count', 'desc')->get();
+
         return view('admin-dashboard-tags', compact('user', 'users', 'tags', 'notifications'));
     }
 
-    public function posts() {   
-        if (!Auth::check()) {
-            // Redirect to home with an alert
+    public function posts() 
+    {   
+        if (!Auth::check()) { // Redirect to home with an alert
             return redirect()->route('home')->with('alert', 'You are not logged in!');
         }
         $user = Auth::user(); // Get logged-in user
-        if (!$user->is_admin && !$user->is_mod) {
-            // Redirect to home with an alert
-            return redirect()->route('home')->with('alert', 'You do not have the right permissions!');
-        }
+
+        $this->authorize('moderator');
     
         $notifications = Controller::getNotifications();
     
@@ -111,7 +111,11 @@ class AdminDashboardController extends Controller
     }
     
     public function deleteTag($id) {
+
+        $this->authorize('moderator');
+
         $tag = Tag::findOrFail($id);
+
         $tag->delete();
 
         return redirect()->back();

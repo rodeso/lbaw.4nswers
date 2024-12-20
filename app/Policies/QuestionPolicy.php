@@ -9,13 +9,13 @@ class QuestionPolicy
     // Can a user update a question
     public function update(User $user, Question $question)
     {
-        return $user->id === $question->author_id;
+        return ($user->id === $question->author_id) && !($user->is_blocked);
     }
 
     // Can a user update tags a question
     public function updateTags(User $user, Question $question)
     {
-        return ($user->id === $question->author_id) || ($user->is_mod);
+        return (($user->id === $question->author_id) || ($user->is_mod)) && !($user->is_blocked);
     }
 
     // Can a user close a question
