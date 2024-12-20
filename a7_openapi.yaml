@@ -1032,7 +1032,7 @@ paths:
       summary: "Choose Answer"
       description: "Mark an answer as the chosen solution. Access: OWN"
       tags:
-        - "M03: Questions Management"
+        - "M08: Notifications"
       parameters:
         - in: path
           name: id
