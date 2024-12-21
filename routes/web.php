@@ -128,7 +128,10 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile')
 // Delete User
 Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
 
-// Follow User
+// Create User
+Route::get('/new-user', [UserController::class, 'create'])->name('user.create');
+Route::post('/new-user', [UserController::class, 'store'])->name('user.store');
+
 // Tag Page
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
 Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');

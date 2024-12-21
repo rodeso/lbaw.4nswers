@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Question;
 use App\Models\Answer;
@@ -306,4 +307,62 @@ class UserController extends Controller
         return redirect()->route('home')->with('success', 'The user has been deleted successfully.');
     }
 
+    public function create()
+    {
+        $notifications = Controller::getNotifications();
+        return view('create-user', compact('notifications'));
+    }
+    
+    public function store(Request $request)
+    {
+        $notifications = Controller::getNotifications();
+
+        // Validate incoming data
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:user',
+            'email' => 'required|email|unique:user',
+            'password' => 'required|string|min:8|confirmed',
+            'birth_date' => 'nullable|date',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'is_mod' => 'nullable|boolean',
+            'is_blocked' => 'nullable|boolean',
+            'aura' => 'nullable|integer',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        // Check for age requirement
+        $birthDate = $data['birth_date'] ?? null;
+        if ($birthDate) {
+            $age = \Carbon\Carbon::parse($birthDate)->age;
+            if ($age < 13) {
+                return back()->withErrors(['birth_date' => 'Sorry, you are too young to create an account.'])->withInput();
+            }
+        }
+
+        // Create new user
+        $user = new User();
+        $user->name = $data['name'];
+        $user->nickname = $data['nickname'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->birth_date = $data['birth_date'];
+        $user->aura = $data['aura'] ?? 0;
+        $user->is_mod = ($data['is_mod'] ?? false) || ($data['is_admin'] ?? false);
+        $user->is_blocked = $data['is_blocked'] ?? false;
+
+        // Save user
+        $user->save();
+
+        // Handle admin creation
+        if ($data['is_admin'] ?? false) {
+            DB::table('admin')->insert([
+                'id' => $user->id,
+                'admin_start' => now(),
+            ]);
+        }
+
+        return redirect()->route('admin-dashboard.users')->with('success', 'User created successfully!');
+
+    }
 }

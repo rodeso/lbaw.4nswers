@@ -20,7 +20,7 @@
         @include('partials.left-panel-admin-users')
 
         <!-- Floating Buttons (Right) -->
-        @include('partials.right-buttons')
+        @include('partials.right-buttons-admin')
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Posts Section -->
