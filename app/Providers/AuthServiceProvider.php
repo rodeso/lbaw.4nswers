@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete-user', [\App\Policies\UserPolicy::class, 'delete']);
         Gate::define('moderator', [\App\Policies\UserPolicy::class, 'moderator']);
         Gate::define('admin', [\App\Policies\UserPolicy::class, 'admin']);
+        Gate::define('unblocked', [\App\Policies\UserPolicy::class, 'unblocked']);
 
         // Define abilities for questions
         Gate::define('update-question', [\App\Policies\QuestionPolicy::class, 'update']);

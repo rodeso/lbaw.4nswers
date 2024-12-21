@@ -28,7 +28,7 @@ class UserPolicy
     // For everone except blocked
     public function unblocked(User $user)
     {
-        return !($user->is_blocked);
+        return !$user->is_blocked;
     }
 
 }
