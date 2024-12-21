@@ -210,7 +210,7 @@ VALUES ('computers', 'all things related to the little machines that we control 
 
 
 INSERT INTO post(body, time_stamp)
-VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-12-21 01:00:00'),
+VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-12-21 15:00:00'),
 ('I need help with a windows update, can anyone help me?', '2023-12-27 19:00:00'),
 ('I love biscuits, especially hungaros and belgas. Any suggestions?', '2024-05-31 14:00:00'),
 ('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP', '2024-03-16 13:31:54'),
@@ -227,7 +227,7 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
-VALUES ('I need help fixing my computer!!', 'Red', '2024-12-21 04:00:00', 1, 1),
+VALUES ('I need help fixing my computer!!', 'Red', '2024-12-21 18:00:00', 1, 1),
 ('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
 ('Any new biscuit recomendation?', 'Yellow', '2024-06-01 00:00:00', 4, 3),
 ('Why does my tummy hurt?', 'Red', '2024-03-16 16:31:54', 10, 4),
@@ -294,7 +294,12 @@ Fast Fourier Transform is an algorithm to perform a Discrete Fourier Transform t
 There is really no need to go deeper, since the two links I gave provide a pretty clear explanation. And note that its impossible to go from theory to implementation without knowing the math behind it.
 
 I hope this introduction makes some sense!
-');
+'),
+('aaaaaaaaaaa'),
+('bbbbbbbbbbb'),
+('ccccccccccc'),
+('ddddddddddd'),
+('eeeeeeeeeee');
 
 INSERT INTO answer(chosen, question_id, author_id, post_id)
 VALUES (FALSE, 1, 4, 16),
@@ -311,7 +316,13 @@ VALUES (FALSE, 1, 4, 16),
 (TRUE, 12, 9, 27),
 (FALSE, 13, 8, 28),
 (FALSE, 14, 1, 29),
-(FALSE, 15, 11, 30);
+(FALSE, 15, 11, 30),
+(FALSE, 1, 5, 31),
+(FALSE, 1, 6, 32),
+(FALSE, 1, 7, 33),
+(FALSE, 1, 8, 34),
+(FALSE, 1, 9, 35);
+
 
 INSERT INTO popularity_vote(is_positive, user_id, question_id)
 VALUES (true, 2, 1),
@@ -323,7 +334,19 @@ VALUES (true, 2, 1),
 (true, 8, 1),
 (true, 9, 1);
 
-
+INSERT INTO aura_vote(is_positive, user_id, answer_id)
+VALUES (true, 2, 16),
+(true, 3, 16),
+(true, 4, 16),
+(true, 5, 16),
+(true, 2, 17),
+(true, 3, 17),
+(true, 4, 17),
+(true, 3, 18),
+(true, 4, 18),
+(true, 3, 19),
+(true, 8, 19),
+(true, 3, 20);
 
 CREATE OR REPLACE FUNCTION update_post_edit_time()
     RETURNS TRIGGER AS $$
