@@ -383,6 +383,7 @@ class PostController extends Controller
             ->first();
         
         $voteUndone = false; // Initialize flag
+        $voteChanged = false;
         
         if ($existingVote) {
             // If the user clicks the same button twice, remove the vote (undo)
@@ -390,17 +391,32 @@ class PostController extends Controller
                 ($voteType === 'downvote' && !$existingVote->is_positive)) {
                 $existingVote->delete();
                 $voteUndone = true; // Mark that vote was undone
+                $voteChanged = -1;
 
                 // Return the updated vote count and voteUndone flag
                 $totalVotes = PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', true)->count()
                     - PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', false)->count();
+                
+                // Update cumulative votes and aura
+                if ($voteChanged !== 0) {
+                    $user = User::find($userId);
+                    $user->votes_processed += $voteChanged;
+
+                    if ($user->votes_processed >= 5) {
+                        $user->votes_processed -= 5; // Reset for next cycle
+                        $user->aura += 1; // Grant 1 aura
+                    }
+
+                    $user->save();
+                }
         
                 return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
             }
 
             // Otherwise, update the vote
+            $voteChanged = 0;
             $existingVote->is_positive = ($voteType === 'upvote');
             $existingVote->save();
         } else {
@@ -410,6 +426,20 @@ class PostController extends Controller
                 'question_id' => $questionId,
                 'is_positive' => ($voteType === 'upvote'),
             ]);
+            $voteChanged = 1;
+        }
+
+        // Update cumulative votes and aura
+        if ($voteChanged !== 0) {
+            $user = User::find($userId);
+            $user->votes_processed += $voteChanged;
+
+            if ($user->votes_processed >= 5) {
+                $user->votes_processed -= 5; // Reset for next cycle
+                $user->aura += 1; // Grant 1 aura
+            }
+
+            $user->save();
         }
 
         // Calculate total votes
@@ -461,12 +491,16 @@ class PostController extends Controller
             ->where('answer_id', $answerId)
             ->first();
 
+        $voteChanged = false;
+
         if ($existingVote) {
             if ($existingVote->is_positive === $isPositive) {
                 $existingVote->delete(); // Remove the vote
+                $voteChanged = -1;
             } else {
                 $existingVote->is_positive = $isPositive;
                 $existingVote->save(); // Save the updated vote
+                $voteChanged = 0;
             }
         } else {
             AuraVote::create([
@@ -474,6 +508,19 @@ class PostController extends Controller
                 'answer_id' => $answerId,
                 'is_positive' => $isPositive,
             ]);
+            $voteChanged = 1;
+        }
+
+        if ($voteChanged !== 0) {
+            $user = User::find($userId);
+            $user->votes_processed += $voteChanged;
+    
+            if ($user->votes_processed >= 10) {
+                $user->votes_processed -= 10; // Reset for next cycle
+                $user->aura += 1; // Grant 1 aura
+            }
+    
+            $user->save();
         }
 
         // Calculate the total aura after the vote
