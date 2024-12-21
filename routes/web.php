@@ -132,6 +132,10 @@ Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->name('user.
 Route::get('/new-user', [UserController::class, 'create'])->name('user.create');
 Route::post('/new-user', [UserController::class, 'store'])->name('user.store');
 
+// Edit User
+Route::get('/users/{id}/edit', [UserController::class, 'editUser'])->name('user.edit');
+Route::put('/users/{id}/update', [UserController::class, 'updateUser'])->name('user.update');
+
 // Tag Page
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
 Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');

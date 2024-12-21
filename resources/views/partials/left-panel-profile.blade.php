@@ -22,7 +22,28 @@
                         </svg>
                     </div>
                 </a>
+            @elseif (Auth::user()->is_admin) <!-- Check if the user is an admin -->
+                <a href="{{ route('user.edit', $user->id) }}" class="relative block w-24 h-24">
+                    <img 
+                        src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 
+                        alt="Profile Picture" 
+                        class="w-24 h-24 rounded-full shadow-lg"
+                    />
+                    <div 
+                        class="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            class="h-6 w-6 text-white" 
+                            viewBox="0 0 20 20" 
+                            fill="currentColor"
+                        >
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7.05 10.12a1 1 0 00-.263.474l-1.11 4.44a.5.5 0 00.607.607l4.44-1.11a1 1 0 00.474-.263l7.536-7.535a2 2 0 000-2.829l-1.414-1.414zm-2.121 1.414l1.414 1.414-7.536 7.535-1.414-1.414 7.536-7.535zM5 18a1 1 0 100-2 1 1 0 000 2z" />
+                        </svg>
+                    </div>
+                </a>
             @else
+
                 <div class="relative block w-24 h-24">
                     <img 
                         src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') }}" 

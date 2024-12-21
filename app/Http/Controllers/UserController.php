@@ -191,6 +191,16 @@ class UserController extends Controller
         return view('edit-password-profile', compact('user','notifications'));
     }
 
+    //Admin User Edit
+    function editUser($id)
+    {
+        $notifications = Controller::getNotifications();
+
+        $user = User::findOrFail($id);
+
+        return view('edit-user', compact('user', 'notifications'));
+    }
+
     // Update the user's profile
     public function update(Request $request)
     {
@@ -262,6 +272,56 @@ class UserController extends Controller
         // Redirect back to the profile page with a success message
         return redirect()->route('profile')->with('success', 'Password updated successfully!');
     }
+
+    // Admin Update the user's profile
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:user,nickname,' . $id,
+            'birth_date' => 'nullable|date',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'is_mod' => 'nullable|boolean',
+            'is_blocked' => 'nullable|boolean',
+            'aura' => 'nullable|integer',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        // Update the user's name and nickname
+        $user->name = $request->input('name');
+        $user->nickname = $request->input('nickname');
+        $user->aura = $request->input('aura') ?? 0;
+        $user->is_mod = ($request->input('is_mod') ?? false) || ($request->input('is_admin') ?? false);
+        $user->is_blocked = $request->input('is_blocked') ?? false;
+
+        if($request->filled('birth_date')){ // Update birth date if provided
+            $birthDate = $request->birth_date;
+            $age = \Carbon\Carbon::parse($birthDate)->age;
+            if ($age < 13) {
+                return back()->withErrors(['birth_date' => 'Sorry, you are too young to create an account.'])->withInput();
+            }
+            $user->birth_date = $request->input('birth_date');
+        }
+
+        // Update photo if provided
+        if ($request->hasFile('profile_picture')) {
+            // Delete the old avatar if exists
+            if ($user->profile_picture && $user->profile_picture !== 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') {
+                Storage::delete($user->profile_picture);
+            }
+
+            // Store the new avatar and update the user's profile
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+        
+        $user->save();
+        return redirect()->route('user.profile', $id)->with('success', 'User edited succesfully!');
+
+    }
+
 
     public function toggleMod($id)
     {
