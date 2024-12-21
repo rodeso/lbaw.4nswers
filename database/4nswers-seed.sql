@@ -321,12 +321,7 @@ VALUES (true, 2, 1),
 (true, 6, 1),
 (true, 7, 1),
 (true, 8, 1),
-(true, 9, 1),
-(true, 10, 1),
-(true, 11, 1),
-(true, 12, 1),
-(true, 13, 1),
-(true, 14, 1).
+(true, 9, 1);
 
 
 
