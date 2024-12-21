@@ -210,7 +210,7 @@ VALUES ('computers', 'all things related to the little machines that we control 
 
 
 INSERT INTO post(body, time_stamp)
-VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-05-31 21:00:00'),
+VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-12-21 01:00:00'),
 ('I need help with a windows update, can anyone help me?', '2023-12-27 19:00:00'),
 ('I love biscuits, especially hungaros and belgas. Any suggestions?', '2024-05-31 14:00:00'),
 ('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP', '2024-03-16 13:31:54'),
@@ -227,7 +227,7 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
-VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
+VALUES ('I need help fixing my computer!!', 'Red', '2024-12-21 04:00:00', 1, 1),
 ('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
 ('Any new biscuit recomendation?', 'Yellow', '2024-06-01 00:00:00', 4, 3),
 ('Why does my tummy hurt?', 'Red', '2024-03-16 16:31:54', 10, 4),
@@ -313,7 +313,20 @@ VALUES (FALSE, 1, 4, 16),
 (FALSE, 14, 1, 29),
 (FALSE, 15, 11, 30);
 
-
+INSERT INTO popularity_vote(is_positive, user_id, question_id)
+VALUES (true, 2, 1),
+(true, 3, 1),
+(true, 4, 1),
+(true, 5, 1),
+(true, 6, 1),
+(true, 7, 1),
+(true, 8, 1),
+(true, 9, 1),
+(true, 10, 1),
+(true, 11, 1),
+(true, 12, 1),
+(true, 13, 1),
+(true, 14, 1).
 
 
 
