@@ -629,49 +629,79 @@ class PostController extends Controller
         return redirect()->route('question.show', $comment->answer->question->id)->with('success', 'Comment updated successfully!');
     }
 
+    private function finalizeQuestionClosure($question)
+    {   
+        // Get the question's author ID
+        $questionAuthorId = $question->author_id;
+    
+        // Count answers not authored by the question's author
+        $numAnswers = Answer::where('question_id', $question->id)
+            ->where('author_id', '!=', $questionAuthorId)
+            ->count();
+        
+        // Srted answers by aura also now authored by the question's author TODO
+        $sortedAnswers = $question->answers
+            ->filter(function ($answer) use ($questionAuthorId) {
+                return $answer->author_id != $questionAuthorId;
+            })
+            ->sortByDesc(function ($answer) {
+                return PostController::aura($answer->id);
+            });
+    
+        // Get popularity votes
+        $popularVotes = $this->popularity($question->id);
+    
+        if ($popularVotes > 0) {
+            $bonusResponders = $popularVotes * 4;
+            $bonus1 = ceil($bonusResponders * (40 / 100));
+            $bonus2 = ceil($bonusResponders * (20 / 100));
+            $bonus3 = ceil($bonusResponders * (12.5 / 100));
+            $bonus4 = ceil($bonusResponders * (7.5 / 100));
+    
+            $topAnswers = $sortedAnswers->take(4);
+            $bonuses = [$bonus1, $bonus2, $bonus3, $bonus4];
+    
+            foreach ($topAnswers as $index => $answer) {
+                $answerAuthor = User::find($answer->author_id);
+                $answerAuthor->aura += $bonuses[$index];
+                $answerAuthor->save();
+            }
+        }
+     
+        // Initialize aura points
+        $bonusAuraPoints = 0;
+    
+        // Apply the aura point logic
+        if ($popularVotes >= 5) {
+            $bonusAuraPoints += ($popularVotes - 5) * 2;
+        }
+        if ($numAnswers >= 3) {
+            $bonusAuraPoints += ($numAnswers - 3) * 2;
+        }
+    
+        // Update the author's aura if bonusAuraPoints > 0
+        if ($bonusAuraPoints > 0) {
+            $author = $question->author;
+            $author->aura += $bonusAuraPoints;
+            $author->save();
+        }
+    
+        // Close the question
+        $question->closed = true;
+        $question->save();
+    }
+
     public function closeQuestion($id)
     {
         DB::beginTransaction();
-    
         try {
             // Retrieve the question
             $question = Question::findOrFail($id);
     
             // Check if the authenticated user is the author or an admin
             $this->authorize('close-question', $question);
-    
-            // Get popularity votes
-            $popularVotes = $this->popularity($id);
-    
-            // Get the question's author ID
-            $questionAuthorId = $question->author_id;
 
-            // Count answers not authored by the question's author
-            $numAnswers = Answer::where('question_id', $id)
-                ->where('author_id', '!=', $questionAuthorId)
-                ->count();
-    
-            // Initialize aura points
-            $bonusAuraPoints = 0;
-
-            // Apply the aura point logic
-            if ($popularVotes >= 5) {
-                $bonusAuraPoints += ($popularVotes - 5) * 2;
-            }
-            if ($numAnswers >= 3) {
-                $bonusAuraPoints += ($numAnswers - 3) * 2;
-            }
-    
-            // Update the author's aura if bonusAuraPoints > 0
-            if ($bonusAuraPoints > 0) {
-                $author = $question->author;
-                $author->aura += $bonusAuraPoints;
-                $author->save();
-            }
-    
-            // Close the question
-            $question->closed = true;
-            $question->save();
+            $this->finalizeQuestionClosure($question);
     
             // Commit the transaction
             DB::commit();
@@ -709,7 +739,7 @@ class PostController extends Controller
         }
     
         // Only allow the question author to choose an answer
-        $this->authorize('update-answer', $question);
+        $this->authorize('choose-question', $question);
 
         // Set this answer as chosen
         $answer->chosen = true;
@@ -733,8 +763,22 @@ class PostController extends Controller
             'notification_id' => $notification->id, // Reference to the notification
         ]);
         $helpfulNotification->save();
+
+        DB::beginTransaction();
+        try {
+            $this->finalizeQuestionClosure($question);
+
+            // Commit the transaction
+            DB::commit();
     
-        return redirect()->back()->with('success', 'Answer chosen successfully!');
+            return redirect()->back()->with('success', 'Answer chosen successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+    
+            return redirect()->back()->with('error', 'Failed to choose the answer!');
+        }
+      
     }
     
 

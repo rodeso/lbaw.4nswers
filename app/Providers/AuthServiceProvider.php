@@ -39,6 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update-question', [\App\Policies\QuestionPolicy::class, 'update']);
         Gate::define('updateTags-question', [\App\Policies\QuestionPolicy::class, 'updateTags']);
         Gate::define('close-question', [\App\Policies\QuestionPolicy::class, 'close']);
+        Gate::define('choose-question', [\App\Policies\QuestionPolicy::class, 'choose']);
         Gate::define('delete-question', [\App\Policies\QuestionPolicy::class, 'delete']);
         
         // Define abilities for answers
