@@ -46,7 +46,6 @@ class RegisterController extends Controller
             'aura' => 0,
             //'profile_picture' => null, // user can't add a profile picture for now
             'created' => now(),
-            'deleted' => false,
             'is_mod' => false
         ]);
 
