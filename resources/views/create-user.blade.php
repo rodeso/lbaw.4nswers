@@ -185,6 +185,7 @@
                                 <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                             @enderror
                         </div>
+                        @if (Auth::user()->is_admin)
                         <!-- is Admin Field -->
                         <div class="mb-6">
                             <label for="is_admin" class="block text-white text-sm font-bold mb-2">
@@ -197,6 +198,7 @@
                                 <p class="text-red-500 text-xs italic mt-2">{{ $message }}</p>
                             @enderror
                         </div>
+                        @endif
                         <!-- Action Buttons -->
                         <div class="mb-6 flex justify-between">
                             <button 
