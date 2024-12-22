@@ -72,8 +72,7 @@ class NotificationController extends Controller
         ]);
 
         // Redirect to the associated question page
-        return redirect()->route('question.show', $questionId)
-                        ->with('success', 'Post flagged successfully.');
+        return redirect()->route('question.show', $questionId)->with('success', 'Post reported successfully.');
     }
         
 
