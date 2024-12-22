@@ -46,18 +46,55 @@
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">How It Works</h2>
                 <p class="text-gray-700">
-                    Questions are open for a predetermined amount of time (up to 48 hours) selected by the poster. The question closes when time runs out or when the poster declares an answer as USEFUL. After closure, the post remains accessible but locked for new contributions and votes.
+                    Questions are open for a predetermined amount of time (up to 24 hours) selected by the poster. The question closes when time runs out or when the poster declares an answer as USEFUL. After closure, the post remains accessible but locked for new contributions and votes.
                 </p>
                 <p class="text-gray-700">
                     Moderators may review flagged posts and provide an analysis of answers, alerting the community to incorrect answers. Posts with higher interaction or significant reports are more likely to receive moderation. Moderators can issue alerts and adjust points for flagged content.
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">Becoming a Moderator</h2>
                 <p class="text-gray-700">
-                    Users can become moderators for a tag by earning points and providing accurate answers to posts associated with that tag.
+                    Users can become moderators by earning points and providing accurate answers to posts.
                 </p>
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">Our Mission</h2>
                 <p class="text-gray-700">
                     Our central motivation is to reduce the frustration of not having someone to ask about important or urgent questions. By engaging a community of users, we aim to deliver the best possible answers quickly and effectively.
+                </p>
+                <h2 class="text-xl font-semibold text-[color:#4E0F35] mt-10">Our Team (LBAW24112)</h2>
+                <p class="text-gray-700 mb-8">
+                    The team behind 4NSWERS! Our work and dedication brought this project to life.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-[color:#4E0F35] p-4 rounded-lg shadow-md text-center">
+                        <a href="https://github.com/El-Castro">
+                            <img src="https://avatars.githubusercontent.com/u/132162815?v=4" alt="Team Member 1" class="w-32 h-32 mx-auto rounded-full mb-4">
+                            <h3 class="text-lg font-semibold text-white" >Afonso Castro</h3>
+                            <p class="text-sm text-[color:#FF006E]">El-Castro</p>
+                        </a>
+                    </div>
+                    <div class="bg-[color:#4E0F35] p-4 rounded-lg shadow-md text-center">
+                        <a href="https://github.com/Leonor2004">
+                            <img src="https://avatars.githubusercontent.com/u/122482920?v=4" alt="Team Member 2" class="w-32 h-32 mx-auto rounded-full mb-4">
+                            <h3 class="text-lg font-semibold text-white">Leonor Couto</h3>
+                            <p class="text-sm text-[color:#FF006E]">Leonor2004</p>
+                        </a>
+                    </div>
+                    <div class="bg-[color:#4E0F35] p-4 rounded-lg shadow-md text-center">
+                        <a href="https://github.com/pedroossantos">
+                            <img src="https://avatars.githubusercontent.com/u/146010699?v=4" alt="Team Member 3" class="w-32 h-32 mx-auto rounded-full mb-4">
+                            <h3 class="text-lg font-semibold text-white">Pedro Santos</h3>
+                            <p class="text-sm text-[color:#FF006E]">pedroossantos</p>
+                        </a>
+                    </div>
+                    <div class="bg-[color:#4E0F35] p-4 rounded-lg shadow-md text-center">
+                        <a href="https://github.com/rodeso">
+                            <img src="https://avatars.githubusercontent.com/u/145766625?v=4" alt="Team Member 4" class="w-32 h-32 mx-auto rounded-full mb-4">
+                            <h3 class="text-lg font-semibold text-white">Rodrigo de Sousa</h3>
+                            <p class="text-sm text-[color:#FF006E]">rodeso</p>
+                        </a>
+                    </div>
+                </div>
+                <p class="text-gray-700 mt-8">
+                    <a href="https://www.youtube.com/watch?v=Sj_9CiNkkn4">Thank you for using our Q&A !</a>
                 </p>
             </div>
         </main>

@@ -29,7 +29,7 @@
             style="color: 
                 @if($question->urgency === 'Red') red
                 @elseif($question->urgency === 'Orange') orange
-                @elseif($question->urgency === 'Yellow') yellow
+                @elseif($question->urgency === 'Yellow') gold
                 @elseif($question->urgency === 'Green') green
                 @else black
                 @endif

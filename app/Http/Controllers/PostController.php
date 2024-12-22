@@ -23,6 +23,7 @@ use App\Models\HelpfulNotification;
 
 class PostController extends Controller
 {   
+    // Post page
     public function show($id)
     {   
 
@@ -91,6 +92,8 @@ class PostController extends Controller
             'new_tags' => 'nullable|string', // JSON string of new tag objects
         ]);
 
+        $this->authorize('unblocked'); 
+
         // Create the post
         $post = Post::create([
             'body' => $validated['body'],
@@ -149,6 +152,8 @@ class PostController extends Controller
             'question_id' => 'required|exists:question,id',
         ]);
 
+        $this->authorize('unblocked'); 
+
         // Fetch the question to check if it's closed
         $question = Question::find($validated['question_id']);
 
@@ -199,6 +204,8 @@ class PostController extends Controller
         $validated = $request->validate([
             'body' => 'required|string|max:4096',
         ]);
+
+        $this->authorize('unblocked'); 
 
         $answer = Answer::findOrFail($answerId);
 
@@ -254,6 +261,8 @@ class PostController extends Controller
             return redirect()->route('home')->with('alert', 'You must be logged in to post a new question!');
         }
 
+        $this->authorize('unblocked'); 
+
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
@@ -273,7 +282,7 @@ class PostController extends Controller
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question 
-        $this->authorize('update', $question);
+        $this->authorize('update-question', $question);
 
         $post = Post::findOrFail($question->post_id);
 
@@ -295,7 +304,7 @@ class PostController extends Controller
         $question = Question::with('tags')->findOrFail($id);
 
         // Check if the logged-in user is the author of the question or a moderator
-        $this->authorize('updateTags', $question);
+        $this->authorize('updateTags-question', $question);
 
         // Tags that the user follows
         $user_tags = Auth::user()
@@ -314,7 +323,7 @@ class PostController extends Controller
         
         $answer = Answer::findOrFail($id);
 
-        $this->authorize('update', $answer);
+        $this->authorize('update-answer', $answer);
 
         $post = Post::findOrFail($answer->post_id);
 
@@ -333,7 +342,7 @@ class PostController extends Controller
         
         $comment = Comment::findOrFail($id);
 
-        $this->authorize('update', $comment);
+        $this->authorize('update-comment', $comment);
 
         $post = Post::findOrFail($comment->post_id);
 
@@ -353,6 +362,8 @@ class PostController extends Controller
 
     public function vote(Request $request, $questionId)
     {
+        $this->authorize('unblocked'); 
+        
         $userId = auth()->id();
 
         // Fetch the question to check if it's closed
@@ -372,6 +383,7 @@ class PostController extends Controller
             ->first();
         
         $voteUndone = false; // Initialize flag
+        $voteChanged = false;
         
         if ($existingVote) {
             // If the user clicks the same button twice, remove the vote (undo)
@@ -379,17 +391,32 @@ class PostController extends Controller
                 ($voteType === 'downvote' && !$existingVote->is_positive)) {
                 $existingVote->delete();
                 $voteUndone = true; // Mark that vote was undone
+                $voteChanged = -1;
 
                 // Return the updated vote count and voteUndone flag
                 $totalVotes = PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', true)->count()
                     - PopularityVote::where('question_id', $questionId)
                     ->where('is_positive', false)->count();
+                
+                // Update cumulative votes and aura
+                if ($voteChanged !== 0) {
+                    $user = User::find($userId);
+                    $user->votes_processed += $voteChanged;
+
+                    if ($user->votes_processed >= 5) {
+                        $user->votes_processed -= 5; // Reset for next cycle
+                        $user->aura += 1; // Grant 1 aura
+                    }
+
+                    $user->save();
+                }
         
                 return response()->json(['totalVotes' => $totalVotes, 'voteUndone' => $voteUndone]);
             }
 
             // Otherwise, update the vote
+            $voteChanged = 0;
             $existingVote->is_positive = ($voteType === 'upvote');
             $existingVote->save();
         } else {
@@ -399,6 +426,20 @@ class PostController extends Controller
                 'question_id' => $questionId,
                 'is_positive' => ($voteType === 'upvote'),
             ]);
+            $voteChanged = 1;
+        }
+
+        // Update cumulative votes and aura
+        if ($voteChanged !== 0) {
+            $user = User::find($userId);
+            $user->votes_processed += $voteChanged;
+
+            if ($user->votes_processed >= 5) {
+                $user->votes_processed -= 5; // Reset for next cycle
+                $user->aura += 1; // Grant 1 aura
+            }
+
+            $user->save();
         }
 
         // Calculate total votes
@@ -412,6 +453,8 @@ class PostController extends Controller
 
     public function auraVote(Request $request, $answerId)
     {
+        $this->authorize('unblocked'); 
+
         if (!auth()->check()) {
             return response()->json(['error' => 'You must be logged in to vote'], 403);
         }
@@ -448,12 +491,16 @@ class PostController extends Controller
             ->where('answer_id', $answerId)
             ->first();
 
+        $voteChanged = false;
+
         if ($existingVote) {
             if ($existingVote->is_positive === $isPositive) {
                 $existingVote->delete(); // Remove the vote
+                $voteChanged = -1;
             } else {
                 $existingVote->is_positive = $isPositive;
                 $existingVote->save(); // Save the updated vote
+                $voteChanged = 0;
             }
         } else {
             AuraVote::create([
@@ -461,6 +508,19 @@ class PostController extends Controller
                 'answer_id' => $answerId,
                 'is_positive' => $isPositive,
             ]);
+            $voteChanged = 1;
+        }
+
+        if ($voteChanged !== 0) {
+            $user = User::find($userId);
+            $user->votes_processed += $voteChanged;
+    
+            if ($user->votes_processed >= 10) {
+                $user->votes_processed -= 10; // Reset for next cycle
+                $user->aura += 1; // Grant 1 aura
+            }
+    
+            $user->save();
         }
 
         // Calculate the total aura after the vote
@@ -484,6 +544,16 @@ class PostController extends Controller
             ->count();
     }
 
+    public function popularity($questionId)
+    {
+        return PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', true)
+            ->count()
+            - PopularityVote::where('question_id', $questionId)
+            ->where('is_positive', false)
+            ->count();
+    }
+
     /*
     Update -------------------------------------------------------------------------------------------------------------------------
     */
@@ -501,7 +571,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Ensure the user has permission to update this question
-        $this->authorize('update', $question);
+        $this->authorize('update-question', $question);
 
         $post = Post::findOrFail($question->post_id);
         $post->update([
@@ -528,7 +598,7 @@ class PostController extends Controller
         $question = Question::findOrFail($id);
 
         // Ensure the user has permission to update this question
-        $this->authorize('updateTags', $question);
+        $this->authorize('updateTags-question', $question);
 
         // Process selected existing tags
         $selectedTagIds = [];
@@ -576,7 +646,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Ensure the user has permission to update this answer
-        $this->authorize('update', $answer);
+        $this->authorize('update-answer', $answer);
 
         $post = Post::findOrFail($answer->post_id);
         $post->update([
@@ -596,7 +666,7 @@ class PostController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Ensure the user has permission to update this comment
-        $this->authorize('update', $comment);
+        $this->authorize('update-comment', $comment);
 
         $post = Post::findOrFail($comment->post_id);
         $post->update([
@@ -606,19 +676,90 @@ class PostController extends Controller
         return redirect()->route('question.show', $comment->answer->question->id)->with('success', 'Comment updated successfully!');
     }
 
-    public function closeQuestion($id)
-    {
-        // Retrieve the question
-        $question = Question::findOrFail($id);
-
-        // Check if the authenticated user is the author or an admin
-        $this->authorize('close', $question);
-
+    private function finalizeQuestionClosure($question)
+    {   
+        // Get the question's author ID
+        $questionAuthorId = $question->author_id;
+    
+        // Count answers not authored by the question's author
+        $numAnswers = Answer::where('question_id', $question->id)
+            ->where('author_id', '!=', $questionAuthorId)
+            ->count();
+        
+        // Srted answers by aura also now authored by the question's author TODO
+        $sortedAnswers = $question->answers
+            ->filter(function ($answer) use ($questionAuthorId) {
+                return $answer->author_id != $questionAuthorId;
+            })
+            ->sortByDesc(function ($answer) {
+                return PostController::aura($answer->id);
+            });
+    
+        // Get popularity votes
+        $popularVotes = $this->popularity($question->id);
+    
+        if ($popularVotes > 0) {
+            $bonusResponders = $popularVotes * 4;
+            $bonus1 = ceil($bonusResponders * (40 / 100));
+            $bonus2 = ceil($bonusResponders * (20 / 100));
+            $bonus3 = ceil($bonusResponders * (12.5 / 100));
+            $bonus4 = ceil($bonusResponders * (7.5 / 100));
+    
+            $topAnswers = $sortedAnswers->take(4);
+            $bonuses = [$bonus1, $bonus2, $bonus3, $bonus4];
+    
+            foreach ($topAnswers as $index => $answer) {
+                $answerAuthor = User::find($answer->author_id);
+                $answerAuthor->aura += $bonuses[$index];
+                $answerAuthor->save();
+            }
+        }
+     
+        // Initialize aura points
+        $bonusAuraPoints = 0;
+    
+        // Apply the aura point logic
+        if ($popularVotes >= 5) {
+            $bonusAuraPoints += ($popularVotes - 5) * 2;
+        }
+        if ($numAnswers >= 3) {
+            $bonusAuraPoints += ($numAnswers - 3) * 2;
+        }
+    
+        // Update the author's aura if bonusAuraPoints > 0
+        if ($bonusAuraPoints > 0) {
+            $author = $question->author;
+            $author->aura += $bonusAuraPoints;
+            $author->save();
+        }
+    
         // Close the question
         $question->closed = true;
         $question->save();
+    }
 
-        return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
+    public function closeQuestion($id)
+    {
+        DB::beginTransaction();
+        try {
+            // Retrieve the question
+            $question = Question::findOrFail($id);
+    
+            // Check if the authenticated user is the author or an admin
+            $this->authorize('close-question', $question);
+
+            $this->finalizeQuestionClosure($question);
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return redirect()->route('question.show', $id)->with('success', 'Question closed successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+    
+            return redirect()->route('question.show', $id)->with('error', 'Failed to close question!');
+        }
     }
     
     public function chooseAnswer(Request $request, $questionId, $answerId)
@@ -645,7 +786,7 @@ class PostController extends Controller
         }
     
         // Only allow the question author to choose an answer
-        $this->authorize('update', $question);
+        $this->authorize('choose-question', $question);
 
         // Set this answer as chosen
         $answer->chosen = true;
@@ -669,8 +810,22 @@ class PostController extends Controller
             'notification_id' => $notification->id, // Reference to the notification
         ]);
         $helpfulNotification->save();
+
+        DB::beginTransaction();
+        try {
+            $this->finalizeQuestionClosure($question);
+
+            // Commit the transaction
+            DB::commit();
     
-        return redirect()->back()->with('success', 'Answer chosen successfully!');
+            return redirect()->back()->with('success', 'Answer chosen successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+    
+            return redirect()->back()->with('error', 'Failed to choose the answer!');
+        }
+      
     }
     
 
@@ -684,7 +839,7 @@ class PostController extends Controller
         $question = Question::with(['answers', 'tags'])->findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $question);
+        $this->authorize('delete-question', $question);
 
         // Delete related answers
         foreach ($question->answers as $answer) {
@@ -713,7 +868,7 @@ class PostController extends Controller
         $answer = Answer::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $answer);
+        $this->authorize('delete-answer', $answer);
 
         $post = $answer->post;
         $post->delete(); // Delete the post
@@ -729,7 +884,7 @@ class PostController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Check if the authenticated user is the author or an admin
-        $this->authorize('delete', $comment);
+        $this->authorize('delete-comment', $comment);
 
         $post = $comment->post;
         $post->delete(); // Delete the post

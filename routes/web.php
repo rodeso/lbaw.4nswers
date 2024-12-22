@@ -40,21 +40,20 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
 
 // Admin Dashboard
-Route::get('/admin-dashboard/users', [AdminDashboardController::class, 'users'])->name('admin-dashboard.users');
-Route::get('/admin-dashboard/tags', [AdminDashboardController::class, 'tags'])->name('admin-dashboard.tags');
-Route::get('/admin-dashboard/posts', [AdminDashboardController::class, 'posts'])->name('admin-dashboard.posts');
+Route::get('/admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
+Route::get('/admin/tags', [AdminDashboardController::class, 'tags'])->name('admin.tags');
+Route::get('/admin/posts', [AdminDashboardController::class, 'posts'])->name('admin.posts');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
 
-Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin-dashboard.deleteTag');
-
+Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin.deleteTag');
 
 // Terms & Conditions
-Route::get('/terms-and-conditions', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
+Route::get('/terms', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
 
 // About Us
-Route::get('/about-us', [AboutUsController::class, 'about'])->name('about.us');
+Route::get('/about', [AboutUsController::class, 'about'])->name('about.us');
 
 // Popular, Urgent, New
 Route::get('/popular', [IndexController::class, 'reorderByPopularity'])->name('popular');
@@ -127,28 +126,34 @@ Route::get('/profile', [UserController::class, 'index'])->name('profile');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.profile');
 
 // Delete User
-Route::delete('/user/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
+Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
 
-// Follow User
+// Create User
+Route::get('/new-user', [UserController::class, 'create'])->name('user.create');
+Route::post('/new-user', [UserController::class, 'store'])->name('user.store');
+
+// Edit User
+Route::get('/users/{id}/edit', [UserController::class, 'editUser'])->name('user.edit');
+Route::put('/users/{id}/update', [UserController::class, 'updateUser'])->name('user.update');
+
 // Tag Page
 Route::get('/tags/{id}', [TagPageController::class, 'index'])->name('tag');
 Route::post('/tags/{id}/toggle-follow', [TagPageController::class, 'toggleFollow'])->name('tags.toggle-follow');
 Route::get('/tags/{id}/is-following', [TagPageController::class, 'isFollowing']);
-
 
 //Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Edit Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-profile', [UserController::class, 'edit'])->name('profile.edit');
-    Route::put('/edit-profile', [UserController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/edit', [UserController::class, 'update'])->name('profile.update');
 });
 
 // Edit Credentials Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/edit-password-profile', [UserController::class, 'editpassword'])->name('profile.editpassword');
-    Route::put('/edit-password-profile', [UserController::class, 'updatepassword'])->name('profile.updatepassword');
+    Route::get('/profile/edit/password', [UserController::class, 'editpassword'])->name('password.edit');
+    Route::put('/profile/edit/password', [UserController::class, 'updatepassword'])->name('password.update');
 });
 
 

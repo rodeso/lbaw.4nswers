@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Question;
 use App\Models\Answer;
@@ -89,6 +90,7 @@ class UserController extends Controller
         return view('profile', compact('user', 'questions', 'tags', 'answers', 'comments', 'notifications', 'followedQuestions'));
     }
 
+    // Other profiles
     public function show($id)
     {   
 
@@ -169,7 +171,6 @@ class UserController extends Controller
     }
     
 
-
     // Show the profile edit form
     public function edit()
     {
@@ -188,6 +189,16 @@ class UserController extends Controller
         $notifications = Controller::getNotifications();
 
         return view('edit-password-profile', compact('user','notifications'));
+    }
+
+    //Admin User Edit
+    function editUser($id)
+    {
+        $notifications = Controller::getNotifications();
+
+        $user = User::findOrFail($id);
+
+        return view('edit-user', compact('user', 'notifications'));
     }
 
     // Update the user's profile
@@ -262,12 +273,60 @@ class UserController extends Controller
         return redirect()->route('profile')->with('success', 'Password updated successfully!');
     }
 
+    // Admin Update the user's profile
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:user,nickname,' . $id,
+            'birth_date' => 'nullable|date',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'is_mod' => 'nullable|boolean',
+            'is_blocked' => 'nullable|boolean',
+            'aura' => 'nullable|integer',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        // Update the user's name and nickname
+        $user->name = $request->input('name');
+        $user->nickname = $request->input('nickname');
+        $user->aura = $request->input('aura') ?? 0;
+        $user->is_mod = ($request->input('is_mod') ?? false) || ($request->input('is_admin') ?? false);
+        $user->is_blocked = $request->input('is_blocked') ?? false;
+
+        if($request->filled('birth_date')){ // Update birth date if provided
+            $birthDate = $request->birth_date;
+            $age = \Carbon\Carbon::parse($birthDate)->age;
+            if ($age < 13) {
+                return back()->withErrors(['birth_date' => 'Sorry, you are too young to create an account.'])->withInput();
+            }
+            $user->birth_date = $request->input('birth_date');
+        }
+
+        // Update photo if provided
+        if ($request->hasFile('profile_picture')) {
+            // Delete the old avatar if exists
+            if ($user->profile_picture && $user->profile_picture !== 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png') {
+                Storage::delete($user->profile_picture);
+            }
+
+            // Store the new avatar and update the user's profile
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+        
+        $user->save();
+        return redirect()->route('user.profile', $id)->with('success', 'User edited succesfully!');
+
+    }
+
+
     public function toggleMod($id)
     {
-        // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
-            return redirect()->back()->with('alert', 'Unauthorized action.');
-        }
+        // Ensure the authenticated user has permission to perform this action - is mod
+        $this->authorize('moderator');
 
         $user = User::findOrFail($id);
 
@@ -279,11 +338,9 @@ class UserController extends Controller
     }
 
     public function toggleBlock($id)
-    {
-        // Ensure the authenticated user has permission to perform this action
-        if (!Auth::user()->is_admin && !Auth::user()->is_mod) {
-            return redirect()->back()->with('alert', 'Unauthorized action.');
-        }
+    { 
+        // Ensure the authenticated user has permission to perform this action - is mod
+        $this->authorize('moderator');
 
         $user = User::findOrFail($id);
 
@@ -296,11 +353,10 @@ class UserController extends Controller
 
     public function deleteUser($id) 
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id); // User that will be deleted
 
-        if (Auth::id() !== $user->id && !Auth::user()->is_admin) {
-            return redirect()->route('home')->with('error', 'You are not authorized to delete this user.');
-        }      
+        // Ensure the authenticated user has permission to perform this action - is the user or is mod
+        $this->authorize('delete-user', $user);   
 
         $user->delete();
 
@@ -311,4 +367,62 @@ class UserController extends Controller
         return redirect()->route('home')->with('success', 'The user has been deleted successfully.');
     }
 
+    public function create()
+    {
+        $notifications = Controller::getNotifications();
+        return view('create-user', compact('notifications'));
+    }
+    
+    public function store(Request $request)
+    {
+        $notifications = Controller::getNotifications();
+
+        // Validate incoming data
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:user',
+            'email' => 'required|email|unique:user',
+            'password' => 'required|string|min:8|confirmed',
+            'birth_date' => 'nullable|date',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'is_mod' => 'nullable|boolean',
+            'is_blocked' => 'nullable|boolean',
+            'aura' => 'nullable|integer',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        // Check for age requirement
+        $birthDate = $data['birth_date'] ?? null;
+        if ($birthDate) {
+            $age = \Carbon\Carbon::parse($birthDate)->age;
+            if ($age < 13) {
+                return back()->withErrors(['birth_date' => 'Sorry, you are too young to create an account.'])->withInput();
+            }
+        }
+
+        // Create new user
+        $user = new User();
+        $user->name = $data['name'];
+        $user->nickname = $data['nickname'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->birth_date = $data['birth_date'];
+        $user->aura = $data['aura'] ?? 0;
+        $user->is_mod = ($data['is_mod'] ?? false) || ($data['is_admin'] ?? false);
+        $user->is_blocked = $data['is_blocked'] ?? false;
+
+        // Save user
+        $user->save();
+
+        // Handle admin creation
+        if ($data['is_admin'] ?? false) {
+            DB::table('admin')->insert([
+                'id' => $user->id,
+                'admin_start' => now(),
+            ]);
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User created successfully!');
+
+    }
 }

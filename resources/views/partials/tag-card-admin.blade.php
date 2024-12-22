@@ -9,7 +9,7 @@
         
                 <span class="px-4 py-2  text-l w-40 mr-4 text-center text-white bg-gray-700 rounded-lg">Followers: {{ $tag->follower_count }}</span>
 
-                <form method="POST" action="{{ route('admin-dashboard.deleteTag', $tag->id) }}">
+                <form method="POST" action="{{ route('admin.deleteTag', $tag->id) }}">
                     @csrf
                     @method('DELETE')
                     <button 

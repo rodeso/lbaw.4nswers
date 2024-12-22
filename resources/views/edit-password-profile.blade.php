@@ -35,7 +35,7 @@
             @endif
 
             <!-- Edit Profile Form -->
-            <form action="{{ route('profile.updatepassword') }}" method="POST">
+            <form action="{{ route('password.update') }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="w-[35rem]">

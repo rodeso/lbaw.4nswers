@@ -13,7 +13,7 @@ class User extends Authenticatable
     protected $table = 'lbaw24112.user';
     protected $fillable = [
         'name', 'nickname', 'email', 'password', 'birth_date', 
-        'aura', 'profile_picture', 'created', 'deleted', 'is_mod'
+        'aura', 'profile_picture', 'created', 'is_mod'. 'is_blocked'
     ];
 
     protected $hidden = [
@@ -24,7 +24,6 @@ class User extends Authenticatable
     protected $casts = [
         'birth_date' => 'date',
         'aura' => 'integer',
-        'deleted' => 'boolean',
         'is_mod' => 'boolean',
         'created' => 'date',
     ];

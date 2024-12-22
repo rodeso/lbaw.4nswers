@@ -18,8 +18,6 @@ class AuraVote extends Model
 
     public $timestamps = false; // Set to false if you don’t have timestamps (created_at, updated_at) in the table
 
-    use HasFactory;
-
     public function answer()
     {
         return $this->belongsTo(Answer::class);

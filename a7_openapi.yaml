@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: 4NSWERS API
   description: Comprehensive API for the collaborative Q&A platform "4NSWERS".
-  version: 1.0.0
+  version: 2.0.0
 servers:
   - url: http://127.0.0.1:8000
     description: Local Development Server
@@ -12,9 +12,10 @@ tags:
   - name: "M02: Home and Navigation"
   - name: "M03: Questions Management"
   - name: "M04: Answers Management"
-  - name: "M05: User Profiles"
-  - name: "M06: Search"
-  - name: "M07: Voting System"
+  - name: "M05: Comments Management"
+  - name: "M06: Tags Management"
+  - name: "M07: User Profiles"
+  - name: "M08: Notifications"
 
 paths:
 
@@ -53,7 +54,6 @@ paths:
             Location:
               schema:
                 type: string
-
   /register:
     get:
       summary: "Registration Form"
@@ -77,104 +77,287 @@ paths:
               properties:
                 name:
                   type: string
+                nickname:
+                  type: string
                 email:
                   type: string
                 password:
                   type: string
+                birth_date:
+                  type: string
+                  format: date
               required:
                 - name
+                - nickname
                 - email
                 - password
+                - birth_date
       responses:
         '302':
           description: "Redirect after registration."
           headers:
             Location:
+              description: "/"
               schema:
                 type: string
-
-  /users/{id}:
+  
+  /:
     get:
-      summary: "View User Profile"
-      description: "Retrieve user profile by ID. Access: OWN, ADM"
+      summary: "Go Home"
+      description: "Get to the Homepage. Acess: PUB"
       tags:
-        - "M05: User Profiles"
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+        - "M02: Home and Navigation"
       responses:
         '200':
-          description: "User Profile"
+          description: "Homepage"
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: "#/components/schemas/User"
-    patch:
-      summary: "Edit User Profile"
-      description: "Edit profile of the user. Access: OWN"
+                type: string
+                description: "The HTML content of the homepage."
+  /about:
+    get:
+      summary: "About Us"
+      description: "Learn more about the platform. Access: PUB"
       tags:
-        - "M05: User Profiles"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserUpdate"
+        - "M02: Home and Navigation"
       responses:
         '200':
-          description: "User profile updated."
-    delete:
-      summary: "Delete User"
-      description: "Delete the user account. Access: OWN, ADM"
-      tags:
-        - "M05: User Profiles"
-      responses:
-        '204':
-          description: "User deleted."
-
-  /questions:
+          description: "About Us"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the about page."
+  /terms:
     get:
-      summary: "Get Questions"
-      description: "Retrieve all active questions. Access: PUB"
+      summary: "Terms and Conditions"
+      description: "Read the terms and conditions. Access: PUB"
       tags:
-        - "M03: Questions Management"
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Terms and Conditions"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the terms and conditions page."
+  /hall-of-fame:
+    get:
+      summary: "Hall of Fame"
+      description: "View the Hall of Fame. Access: PUB"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Hall of Fame"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the hall of fame page."
+  /foryou:
+    get:
+      summary: "For You"
+      description: "View personalized recommendations. Access: USR"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "For You"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the personalized recommendations page."
+  /popular:
+    get:
+      summary: "Popular Questions"
+      description: "View the most popular questions. Access: PUB"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Popular Questions"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the popular questions page."
+  /new:
+    get:
+      summary: "New Questions"
+      description: "View the newest questions. Access: PUB"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "New Questions"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the new questions page."
+  /urgent:
+    get:
+      summary: "Urgent Questions"
+      description: "View the most urgent questions. Access: PUB"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Urgent Questions"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the urgent questions page."
+  /admin/users:
+    get:
+      summary: "User Management"
+      description: "View and manage user accounts. Access: ADM"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "User Management Dashboard"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the user management dashboard."
+  /admin/posts:
+    get:
+      summary: "Post Management"
+      description: "View and manage questions and answers. Access: ADM"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Post Management Dashboard"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the post management dashboard."
+  /admin/tags:
+    get:
+      summary: "Tag Management"
+      description: "View and manage tags. Access: ADM"
+      tags:
+        - "M02: Home and Navigation"
+      responses:
+        '200':
+          description: "Tag Management Dashboard"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the tag management dashboard."
+  /search:
+    get:
+      summary: "Search Questions"
+      description: "Search for questions using a query string. Access: PUB"
+      tags:
+        - "M02: Home and Navigation"
       parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          description: "The search term to query questions by title, content, tag, or author."
+          required: false
         - in: query
           name: tag
           schema:
-            type: string
-          description: "Filter by tag"
-        - in: query
-          name: urgency
-          schema:
-            type: string
-          description: "Filter by urgency level"
+            type: integer
+          description: "Filter questions by a specific tag ID."
+          required: false
       responses:
         '200':
-          description: "List of questions"
+          description: "Successful response containing search results."
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Question"
-    post:
-      summary: "Create Question"
-      description: "Submit a new question. Access: USR"
-      tags:
-        - "M03: Questions Management"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/QuestionCreate"
-      responses:
-        '201':
-          description: "Question created successfully."
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: "The unique ID of the question."
+                    title:
+                      type: string
+                      description: "The title of the question."
+                    body:
+                      type: string
+                      description: "The body content of the question."
+                    tags:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: "The unique ID of the tag."
+                          name:
+                            type: string
+                            description: "The name of the tag."
+                    author:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: "The unique ID of the author."
+                        nickname:
+                          type: string
+                          description: "The nickname of the author."
+                example:
+                  - id: 1
+                    title: "How to implement search in Laravel?"
+                    body: "I need help implementing a search function in my Laravel application..."
+                    tags:
+                      - id: 101
+                        name: "Laravel"
+                      - id: 102
+                        name: "Search"
+                    author:
+                      id: 5
+                      nickname: "devguru"
+                  - id: 2
+                    title: "What is the best way to handle search queries?"
+                    body: "Looking for advice on efficient search strategies for large datasets..."
+                    tags:
+                      - id: 103
+                        name: "Database"
+                    author:
+                      id: 8
+                      nickname: "datawhiz"
+        '400':
+          description: "Bad Request. Invalid parameters provided."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: "Error message describing the issue."
+                example:
+                  error: "Invalid tag ID provided."
+        '404':
+          description: "No results found for the given query and/or tag."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: "A message indicating no results were found."
+                example:
+                  message: "No questions found matching the query."
 
   /questions/{id}:
     get:
@@ -192,52 +375,215 @@ paths:
         '200':
           description: "Question details"
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: "#/components/schemas/Question"
-    patch:
+                type: string
+                description: "The HTML content of the question page."
+  /questions/{id}/edit:
+    get:
       summary: "Edit Question"
-      description: "Edit details of a question. Access: OWN"
+      description: "Provide a form to edit a question. Access: OWN"
       tags:
         - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Edit Question Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the edit question form."
+  /questions/{id}/update:
+    put:
+      summary: "Update Question"
+      description: "Process the edit question form. Access: OWN"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/QuestionUpdate"
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+              required:
+                - title
+                - body
       responses:
-        '200':
-          description: "Question updated."
+        '302':
+          description: "Redirect after question update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /questions/{id}/delete:
     delete:
       summary: "Delete Question"
       description: "Delete a question. Access: OWN, ADM"
       tags:
         - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       responses:
-        '204':
-          description: "Question deleted."
-
+        '302':
+          description: "Redirect after question deletion."
+          headers:
+            Location:
+              schema:
+                type: string
+  /questions/{id}/close:
+    post:
+      summary: "Close Question"
+      description: "Mark a question as closed. Access: OWN"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: "Redirect after question closure."
+          headers:
+            Location:
+              schema:
+                type: string
+  /questions/{id}/edit-tags:
+    get:
+      summary: "Edit Question Tags"
+      description: "Provide a form to edit the tags of a question. Access: OWN"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Edit Tags Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the edit tags form."
+  /questions/{id}/update-tags:
+    put:
+      summary: "Update Question Tags"
+      description: "Process the edit tags form. Access: OWN"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    type: integer
+              required:
+                - tags
+      responses:
+        '302':
+          description: "Redirect after question tags update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /questions/{id}/follow:
+    post:
+      summary: "Follow Question"
+      description: "Follow a question to receive notifications. Access: USR"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Question followed successfully."
+  /questions/{id}/vote:
+    post:
+      summary: "Vote on Question"
+      description: "Submit a vote for a question. Access: USR"
+      tags:
+        - "M03: Questions Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Vote submitted successfully."
+  
   /answers:
     post:
-      summary: "Submit an Answer"
-      description: "Post a new answer to a question. Access: USR"
+      summary: "Submit Answer"
+      description: "Submit an answer to a question. Access: USR"
       tags:
         - "M04: Answers Management"
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/AnswerCreate"
+              type: object
+              properties:
+                body:
+                  type: string
+                question_id:
+                  type: integer
+              required:
+                - body
+                - question_id
       responses:
-        '201':
-          description: "Answer submitted."
-
-  /answers/{id}:
+        '302':
+          description: "Redirect after answer submission."
+          headers:
+            Location:
+              schema:
+                type: string
+  /answers/{id}/edit:
     get:
-      summary: "View Answer"
-      description: "Retrieve details of an answer by ID. Access: PUB"
+      summary: "Edit Answer"
+      description: "Provide a form to edit an answer. Access: OWN"
       tags:
         - "M04: Answers Management"
       parameters:
@@ -248,78 +594,48 @@ paths:
             type: integer
       responses:
         '200':
-          description: "Answer details"
+          description: "Edit Answer Form"
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: "#/components/schemas/Answer"
-    patch:
-      summary: "Edit Answer"
-      description: "Edit details of an answer. Access: OWN"
+                type: string
+                description: "The HTML content of the edit answer form."
+  /answers/{id}/update:
+    put:
+      summary: "Update Answer"
+      description: "Process the edit answer form. Access: OWN"
       tags:
         - "M04: Answers Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/AnswerUpdate"
+              type: object
+              properties:
+                body:
+                  type: string
+              required:
+                - body
       responses:
-        '200':
-          description: "Answer updated."
+        '302':
+          description: "Redirect after answer update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /answers/{id}/delete:
     delete:
       summary: "Delete Answer"
       description: "Delete an answer. Access: OWN, ADM"
       tags:
         - "M04: Answers Management"
-      responses:
-        '204':
-          description: "Answer deleted."
-          
-  /search:
-    get:
-      summary: "Search Questions"
-      description: "Search for questions using a query string. Access: PUB"
-      tags:
-        - "M06: Search"
-      parameters:
-        - in: query
-          name: q
-          schema:
-            type: string
-          description: "The search term to query questions by title or content."
-      responses:
-        '200':
-          description: "A list of questions that match the search query."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Question"
-
-  /vote:
-    post:
-      summary: "Vote on an Answer"
-      description: "Submit a vote for an answer. Access: USR"
-      tags:
-        - "M07: Voting System"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/VoteCreate"
-      responses:
-        '200':
-          description: "Vote submitted successfully."
-
-  /vote/{id}:
-    delete:
-      summary: "Remove Vote"
-      description: "Remove a vote from an answer. Access: USR"
-      tags:
-        - "M07: Voting System"
       parameters:
         - in: path
           name: id
@@ -327,9 +643,455 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
-          description: "Vote removed."
+        '302':
+          description: "Redirect after answer deletion."
+          headers:
+            Location:
+              schema:
+                type: string
+  /answers/{id}/vote:
+    post:
+      summary: "Vote on Answer"
+      description: "Submit a vote for an answer. Access: USR"
+      tags:
+        - "M04: Answers Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Vote submitted successfully."
+  
+  /answers/{id}/comments:
+    post:
+      summary: "Submit Comment"
+      description: "Submit a comment on an answer. Access: USR"
+      tags:
+        - "M05: Comments Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+              required:
+                - body
+      responses:
+        '302':
+          description: "Redirect after comment submission."
+          headers:
+            Location:
+              schema:
+                type: string
+  /comments/{id}/edit:
+    get:
+      summary: "Edit Comment"
+      description: "Provide a form to edit a comment. Access: OWN"
+      tags:
+        - "M05: Comments Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Edit Comment Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the edit comment form."
+  /comments/{id}/update:
+    put:
+      summary: "Update Comment"
+      description: "Process the edit comment form. Access: OWN"
+      tags:
+        - "M05: Comments Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+              required:
+                - body
+      responses:
+        '302':
+          description: "Redirect after comment update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /comments/{id}/delete:
+    delete:
+      summary: "Delete Comment"
+      description: "Delete a comment. Access: OWN, ADM"
+      tags:
+        - "M05: Comments Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: "Redirect after comment deletion."
+          headers:
+            Location:
+              schema:
+                type: string
+  
+  /tags{id}:
+    get:
+      summary: "View Tag"
+      description: "Retrieve details of a tag by ID. Access: PUB"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Tag details"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the tag page."
+    delete:
+      summary: "Delete Tag"
+      description: "Delete a tag. Access: ADM"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: "Redirect after tag deletion."
+          headers:
+            Location:
+              schema:
+                type: string
+  /tags/{id}/toggle-follow:
+    post:
+      summary: "Toggle Follow Tag"
+      description: "Toggle follow status of a tag. Access: USR"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Tag follow status toggled successfully."
+  /tags/{id}/is-following:
+    get:
+      summary: "Check Following Status"
+      description: "Check if the user is following a tag. Access: USR"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Following status"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  following:
+                    type: boolean
+                example:
+                  following: true
+  
+  /users/{id}:
+    get:
+      summary: "View User Profile"
+      description: "Retrieve details of a user by ID. Access: PUB"
+      tags:
+        - "M07: User Profiles"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "User profile"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the user profile page."
+    delete:
+      summary: "Delete User"
+      description: "Delete a user account. Access: ADM"
+      tags:
+        - "M07: User Profiles"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: "Redirect after user deletion."
+          headers:
+            Location:
+              schema:
+                type: string
+  /users/{id}/toggle-mod:
+    post:
+      summary: "Toggle Moderator Status"
+      description: "Toggle moderator status of a user. Access: ADM"
+      tags:
+        - "M07: User Profiles"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Moderator status toggled successfully."
+  /users/{id}/toggle-block:
+    post:
+      summary: "Toggle Block Status"
+      description: "Toggle block status of a user. Access: ADM"
+      tags:
+        - "M07: User Profiles"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Block status toggled successfully."
+  /profile:
+    get:
+      summary: "View Own Profile"
+      description: "Retrieve details of the authenticated user. Access: USR"
+      tags:
+        - "M07: User Profiles"
+      responses:
+        '200':
+          description: "User profile"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the user profile page."
+  /profile/edit:
+    get:
+      summary: "Edit Profile"
+      description: "Provide a form to edit the user profile. Access: USR"
+      tags:
+        - "M07: User Profiles"
+      responses:
+        '200':
+          description: "Edit Profile Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the edit profile form."
+    put:
+      summary: "Update Profile"
+      description: "Process the edit profile form. Access: USR"
+      tags:
+        - "M07: User Profiles"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                nickname:
+                  type: string
+                email:
+                  type: string
+                birth_date:
+                  type: string
+                  format: date
+              required:
+                - name
+                - nickname
+                - email
+                - birth_date
+      responses:
+        '302':
+          description: "Redirect after profile update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /profile/edit/password:
+    get:
+      summary: "Change Password"
+      description: "Provide a form to change the user password. Access: USR"
+      tags:
+        - "M07: User Profiles"
+      responses:
+        '200':
+          description: "Change Password Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the change password form."
+    put:
+      summary: "Update Password"
+      description: "Process the change password form. Access: USR"
+      tags:
+        - "M07: User Profiles"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                new_password:
+                  type: string
+              required:
+                - current_password
+                - new_password
+      responses:
+        '302':
+          description: "Redirect after password update."
+          headers:
+            Location:
+              schema:
+                type: string
 
+  /notifications:
+    get:
+      summary: "View Notifications"
+      description: "View notifications for the authenticated user. Access: USR"
+      tags:
+        - "M08: Notifications"
+      responses:
+        '200':
+          description: "Notifications"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the notifications page."
+  /questions/{id}/choose-answer/{answerId}:
+    post:
+      summary: "Choose Answer"
+      description: "Mark an answer as the chosen solution. Access: OWN"
+      tags:
+        - "M08: Notifications"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: answerId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Answer chosen successfully."
+  /posts/{id}/report:
+    get:
+      summary: "Report Post"
+      description: "Provide a form to report a question, answer or comment for review. Access: USR"
+      tags:
+        - "M08: Notifications"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Report Post Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the report post form."
+    post:
+      summary: "Report Post"
+      description: "Report a question, answer or comment for review. Access: USR"
+      tags:
+        - "M08: Notifications"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+              required:
+                - reason
+      responses:
+        '200':
+          description: "Post reported successfully."  
 
 components:
   schemas:
@@ -338,68 +1100,168 @@ components:
       properties:
         id:
           type: integer
+          description: "Unique identifier for the user."
         name:
           type: string
+          description: "Full name of the user."
+        nickname:
+          type: string
+          maxLength: 24
+          description: "Nickname of the user."
         email:
           type: string
-
-    UserUpdate:
+          description: "Email address of the user."
+        password:
+          type: string
+          description: "Hashed password for authentication."
+        birth_date:
+          type: string
+          format: date
+          description: "Date of birth of the user."
+        aura:
+          type: integer
+          description: "User's aura points."
+        profile_picture:
+          type: string
+          description: "URL of the user's profile picture."
+        created:
+          type: string
+          format: date
+          description: "Account creation date."
+        deleted:
+          type: boolean
+          description: "Indicates if the account is deleted."
+        is_mod:
+          type: boolean
+          description: "Indicates if the user is a moderator."
+        is_blocked:
+          type: boolean
+          description: "Indicates if the user is blocked."
+    
+    Admin:
       type: object
       properties:
+        id:
+          type: integer
+          description: "Unique identifier for the admin user."
+        admin_start:
+          type: string
+          format: date
+          description: "Date when the admin privileges started."
+
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the tag."
         name:
           type: string
-        email:
+          maxLength: 32
+          description: "Name of the tag."
+        description:
           type: string
+          description: "Detailed description of the tag."
+        follower_count:
+          type: integer
+          description: "Number of users following this tag."
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the post."
+        body:
+          type: string
+          description: "Content of the post."
+        time_stamp:
+          type: string
+          format: date-time
+          description: "Timestamp of post creation."
+        edit_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: "Timestamp of the last edit."
 
     Question:
       type: object
       properties:
         id:
           type: integer
+          description: "Unique identifier for the question."
         title:
           type: string
-        body:
-          type: string
+          description: "Title of the question."
         urgency:
           type: string
-        tags:
-          type: array
-          items:
-            type: string
-
-    QuestionCreate:
-      type: object
-      required:
-        - title
-        - body
-      properties:
-        title:
+          description: "Urgency level of the question."
+        time_end:
           type: string
-        body:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
+          format: date-time
+          description: "Deadline for resolving the question."
+        closed:
+          type: boolean
+          description: "Indicates if the question is closed."
+        author_id:
+          type: integer
+          description: "ID of the question author."
+        post_id:
+          type: integer
+          description: "ID of the related post."
 
     Answer:
       type: object
       properties:
         id:
           type: integer
-        body:
-          type: string
+          description: "Unique identifier for the answer."
+        chosen:
+          type: boolean
+          description: "Indicates if the answer was chosen."
         question_id:
           type: integer
+          description: "ID of the related question."
+        author_id:
+          type: integer
+          description: "ID of the answer author."
+        post_id:
+          type: integer
+          description: "ID of the related post."
 
-    AnswerCreate:
+    Comment:
       type: object
-      required:
-        - body
-        - question_id
       properties:
-        body:
-          type: string
-        question_id:
+        id:
           type: integer
-    
+          description: "Unique identifier for the comment."
+        answer_id:
+          type: integer
+          description: "ID of the related answer."
+        author_id:
+          type: integer
+          description: "ID of the comment author."
+        post_id:
+          type: integer
+          description: "ID of the related post."
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Unique identifier for the notification."
+        content:
+          type: string
+          description: "Content of the notification."
+        time_stamp:
+          type: string
+          format: date-time
+          description: "Timestamp of the notification."
+        post_id:
+          type: integer
+          description: "ID of the related post."
+        user_id:
+          type: integer
+          description: "ID of the user receiving the notification."

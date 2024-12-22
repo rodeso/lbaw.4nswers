@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS lbaw24112.user (
   password VARCHAR NOT NULL,
   birth_date DATE CHECK (birth_date <= CURRENT_DATE - INTERVAL '13 years') NOT NULL,
   aura INT DEFAULT 0 NOT NULL,
+  votes_processed INT DEFAULT 0 NOT NULL,
   profile_picture VARCHAR DEFAULT 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht8llkev.png' NOT NULL,
   created DATE DEFAULT CURRENT_DATE NOT NULL,
-  deleted BOOLEAN DEFAULT FALSE NOT NULL,
   is_mod BOOLEAN DEFAULT FALSE NOT NULL,
   is_blocked BOOLEAN DEFAULT FALSE NOT NULL
 );
@@ -174,20 +174,20 @@ CREATE INDEX tag_name_tsvector_idx ON tag USING GIN (to_tsvector('english', name
 
 
 INSERT INTO lbaw24112.user(id, name, nickname, email, password, birth_date, is_mod)
-VALUES (0, 'DELETED', 'DELETED','DELETEDemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '1111-01-01', FALSE);
+VALUES (0, 'DELETED', 'DELETED','DELETEDemail@4nswers.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '1111-01-01', FALSE);
 
-INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, profile_picture, is_mod)
-VALUES ('Leonor', 'Nónó', 'leonoremail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23', 'profile_pictures/N0tRfvH1MHP02zNHNNc0cHpJjdNQxckuyoLBqiPv.jpg', TRUE),
-('Rodrigo', 'Rodri_5', 'rodrigoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16', 'profile_pictures/rJ2LsD8YY4ywMKx1UtbnJfXWWlXHKHtmrmSw60gW.jpg', TRUE),
-('Pedro', 'Puka', 'pedroemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03', 'profile_pictures/yTbQ1IqrVfz7dFDVxnR0IXCICgZ2to3MiiCbtSdv.jpg', TRUE),
-('Afonso', 'Osnofa', 'afonsoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28', 'profile_pictures/2GphZhBD3PHr65qCHlOM0bVOCJHduKXhPZFHOsyr.jpg', TRUE),
-('Miguel', 'Miguel', 'miguelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-22', 'profile_pictures/WSS0v1cdife3VfV4TKUCt5orIIaPe5DifNsuaWeu.jpg', TRUE),
-('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17', 'profile_pictures/JPAzV9YlMUkfSkaRKBXIGogxGcrEZ65XOBYCD1LJ.jpg', FALSE),
-('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19', 'profile_pictures/rGVQeyrqfMFkqjkdL2gpnkI8RjjwiTHI5EklbwNA.png', FALSE),
-('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26', 'profile_pictures/K1LVtEeG8IIh1RZaYxKSWCDtUDFoaFnynfZDUIJv.jpg', TRUE),
-('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30', 'profile_pictures/X6rPuddaSb616CKoQ7W8tvMil6gicxNonLBpNVDJ.jpg', FALSE),
-('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg', FALSE),
-('Rafael', 'Rafa', 'rafaelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-12-22', 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht9llkev.png', FALSE);
+INSERT INTO lbaw24112.user(name, nickname, email, password, birth_date, profile_picture, is_mod, aura)
+VALUES ('Leonor', 'Nónó', 'leonoremail@4nswers.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-10-23', 'profile_pictures/N0tRfvH1MHP02zNHNNc0cHpJjdNQxckuyoLBqiPv.jpg', TRUE, 0),
+('Rodrigo', 'Rodri_5', 'rodrigoemail@4nswers.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-03-16', 'profile_pictures/rJ2LsD8YY4ywMKx1UtbnJfXWWlXHKHtmrmSw60gW.jpg', TRUE, 0),
+('Pedro', 'Puka', 'pedroemail@4nswers.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-03', 'profile_pictures/yTbQ1IqrVfz7dFDVxnR0IXCICgZ2to3MiiCbtSdv.jpg', TRUE, 0),
+('Afonso', 'Osnofa', 'afonsoemail@4nswers.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-28', 'profile_pictures/2GphZhBD3PHr65qCHlOM0bVOCJHduKXhPZFHOsyr.jpg', TRUE, 0),
+('Miguel', 'Miguel', 'miguelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-01-22', 'profile_pictures/WSS0v1cdife3VfV4TKUCt5orIIaPe5DifNsuaWeu.jpg', TRUE, 4),
+('Alexandre', 'Ramos', 'alexandreemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-07-17', 'profile_pictures/JPAzV9YlMUkfSkaRKBXIGogxGcrEZ65XOBYCD1LJ.jpg', FALSE, 2),
+('Afonso', 'Mansilha', 'mansilhaemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-04-19', 'profile_pictures/rGVQeyrqfMFkqjkdL2gpnkI8RjjwiTHI5EklbwNA.png', FALSE, 0),
+('Vicente', 'Vicente', 'vicenteemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-26', 'profile_pictures/K1LVtEeG8IIh1RZaYxKSWCDtUDFoaFnynfZDUIJv.jpg', TRUE, 2),
+('Francisco', 'Chico', 'franciscoemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-11-30', 'profile_pictures/X6rPuddaSb616CKoQ7W8tvMil6gicxNonLBpNVDJ.jpg', FALSE, 1),
+('Clara', 'Clara', 'claraemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-06-14', 'profile_pictures/EcibNls9rCYEBMSk0vRQLf5AT8CQkijt1T78ZbYC.jpg', FALSE, 0),
+('Rafael', 'Rafa', 'rafaelemail@fake.com', '$2y$10$BoY72PlgyoVpkCoqNSsBhunULIwdHhPbHOoOQtKATUF7kYGNgOsJy', '2004-12-22', 'profile_pictures/5P31c2m0XosLV5HWAl8gTDXUm0vVmNO6ht9llkev.png', FALSE, 0);
 
 
 INSERT INTO admin (id, admin_start)
@@ -210,7 +210,7 @@ VALUES ('computers', 'all things related to the little machines that we control 
 
 
 INSERT INTO post(body, time_stamp)
-VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-05-31 21:00:00'),
+VALUES ('my computer crashed tooday, it was driving me to school and now i am lost.', '2024-12-21 15:00:00'),
 ('I need help with a windows update, can anyone help me?', '2023-12-27 19:00:00'),
 ('I love biscuits, especially hungaros and belgas. Any suggestions?', '2024-05-31 14:00:00'),
 ('I dont know why my tummy hurts, I ate a lot of cookies this morning but I was hungry and my tummy was hurting, but now it hurts even more!!!! Pleawse HEL?PPP', '2024-03-16 13:31:54'),
@@ -226,11 +226,8 @@ VALUES ('my computer crashed tooday, it was driving me to school and now i am lo
 ('I love all music, but I am a sucker for a good pop song.', '2024-08-28 00:00:00'),
 ('I was asked an interview question where I needed to use it but I have no idea what it is. So in plain english what is the Fast Fourier Transform and how can I use it to find the derivative of a function given its (x, y) values as input?', '2024-12-06 18:00:00');
 
-INSERT INTO post(body, time_stamp, edit_time)
-VALUES ('teste de edit', '2024-08-28 00:00:00', '2024-12-17 22:00:00');
-
 INSERT INTO question(title, urgency, time_end, author_id ,post_id)
-VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
+VALUES ('I need help fixing my computer!!', 'Red', '2024-12-21 18:00:00', 1, 1),
 ('How to install a windows update', 'Orange', '2023-12-28 00:00:00', 5, 2),
 ('Any new biscuit recomendation?', 'Yellow', '2024-06-01 00:00:00', 4, 3),
 ('Why does my tummy hurt?', 'Red', '2024-03-16 16:31:54', 10, 4),
@@ -244,8 +241,7 @@ VALUES ('I need help fixing my computer!!', 'Red', '2024-06-01 00:00:00', 1, 1),
 ('Im flying to Madrid next week', 'Green', '2023-12-31 00:00:00', 3, 12),
 ('Anyone else excited for Primavera Sound?', 'Green', '2024-09-17 00:00:00', 2, 13),
 ('Favorite music genres?', 'Green', '2024-08-29 00:00:00', 7, 14),
-('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15),
-('teste de edit', 'Green', '2024-12-18 22:00:00', 2, 16);
+('What is the Fast Fourier Transform?', 'Green', '2024-12-07 18:00:00', 9, 15);
 
 
 INSERT INTO question_tags(question_id, tag_id)
@@ -263,8 +259,7 @@ VALUES (1, 1),
 (12, 6),
 (13, 7),
 (14, 7),
-(15, 8),
-(16, 4);
+(15, 8);
 
 
 INSERT INTO post(body)
@@ -299,7 +294,12 @@ Fast Fourier Transform is an algorithm to perform a Discrete Fourier Transform t
 There is really no need to go deeper, since the two links I gave provide a pretty clear explanation. And note that its impossible to go from theory to implementation without knowing the math behind it.
 
 I hope this introduction makes some sense!
-');
+'),
+('aaaaaaaaaaa'),
+('bbbbbbbbbbb'),
+('ccccccccccc'),
+('ddddddddddd'),
+('eeeeeeeeeee');
 
 INSERT INTO answer(chosen, question_id, author_id, post_id)
 VALUES (FALSE, 1, 4, 16),
@@ -316,11 +316,37 @@ VALUES (FALSE, 1, 4, 16),
 (TRUE, 12, 9, 27),
 (FALSE, 13, 8, 28),
 (FALSE, 14, 1, 29),
-(FALSE, 15, 11, 30);
+(FALSE, 15, 11, 30),
+(FALSE, 1, 5, 31),
+(FALSE, 1, 6, 32),
+(FALSE, 1, 7, 33),
+(FALSE, 1, 8, 34),
+(FALSE, 1, 9, 35);
 
 
+INSERT INTO popularity_vote(is_positive, user_id, question_id)
+VALUES (true, 2, 1),
+(true, 3, 1),
+(true, 4, 1),
+(true, 5, 1),
+(true, 6, 1),
+(true, 7, 1),
+(true, 8, 1),
+(true, 9, 1);
 
-
+INSERT INTO aura_vote(is_positive, user_id, answer_id)
+VALUES (true, 2, 16),
+(true, 3, 16),
+(true, 4, 16),
+(true, 5, 16),
+(true, 2, 17),
+(true, 3, 17),
+(true, 4, 17),
+(true, 3, 18),
+(true, 4, 18),
+(true, 3, 19),
+(true, 8, 19),
+(true, 3, 20);
 
 CREATE OR REPLACE FUNCTION update_post_edit_time()
     RETURNS TRIGGER AS $$

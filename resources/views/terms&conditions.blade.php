@@ -59,7 +59,7 @@
                 <p class="text-gray-700">Moderators review flagged posts and randomly patrol all questions and feeds. They can issue alerts, remove content, or adjust point balances for violations. Users may become moderators by achieving specific performance metrics.</p>
 
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">J. Time-Limited Questions</h2>
-                <p class="text-gray-700">All questions are open for a maximum of 48 hours (decision up to the question's poster) or until a USEFUL answer is selected. After closure, the post remains accessible but locked for further contributions and votes.</p>
+                <p class="text-gray-700">All questions are open for a maximum of 24 hours (decision up to the question's poster) or until a USEFUL answer is selected. After closure, the post remains accessible but locked for further contributions and votes.</p>
 
                 <h2 class="text-xl font-semibold text-[color:#4E0F35]">K. Prohibited Activities</h2>
                 <p class="text-gray-700">

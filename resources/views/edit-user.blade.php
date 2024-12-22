@@ -13,7 +13,7 @@
     @include('partials.header')
 
     <!-- Floating Side Panel (Left) -->
-    @include('partials.left-panel-edit-profile')
+    @include('partials.left-panel-edit-user')
 
     <!-- Floating Buttons (Right) -->
     @include('partials.right-buttons')
@@ -21,7 +21,7 @@
     <!-- Main Page -->
     <div class="flex-grow flex justify-center pt-20">
         <div class="max-w-4xl mx-auto bg-[color:#C18A8A] p-6 rounded-lg shadow-lg">
-            <h1 class="text-2xl font-bold text-gray-500 mb-6 bg-[color:#4B1414] p-2 rounded-lg shadow-lg">Edit Profile</h1>
+            <h1 class="text-2xl font-bold text-gray-500 mb-6 bg-[color:#4B1414] p-2 rounded-lg shadow-lg">Edit User "{{ $user->nickname }}" </h1>
 
             <!-- Display any errors -->
             @if ($errors->any())
@@ -35,7 +35,7 @@
             @endif
 
             <!-- Edit Profile Form -->
-            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT') <!-- This method is used for PUT requests to update data -->
                 <div class="w-[35rem]">
@@ -59,7 +59,7 @@
                             type="text" 
                             id="name" 
                             name="name" 
-                            value="{{ old('name', Auth::user()->name) }}" 
+                            value="{{ old('name', $user->name) }}" 
                             class="border p-2 rounded w-full" 
                             required
                         />
@@ -72,7 +72,7 @@
                             type="text" 
                             id="nickname" 
                             name="nickname" 
-                            value="{{ old('nickname', Auth::user()->nickname) }}" 
+                            value="{{ old('nickname', $user->nickname) }}" 
                             class="border p-2 rounded w-full" 
                             required
                         />
@@ -85,22 +85,12 @@
                             type="date" 
                             id="birth_date" 
                             name="birth_date" 
-                            value="{{ old('birth_date', Auth::user()->birth_date) }}" 
+                            value="{{ old('birth_date', $user->birth_date) }}" 
                             class="border p-2 rounded w-full" 
                         />
                     </div>
 
                     <div class="flex justify-between">
-                        <!-- Change Password Button -->
-                        <a href="{{ route('password.edit') }}">
-                            <button 
-                                type="button" 
-                                class="bg-red-500 text-white py-2 px-6 rounded-full hover:bg-red-600 w-[11rem]"
-                            >
-                                Change Password
-                            </button>
-                        </a>
-
                         <!-- Save Changes Button -->
                         <button 
                             type="submit" 

@@ -14,7 +14,6 @@ class NotificationController extends Controller
 {
 
     // Report
-
     public function showReportForm($id)
     {
 
@@ -78,7 +77,6 @@ class NotificationController extends Controller
         
 
     // Flag
-
     public function showFlagForm($id)
     {
 
