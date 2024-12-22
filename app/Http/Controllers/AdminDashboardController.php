@@ -120,11 +120,17 @@ class AdminDashboardController extends Controller
         ->orderByDesc('report_count')
         ->get();
     
-    
+        $reports = DB::table('report_notification')
+        ->join('notification', 'report_notification.notification_id', '=', 'notification.id')
+        ->join('post', 'notification.post_id', '=', 'post.id')
+        ->select('post.id as post_id', 'notification.content as content', 'report_notification.report as reason')
+        ->orderBy('post.id')
+        ->get();
+
         // Fetch all users for the dashboard
         $users = User::orderBy('aura', 'desc')->get();
 
-        return view('admin-dashboard-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications'));
+        return view('admin-dashboard-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications', 'reports'));
     }
     
     
