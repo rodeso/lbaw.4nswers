@@ -120,4 +120,33 @@ class AdminDashboardController extends Controller
 
         return redirect()->back();
     }
+
+    public function showEditTag($id)
+    {
+        $this->authorize('moderator');
+
+        $notifications = Controller::getNotifications();
+
+        $tag = Tag::findOrFail($id);
+
+        return view('edit-tag', compact('tag', 'notifications'));
+    }
+    
+    public function updateTag(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $this->authorize('moderator');
+
+        $tag = Tag::findOrFail($id);
+        $tag->name = $request->input('name');
+        $tag->description = $request->input('description');
+        $tag->save();
+
+        return redirect()->route('admin.tags')->with('success', 'Tag updated successfully!');
+    }
+
 }

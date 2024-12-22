@@ -9,17 +9,29 @@
         
                 <span class="px-4 py-2  text-l w-40 mr-4 text-center text-white bg-gray-700 rounded-lg">Followers: {{ $tag->follower_count }}</span>
 
-                <form method="POST" action="{{ route('admin.deleteTag', $tag->id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button 
-                        type="submit" 
-                        class="px-4 py-2 text-l w-24 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                <div class="flex flex-col space-y-2">
+                    <!-- Edit Button -->
+                    <a 
+                        href="{{ route('admin.edit-tags', $tag->id) }}" 
+                        class="px-4 py-2 text-l w-24 text-white bg-blue-500 rounded-lg hover:bg-blue-700 text-center"
                     >
-                        Delete
-                    </button>
-                </form>
+                        Edit
+                    </a>
+                    
+                    <!-- Delete Button -->
+                    <form method="POST" action="{{ route('admin.deleteTag', $tag->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button 
+                            type="submit" 
+                            class="px-4 py-2 text-l w-24 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                        >
+                            Delete
+                        </button>
+                    </form>
 
+                    
+                </div>
             </div>
         </div>
     </section>

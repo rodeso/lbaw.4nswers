@@ -43,6 +43,8 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 Route::get('/admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
 Route::get('/admin/tags', [AdminDashboardController::class, 'tags'])->name('admin.tags');
 Route::get('/admin/posts', [AdminDashboardController::class, 'posts'])->name('admin.posts');
+Route::get('/admin/tag/{id}/edit', [AdminDashboardController::class, 'showEditTag'])->name('admin.edit-tags');
+Route::put('/admin/tag/{id}/update', [AdminDashboardController::class, 'updateTag'])->name('admin.updateTag');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
