@@ -43,6 +43,7 @@
                         <div class="mb-6">
                             <label for="reason" class="block text-white text-sm font-bold mb-2">
                                 Reason for Flagging
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="text" 
@@ -62,6 +63,7 @@
                         <div class="mb-6">
                             <label for="content" class="block text-white text-sm font-bold mb-2">
                                 Notification Content
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <textarea 
                                 name="content" 

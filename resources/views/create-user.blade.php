@@ -43,6 +43,7 @@
                         <div class="mb-6">
                             <label for="nickname" class="block text-white text-sm font-bold mb-2">
                                 Nickname
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="text" 
@@ -60,6 +61,7 @@
                         <div class="mb-6">
                             <label for="name" class="block text-white text-sm font-bold mb-2">
                                 Name
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="text" 
@@ -78,6 +80,7 @@
                         <div class="mb-6">
                             <label for="email" class="block text-white text-sm font-bold mb-2">
                                 Email
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="email" 
@@ -96,6 +99,7 @@
                         <div class="mb-6">
                             <label for="password" class="block text-white text-sm font-bold mb-2">
                                 Password
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="password" 
@@ -114,6 +118,7 @@
                         <div class="mb-6">
                             <label for="password_confirmation" class="block text-white text-sm font-bold mb-2">
                                 Confirm Password
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="password" 
@@ -131,6 +136,7 @@
                         <div class="mb-6">
                             <label for="birth_date" class="block text-white text-sm font-bold mb-2">
                                 Birthday
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="date" 
@@ -149,6 +155,7 @@
                         <div class="mb-6">
                             <label for="aura" class="block text-white text-sm font-bold mb-2">
                                 Aura
+                                <span class="text-[color:#FF006E]">*</span>
                             </label>
                             <input 
                                 type="number" 

@@ -48,7 +48,7 @@
         </div>
         <div class= "mb-6">
             <!-- Urgency Level -->
-            <label for="urgency" class="block text-gray-700 font-bold mb-2">Urgency Level:</label>
+            <label for="urgency" class="block text-gray-700 font-bold mb-2">Urgency Level: <span class="text-[color:#FF006E]">*</span></label>
             <select 
                 name="urgency" 
                 id="urgency" 

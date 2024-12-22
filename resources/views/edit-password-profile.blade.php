@@ -42,7 +42,7 @@
 
                     <!-- Email Section -->
                     <div class="mb-6">
-                        <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+                        <label for="email" class="block text-gray-700 font-bold mb-2">Email <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="text" 
                             id="email" 
@@ -54,7 +54,7 @@
 
                     <!-- Old Password -->
                     <div class="mb-6">
-                        <label for="password" class="block text-gray-700 font-bold mb-2">Old Password</label>
+                        <label for="password" class="block text-gray-700 font-bold mb-2">Old Password <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="password" 
                             id="password" 
@@ -66,7 +66,7 @@
 
                     <!-- New Password -->
                     <div class="mb-6">
-                        <label for="new_password" class="block text-gray-700 font-bold mb-2">New Password</label>
+                        <label for="new_password" class="block text-gray-700 font-bold mb-2">New Password <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="password" 
                             id="new_password" 
@@ -78,7 +78,7 @@
 
                     <!-- Confirm New Password -->
                     <div class="mb-6">
-                        <label for="new_password_confirmation" class="block text-gray-700 font-bold mb-2">Confirm New Password</label>
+                        <label for="new_password_confirmation" class="block text-gray-700 font-bold mb-2">Confirm New Password <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="password" 
                             id="new_password_confirmation" 

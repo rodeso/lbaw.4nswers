@@ -37,13 +37,13 @@
             @csrf
 
             <div class="mb-2">
-                <label for="email" class="block mb-1">Email:</label>
+                <label for="email" class="block mb-1">Email: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-2">
-                <label for="password" class="block mb-1">Password:</label>
+                <label for="password" class="block mb-1">Password: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="password" id="password" name="password" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>

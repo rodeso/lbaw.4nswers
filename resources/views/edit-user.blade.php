@@ -67,7 +67,7 @@
 
                     <!-- Nickname Section -->
                     <div class="mb-6">
-                        <label for="nickname" class="block text-gray-700 font-bold mb-2">Nickname</label>
+                        <label for="nickname" class="block text-gray-700 font-bold mb-2">Nickname <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="text" 
                             id="nickname" 
@@ -80,7 +80,7 @@
 
                     <!-- Birth Date Section -->
                     <div class="mb-6">
-                        <label for="birth_date" class="block text-gray-700 font-bold mb-2">Birth Date</label>
+                        <label for="birth_date" class="block text-gray-700 font-bold mb-2">Birth Date <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="date" 
                             id="birth_date" 

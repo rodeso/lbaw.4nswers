@@ -54,7 +54,7 @@
 
                     <!-- Name Section -->
                     <div class="mb-6">
-                        <label for="name" class="block text-gray-700 font-bold mb-2">Full Name</label>
+                        <label for="name" class="block text-gray-700 font-bold mb-2">Full Name <span class="text-[color:#FF006E]">*</span></label>
                         <input 
                             type="text" 
                             id="name" 

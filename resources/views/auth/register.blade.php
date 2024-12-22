@@ -38,37 +38,37 @@
             @csrf
 
             <div class="mb-2">
-                <label for="name" class="block mb-1">Name:</label>
+                <label for="name" class="block mb-1">Name: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-2">
-                <label for="nickname" class="block mb-1">Nickname:</label>
+                <label for="nickname" class="block mb-1">Nickname: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="text" id="nickname" name="nickname" value="{{ old('nickname') }}"
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-2">
-                <label for="email" class="block mb-1">Email:</label>
+                <label for="email" class="block mb-1">Email: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-2">
-                <label for="password" class="block mb-1">Password:</label>
+                <label for="password" class="block mb-1">Password: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="password" id="password" name="password" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-2">
-                <label for="password_confirmation" class="block mb-1">Confirm Password:</label>
+                <label for="password_confirmation" class="block mb-1">Confirm Password: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
 
             <div class="mb-3">
-                <label for="birth_date" class="block mb-1">Birth Date:</label>
+                <label for="birth_date" class="block mb-1">Birth Date: <span class="text-[color:#FF006E]">*</span></label>
                 <input type="date" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required
                     class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A]">
             </div>
