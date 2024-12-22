@@ -132,7 +132,7 @@ class AdminDashboardController extends Controller
         // Fetch all users for the dashboard
         $users = User::orderBy('aura', 'desc')->get();
 
-        return view('admin-dashboard-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications', 'reports'));
+        return view('admin-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications', 'reports'));
     }
     
     
