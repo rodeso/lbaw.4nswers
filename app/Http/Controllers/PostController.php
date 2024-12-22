@@ -51,14 +51,21 @@ class PostController extends Controller
             return redirect()->route('home')->with('alert', 'Question not found.');
         }
 
-        $sortedAnswers = $question->answers->sortByDesc(function ($answer) {
-            return $answer->aura = PostController::aura($answer->id);
-        });
-        // Calculate aura for each answer
-        foreach ($sortedAnswers as $answer) {
+        // First, calculate aura for each answer
+        foreach ($question->answers as $answer) {
             $answer->aura = PostController::aura($answer->id);
         }
-    
+
+        $sortedAnswers = $question->answers->sortByDesc(function ($answer) {
+            // First, check if the answer is chosen. You can replace `is_chosen` with the actual field or method that determines if it's chosen.
+            if ($answer->chosen) {
+                return PHP_INT_MAX; // Put the chosen answer at the top
+            }
+            // Otherwise, sort by aura
+            return $answer->aura;
+        });
+
+       
         // Tags that user follows
         $user_tags = Auth::user()
             ? Tag::whereIn('id', UserFollowsTag::where('user_id', Auth::user()->id)->pluck('tag_id'))->get()
