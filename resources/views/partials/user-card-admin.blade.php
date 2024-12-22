@@ -18,6 +18,7 @@
                 </a>
                 <div class="absolute right-10 flex">
                     @if (Auth::user()->is_admin)
+
                         @if ($user->is_admin)
                             <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-green-500 rounded-lg">Admin</span>
                         @elseif ($user->is_blocked)
@@ -33,6 +34,7 @@
                                 </button>
                             </form>
                         @endif
+
                         @if ($user->is_admin || $user->is_mod)
                             <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
@@ -40,28 +42,31 @@
                                 @csrf
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 mr-10 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-red-500 rounded-lg hover:bg-red-700"
                                 >
                                     {{ $user->is_blocked ? 'Unblock User' : 'Block User' }}
                                 </button>
                             </form>
                         @endif
+
                         @if ($user->is_admin || $user->is_mod)
                             <span class="px-4 py-2 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
-                            <form action="{{ route('user.delete', $user->id) }}" method="POST" class="w-full">
+                            <form action="{{ route('user.delete', $user->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button 
                                     type="submit" 
-                                    class="px-4 py-2 text-l w-36 text-white bg-red-500 rounded-lg hover:bg-red-700"
+                                    class="px-4 py-2 text-l w-36 text-center text-white bg-red-500 rounded-lg hover:bg-red-700"
                                     onclick="return confirm('Are you sure you want to delete this account? This action cannot be undone.')"
                                 >
                                     Delete
                                 </button>
                             </form>     
                         @endif
+
                     @elseif (!Auth::user()->is_admin && Auth::user()->is_mod)
+
                         @if ($user->is_admin)
                             <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-green-500 rounded-lg">Admin</span>
                         @elseif ($user->is_mod)
@@ -69,6 +74,7 @@
                         @else
                             <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @endif
+
                         @if ($user->is_admin || $user->is_mod)
                             <span class="px-4 py-2 mr-10 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                         @else
@@ -82,6 +88,7 @@
                                 </button>
                             </form>
                         @endif
+
                         <span class="px-4 py-2 text-l w-36 text-center text-white bg-gray-700 rounded-lg">Not Available</span>
                     @endif
                 </div>
