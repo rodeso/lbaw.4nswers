@@ -37,6 +37,7 @@
                 rows="4" 
                 class="w-full p-2 border-2 border-[color:#4B1414] rounded-md focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-[color:#C18A8A] text-black bg-gray-100"
                 placeholder="Provide details about the tag..."
+                required
             >{{ $tag->description }}</textarea>
         </div>
 
