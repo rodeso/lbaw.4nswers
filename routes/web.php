@@ -40,14 +40,14 @@ Route::get('/foryou', [ForYouController::class, 'index'])->name('foryou');
 Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-of-fame');
 
 // Admin Dashboard
-Route::get('/admin-dashboard/users', [AdminDashboardController::class, 'users'])->name('admin-dashboard.users');
-Route::get('/admin-dashboard/tags', [AdminDashboardController::class, 'tags'])->name('admin-dashboard.tags');
-Route::get('/admin-dashboard/posts', [AdminDashboardController::class, 'posts'])->name('admin-dashboard.posts');
+Route::get('/admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
+Route::get('/admin/tags', [AdminDashboardController::class, 'tags'])->name('admin.tags');
+Route::get('/admin/posts', [AdminDashboardController::class, 'posts'])->name('admin.posts');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
 
-Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin-dashboard.deleteTag');
+Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin.deleteTag');
 
 // Terms & Conditions
 Route::get('/terms', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');

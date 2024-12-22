@@ -213,7 +213,7 @@ paths:
               schema:
                 type: string
                 description: "The HTML content of the urgent questions page."
-  /admin-dashboard/users:
+  /admin/users:
     get:
       summary: "User Management"
       description: "View and manage user accounts. Access: ADM"
@@ -227,7 +227,7 @@ paths:
               schema:
                 type: string
                 description: "The HTML content of the user management dashboard."
-  /admin-dashboard/posts:
+  /admin/posts:
     get:
       summary: "Post Management"
       description: "View and manage questions and answers. Access: ADM"
@@ -241,7 +241,7 @@ paths:
               schema:
                 type: string
                 description: "The HTML content of the post management dashboard."
-  /admin-dashboard/tags:
+  /admin/tags:
     get:
       summary: "Tag Management"
       description: "View and manage tags. Access: ADM"

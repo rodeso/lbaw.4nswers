@@ -95,13 +95,13 @@
                                     Admin Dashboard
                                 </li>
                                 <ul id="adminDropdown" class="hidden ml-4 space-y-2">
-                                    <a href="{{ route('admin-dashboard.users') }}">
+                                    <a href="{{ route('admin.users') }}">
                                         <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Users</li>
                                     </a>
-                                    <a href="{{ route('admin-dashboard.posts') }}">
+                                    <a href="{{ route('admin.posts') }}">
                                         <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Posts</li>
                                     </a>
-                                    <a href="{{ route('admin-dashboard.tags') }}">
+                                    <a href="{{ route('admin.tags') }}">
                                         <li class="text-[color:#C18A8A] py-2 hover:bg-gray-700 hover:text-[color:#FF006E] px-4 rounded">Manage Tags</li>
                                     </a>
                                 </ul>
@@ -235,7 +235,7 @@
                                                 Report: {{ $notification->report }}
                                             </div>                                         
                                             <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->question_id]) }}" >Go to Question.</a><br>
-                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" >Go to Posts' Dashboard.</a>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin.posts') }}" >Go to Posts' Dashboard.</a>
                                         @elseif ($notification->answer_question_id)
                                             <div class="text-sm text-black mb-3 break-words">
                                                 On the answer: "{{ $notification->post_body }}"
@@ -244,7 +244,7 @@
                                                 Report: {{ $notification->report }}
                                             </div>
                                             <a class="font-bold text-[color:#4B1414]" href="{{ route('question.show', ['id' => $notification->answer_question_id]) }}" >Go to Answer.</a><br>
-                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" >Go to Posts' Dashboard.</a>
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin.posts') }}" >Go to Posts' Dashboard.</a>
                                         @elseif ($notification->comment_question_id)
                                             <div class="text-sm text-black mb-3 break-words">
                                                 On the comment: "{{ $notification->post_body }}"
@@ -253,7 +253,7 @@
                                                 Report: {{ $notification->report }}
                                             </div>
                                             <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('question.show', ['id' => $notification->comment_question_id]) }}" >Go to Comment.</a><br>
-                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin-dashboard.posts') }}" >Go to Posts' Dashboard.</a>                    
+                                            <a class="font-bold text-[color:#4B1414] break-words" href="{{ route('admin.posts') }}" >Go to Posts' Dashboard.</a>                    
                                         @endif
                                         <div class="text-sm text-black">
                                             {{ $notification->time_stamp->diffForHumans() }}

@@ -422,7 +422,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('admin-dashboard.users')->with('success', 'User created successfully!');
+        return redirect()->route('admin.users')->with('success', 'User created successfully!');
 
     }
 }

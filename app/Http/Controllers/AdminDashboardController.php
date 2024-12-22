@@ -29,7 +29,7 @@ class AdminDashboardController extends Controller
         
         $users = User::orderBy('aura', 'desc')->get();
 
-        return view('admin-dashboard-users', compact('user', 'users', 'notifications'));
+        return view('admin-users', compact('user', 'users', 'notifications'));
     }
 
     public function tags() 
@@ -44,11 +44,11 @@ class AdminDashboardController extends Controller
         
         $notifications = Controller::getNotifications();
 
-        $users = User::orderBy('aura', 'desc')->get();~
+        $users = User::orderBy('aura', 'desc')->get();
 
         $tags = Tag::orderBy('follower_count', 'desc')->get();
 
-        return view('admin-dashboard-tags', compact('user', 'users', 'tags', 'notifications'));
+        return view('admin-tags', compact('user', 'users', 'tags', 'notifications'));
     }
 
     public function posts() 
@@ -107,7 +107,7 @@ class AdminDashboardController extends Controller
         // Fetch all users for the dashboard
         $users = User::orderBy('aura', 'desc')->get();
     
-        return view('admin-dashboard-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications'));
+        return view('admin-posts', compact('user', 'users', 'questions', 'answers', 'comments', 'notifications'));
     }
     
     public function deleteTag($id) {
