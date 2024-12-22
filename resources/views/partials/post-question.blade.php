@@ -155,11 +155,15 @@
                         @if (auth()->id() === $question->author->id)
                             <!-- Actions for the Author of the Question -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <a href="{{ route('question.edit', $question->id) }}">Edit Question</a>
+                                <form action="{{ route('question.edit', $question->id) }}" method="GET">
+                                    <button type="submit" class="block w-full text-left">Edit Question</button>
+                                </form>
                             </li>
                             <!-- Edit Tags -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
+                                <form action="{{ route('question.edit-tags', $question->id) }}" method="GET">
+                                    <button type="submit" class="block w-full text-left">Edit Tags</button>
+                                </form>
                             </li>
 
                             @if (!$question->closed)
@@ -176,79 +180,57 @@
                                     <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit">Delete Question</button>
+                                        <button type="submit" class="block w-full text-left">Delete Question</button>
                                     </form>
                                 </li>
                             @endif
                         @endif
 
-                        
                         <!-- Actions for Moderators -->
                         @if (auth()->user()->is_mod)
                             @if (auth()->id() !== $question->author->id)
                                 <!-- Edit Tags button for moderators -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                    <a href="{{ route('question.edit-tags', $question->id) }}">Edit Tags</a>
+                                    <form action="{{ route('question.edit-tags', $question->id) }}" method="GET">
+                                        <button type="submit" class="block w-full text-left">Edit Tags</button>
+                                    </form>
                                 </li>
                                 <!-- Flag Post -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                    <a 
-                                        href="{{ route('posts.flag', $question->post_id) }}" 
-                                        class="block text-white"
-                                        title="Flag this question for moderation"
-                                    >
-                                        Flag This Question
-                                    </a>
+                                    <form action="{{ route('posts.flag', $question->post_id) }}" method="GET">
+                                        <button type="submit" class="block w-full text-left">Flag This Question</button>
+                                    </form>
                                 </li>
                                 <!-- Delete Flag -->
                                 @if ($question->post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
                                     <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                        <form 
-                                            action="{{ route('posts.flag.delete', $question->post->id) }}" 
-                                            method="POST" 
-                                            onsubmit="return confirm('Are you sure you want to delete this flag?');"
-                                        >
+                                        <form action="{{ route('posts.flag.delete', $question->post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this flag?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button 
-                                                type="submit" 
-                                                class="block text-white w-full text-left"
-                                            >
-                                                Delete Flag
-                                            </button>
+                                            <button type="submit" class="block text-white w-full text-left">Delete Flag</button>
                                         </form>
                                     </li>
                                 @endif
                             @endif
                             <!-- Delete button for moderators --> 
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <form 
-                                    action="{{ route('question.delete', $question->id) }}" 
-                                    method="POST" 
-                                    onsubmit="return confirm('Are you sure you want to delete this question?');"
-                                >
+                                <form action="{{ route('question.delete', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this question?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button 
-                                        type="submit" 
-                                        class="block text-white w-full text-left"
-                                    >
-                                        Delete Question
-                                    </button>
+                                    <button type="submit" class="block text-white w-full text-left">Delete Question</button>
                                 </form>
                             </li>
                         @endif
                         @if (!auth()->user()->is_mod && auth()->id() !== $question->author->id)
                             <!-- Actions for Regular Users -->
                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                            <a 
-                                href="{{ route('posts.report', $question->post_id) }}" 
-                                class="block text-white"
-                                title="Report this question for moderation"
-                            >Report Question</a>
+                                <form action="{{ route('posts.report', $question->post_id) }}" method="GET">
+                                    <button type="submit" class="block w-full text-left">Report Question</button>
+                                </form>
                             </li>
                         @endif
                     </ul>
+
                 </div>
             </div>
         @endauth
