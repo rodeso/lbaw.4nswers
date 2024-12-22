@@ -683,7 +683,7 @@ class PostController extends Controller
         return redirect()->route('question.show', $comment->answer->question->id)->with('success', 'Comment updated successfully!');
     }
 
-    private function finalizeQuestionClosure($question)
+    public function finalizeQuestionClosure($question)
     {   
         // Get the question's author ID
         $questionAuthorId = $question->author_id;
