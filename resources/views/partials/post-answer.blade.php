@@ -176,14 +176,16 @@
                             @if (auth()->id() === $answer->author->id)
                                 <!-- Actions for the Author of the Answer -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-gray-700 rounded">
-                                    <a href="{{ route('answer.edit', $answer->id) }}">Edit Answer</a>
+                                    <form action="{{ route('answer.edit', $answer->id) }}" method="GET">
+                                        <button type="submit" class="block w-full text-left">Edit Answer</button>
+                                    </form>
                                 </li>
                                 @if (!$answer->chosen && !auth()->user()->is_mod)
                                     <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit">Delete Answer</button>
+                                            <button type="submit" class="block w-full text-left">Delete Answer</button>
                                         </form>
                                     </li>
                                 @endif
@@ -194,7 +196,7 @@
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                     <form action="{{ route('question.chooseAnswer', ['questionId' => $question->id, 'answerId' => $answer->id]) }}" method="POST">
                                         @csrf
-                                        <button type="submit">Choose this answer</button>
+                                        <button type="submit" class="block w-full text-left">Choose this answer</button>
                                     </form>
                                 </li>
                             @endif
@@ -202,11 +204,9 @@
                             @if (!auth()->user()->is_mod && auth()->id() !== $answer->author->id)
                                 <!-- Actions for Regular Users -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                <a 
-                                    href="{{ route('posts.report', $answer->post_id) }}" 
-                                    class="block text-white"
-                                    title="Report this answer for moderation"
-                                >Report Answer</a>
+                                    <form action="{{ route('posts.report', $answer->post_id) }}" method="GET">
+                                        <button type="submit" class="block w-full text-left">Report Answer</button>
+                                    </form>
                                 </li>
                             @endif
 
@@ -215,30 +215,17 @@
                                 @if (auth()->id() !== $answer->author->id)
                                     <!-- Flag Answer -->
                                     <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                        <a 
-                                            href="{{ route('posts.flag', $answer->post_id) }}" 
-                                            class="block text-white"
-                                            title="Flag this answer for moderation"
-                                        >
-                                            Flag This Answer
-                                        </a>
+                                        <form action="{{ route('posts.flag', $answer->post_id) }}" method="GET">
+                                            <button type="submit" class="block w-full text-left">Flag This Answer</button>
+                                        </form>
                                     </li>
                                     <!-- Delete Flag Button -->
                                     @if ($answer->post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <form 
-                                                action="{{ route('posts.flag.delete', $answer->post->id) }}" 
-                                                method="POST" 
-                                                onsubmit="return confirm('Are you sure you want to delete this flag?');"
-                                            >
+                                            <form action="{{ route('posts.flag.delete', $answer->post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this flag?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button 
-                                                    type="submit" 
-                                                    class="block text-white w-full text-left"
-                                                >
-                                                    Delete Flag
-                                                </button>
+                                                <button type="submit" class="block text-white w-full text-left">Delete Flag</button>
                                             </form>
                                         </li>
                                     @endif
@@ -246,28 +233,17 @@
 
                                 <!-- Delete Answer -->
                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                    <form 
-                                        action="{{ route('answer.delete', $answer->id) }}" 
-                                        method="POST" 
-                                        onsubmit="return confirm('Are you sure you want to delete this answer?');"
-                                    >
+                                    <form action="{{ route('answer.delete', $answer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this answer?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button 
-                                            type="submit" 
-                                            class="block text-white w-full text-left"
-                                        >
-                                            Delete Answer
-                                        </button>
+                                        <button type="submit" class="block text-white w-full text-left">Delete Answer</button>
                                     </form>
                                 </li>
                             @endif
-                            
                         </ul>
                     </div>
                 </div>
             @endauth
-            <!-- JavaScript to toggle the menu -->
         </div>
         <!-- Highlight for chosen answer -->
         @if($answer->chosen)

@@ -8,6 +8,7 @@
     <title>4NSWERS - Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{ asset('js/profile.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 relative">
 
@@ -21,40 +22,35 @@
 
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
+
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Posts Section -->
-            <section class="w-3/5 space-y-8 grid place-items-center h-full text-black">
-                <h1 id="questions" class="text-2xl font-bold w-[800px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Questions:</h1>
-                @foreach($questions as $question)
-                    <div class="card">
-                        <div class="card-body">
-                            <h3>{{ $question->title }}</h3>
-                            <p>{{ $question->post_body }}</p>
-                            <p><strong>Urgency:</strong> {{ $question->urgency }}</p>
-                            <p><strong>End Time:</strong> {{ $question->time_end }}</p>
-                            <p>Number of Reports: {{ $question->report_count }}</p>
-                        </div>
-                    </div>
-                @endforeach
-                <h1 id="answers" class="text-2xl font-bold w-[800px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Answers:</h1>
-                @foreach($answers as $answer)
-                    <div class="card">
-                        <div class="card-body">
-                            <p>{{ $answer->post_body }}</p>
-                            <p><strong>Related Question ID:</strong> {{ $answer->question_id }}</p>
-                        </div>
-                    </div>
-                @endforeach
-                <h1 id="comments" class="text-2xl font-bold w-[800px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Comments:</h1>
-                @foreach($comments as $comment)
-                    <div class="card">
-                        <div class="card-body">
-                            <p>{{ $comment->post_body }}</p>
-                            <p><strong>Related Answer ID:</strong> {{ $comment->answer_id }}</p>
-                        </div>
-                    </div>
-                @endforeach
+            <section class="w-3/5 space-y-8">
+                <h1 id="questions" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Questions:</h1>
+                @if($questions->isNotEmpty())
+                    @foreach($questions as $question)
+                        @include('partials.reported-question')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported questions yet!</p>
+                @endif
+                <h1 id="answers" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Answers:</h1>
+                @if($answers->isNotEmpty())
+                    @foreach($answers as $answer)
+                        @include('partials.reported-answer')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported answers yet!</p>
+                @endif
+                <h1 id="comments" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Comments:</h1>
+                @if($comments->isNotEmpty())
+                    @foreach($comments as $comment)
+                        @include('partials.reported-comment')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported comments yet!</p>
+                @endif
             </section>
         </main>
         

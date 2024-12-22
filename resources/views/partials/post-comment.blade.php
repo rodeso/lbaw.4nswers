@@ -46,7 +46,9 @@
                                     @if (auth()->id() === $comment->author->id)
                                         <!-- Actions for the Comment Author -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                            <a href="{{ route('comment.edit', $comment->id) }}">Edit Comment</a>
+                                            <form action="{{ route('comment.edit', $comment->id) }}" method="GET">
+                                                <button type="submit" class="block w-full text-left">Edit Comment</button>
+                                            </form>
                                         </li>
                                         @if (!auth()->user()->is_mod)
                                             <!-- Only non-moderators see this delete button -->
@@ -54,7 +56,7 @@
                                                 <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit">Delete Comment</button>
+                                                    <button type="submit" class="block w-full text-left">Delete Comment</button>
                                                 </form>
                                             </li>
                                         @endif
@@ -65,30 +67,17 @@
                                         @if (auth()->id() !== $comment->author->id)
                                             <!-- Flag Comment -->
                                             <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                                <a 
-                                                    href="{{ route('posts.flag', $comment->post_id) }}" 
-                                                    class="block text-white"
-                                                    title="Flag this comment for moderation"
-                                                >
-                                                    Flag This Comment
-                                                </a>
+                                                <form action="{{ route('posts.flag', $comment->post_id) }}" method="GET">
+                                                    <button type="submit" class="block w-full text-left">Flag This Comment</button>
+                                                </form>
                                             </li>
                                             <!-- Delete Flag Button -->
                                             @if ($comment->post->notifications->where('type', \App\Models\ModeratorNotification::class)->isNotEmpty())
                                                 <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                                    <form 
-                                                        action="{{ route('posts.flag.delete', $comment->post->id) }}" 
-                                                        method="POST" 
-                                                        onsubmit="return confirm('Are you sure you want to delete this flag?');"
-                                                    >
+                                                    <form action="{{ route('posts.flag.delete', $comment->post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this flag?');">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button 
-                                                            type="submit" 
-                                                            class="block text-white w-full text-left"
-                                                        >
-                                                            Delete Flag
-                                                        </button>
+                                                        <button type="submit" class="block text-white w-full text-left">Delete Flag</button>
                                                     </form>
                                                 </li>
                                             @endif
@@ -98,24 +87,21 @@
                                             <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit">Delete Comment</button>
+                                                <button type="submit" class="block w-full text-left">Delete Comment</button>
                                             </form>
                                         </li>
                                     @endif
 
-
                                     @if (!auth()->user()->is_mod && auth()->id() !== $comment->author->id)
                                         <!-- Actions for Regular Users -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
-                                        <a 
-                                        href="{{ route('posts.report', $question->post_id) }}" 
-                                        class="block text-white"
-                                        title="Report this question for moderation"
-                                        >
-                                            Report Comment</a>
+                                            <form action="{{ route('posts.report', $comment->post->id) }}" method="GET">
+                                                <button type="submit" class="block w-full text-left">Report Comment</button>
+                                            </form>
                                         </li>
                                     @endif
                                 </ul>
+
                             </div>
                         </div>
                     @endauth

@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (results.length > 0) {
                     searchResults.classList.remove("hidden");
+
                     results.forEach(result => {
                         const resultItem = document.createElement("div");
                         resultItem.className = "py-2 border-b border-gray-300";
@@ -75,13 +76,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                         searchResults.appendChild(resultItem);
                     });
                 } else {
-                    searchResults.classList.add("hidden");
+                    // No results found, show "No results" message
+                    searchResults.classList.remove("hidden");
+                    searchResults.innerHTML = `<p class="py-4 text-center text-gray-500">No results found.</p>`;
                 }
             } catch (error) {
                 console.error("Error fetching search results:", error);
             }
         }, 300); // Debounce delay
     };
+
 
     // Fetch tags on page load
     await fetchTags();
