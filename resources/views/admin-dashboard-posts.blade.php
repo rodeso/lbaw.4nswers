@@ -21,22 +21,35 @@
 
         <!-- Floating Buttons (Right) -->
         @include('partials.right-buttons')
+
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-20">
             <!-- Centered Posts Section -->
-            <section class="w-3/5 space-y-8 grid place-items-center h-full text-black">
-                <h1 id="questions" class="text-2xl font-bold text-white w-[800px] bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Questions:</h1>
-                @foreach($questions as $question)
-                    @include('partials.reported-question')
-                @endforeach
-                <h1 id="answers" class="text-2xl font-bold text-white w-[800px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Answers:</h1>
-                @foreach($answers as $answer)
-                    @include('partials.reported-answer')
-                @endforeach
-                <h1 id="comments" class="text-2xl font-bold text-white w-[800px] mt-8 bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Comments:</h1>
-                @foreach($comments as $comment)
-                    @include('partials.reported-comment')
-                @endforeach
+            <section class="w-3/5 space-y-8">
+                <h1 id="questions" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Questions:</h1>
+                @if($questions->isNotEmpty())
+                    @foreach($questions as $question)
+                        @include('partials.reported-question')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported questions yet!</p>
+                @endif
+                <h1 id="answers" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Answers:</h1>
+                @if($answers->isNotEmpty())
+                    @foreach($answers as $answer)
+                        @include('partials.reported-answer')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported answers yet!</p>
+                @endif
+                <h1 id="comments" class="text-2xl font-bold text-white bg-[color:#4B1414] p-3 rounded-lg shadow-lg">Reported Comments:</h1>
+                @if($comments->isNotEmpty())
+                    @foreach($comments as $comment)
+                        @include('partials.reported-comment')
+                    @endforeach
+                @else
+                    <p class="text-lg font-bold text-[color:#4B1414] p-3 rounded-lg">No reported comments yet!</p>
+                @endif
             </section>
         </main>
         

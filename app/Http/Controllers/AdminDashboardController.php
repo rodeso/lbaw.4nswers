@@ -70,8 +70,20 @@ class AdminDashboardController extends Controller
             ->join('report_notification', 'notification.id', '=', 'report_notification.notification_id')
             ->select('question.*', 'post.body as post_body', DB::raw('COUNT(report_notification.notification_id) as report_count'))
             ->groupBy('question.id', 'post.id')
+            ->withCount([
+                'popularityVotes as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'popularityVotes as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
             ->orderByDesc('report_count')
             ->get();
+        
+        foreach ($questions as $question) {
+            $question->vote_difference = $question->positive_votes - $question->negative_votes;
+        }
     
         // Fetch all reported answers with author and reports
         $answers = Answer::with(['author', 'post'])
@@ -80,18 +92,34 @@ class AdminDashboardController extends Controller
             ->join('report_notification', 'notification.id', '=', 'report_notification.notification_id')
             ->select('answer.*', 'post.body as post_body', DB::raw('COUNT(report_notification.notification_id) as report_count'))
             ->groupBy('answer.id', 'post.id')
+            ->withCount([
+                'auraVote as positive_votes' => function ($query) {
+                    $query->where('is_positive', true);
+                },
+                'auraVote as negative_votes' => function ($query) {
+                    $query->where('is_positive', false);
+                },
+            ])
             ->orderByDesc('report_count')
             ->get();
-    
+        
+        foreach ($answers as $answer) {
+            $answer->vote_difference = $answer->positive_votes - $answer->negative_votes;
+        }
         // Fetch all reported comments with author and reports
         $comments = Comment::with(['author', 'post'])
-            ->join('post', 'comment.post_id', '=', 'post.id')
-            ->join('notification', 'post.id', '=', 'notification.post_id')
-            ->join('report_notification', 'notification.id', '=', 'report_notification.notification_id')
-            ->select('comment.*', 'post.body as post_body', DB::raw('COUNT(report_notification.notification_id) as report_count'))
-            ->groupBy('comment.id', 'post.id')
-            ->orderByDesc('report_count')
-            ->get();
+        ->join('post', 'comment.post_id', '=', 'post.id')
+        ->join('notification', 'post.id', '=', 'notification.post_id')
+        ->join('report_notification', 'notification.id', '=', 'report_notification.notification_id')
+        ->select(
+            'comment.*', 
+            'post.body as post_body', 
+            DB::raw('COUNT(report_notification.notification_id) as report_count')
+        )
+        ->groupBy('comment.id', 'post.id', 'post.body') // Include all selected fields
+        ->orderByDesc('report_count')
+        ->get();
+    
     
         // Fetch all users for the dashboard
         $users = User::orderBy('aura', 'desc')->get();

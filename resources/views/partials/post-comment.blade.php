@@ -108,7 +108,7 @@
                                         <!-- Actions for Regular Users -->
                                         <li class="w-full text-left px-4 py-2 hover:bg-[color:#FF006E] rounded">
                                         <a 
-                                        href="{{ route('posts.report', $question->post_id) }}" 
+                                        href="{{ route('posts.report', $comment->post->id) }}" 
                                         class="block text-white"
                                         title="Report this question for moderation"
                                         >
