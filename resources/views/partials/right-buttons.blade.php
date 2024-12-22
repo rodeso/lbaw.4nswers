@@ -10,16 +10,20 @@
     </li>
     @auth
     <li>
-        <button class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
-            <a href=" {{ route('new-question') }}">Post a Question</a>
-        </button>
+        <form action="{{ route('new-question') }}" method="GET" style="display: inline;">
+            <button type="submit" class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
+                Post a Question
+            </button>
+        </form>
     </li>
     @endauth
     @guest
     <li>
-        <button class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
-            <a href="/login">Login to Post</a>
-        </button>
+        <form action="{{ route('login') }}" method="GET" style="display: inline;">
+            <button type="submit" class="bg-[color:#4B1414] hover:bg-[color:#4B1414] text-white px-4 py-2 rounded-md w-full text-sm">
+                Login to Post
+            </button>
+        </form>
     </li>
     @endguest
 </ul>
