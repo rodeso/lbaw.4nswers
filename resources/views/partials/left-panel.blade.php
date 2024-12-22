@@ -56,6 +56,7 @@
         <div class="absolute top-0 left-0 h-full w-1 bg-[color:#C18A8A] rounded"></div>
         @if (Auth::check() && !$user_tags->isEmpty())
             <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">Subscribed Tags</h4>
+                <ul>
                 @foreach ($user_tags as $tag)
                     <li class="list-none">
                         <a href="{{ route('tag', ['id' => $tag->id]) }}" class="font-bold mb-4 text-[color:#C18A8A] pl-4">
@@ -63,6 +64,7 @@
                         </a>
                     </li>
                 @endforeach
+                </ul>
         @elseif (Auth::check())
             <h4 class="font-bold mb-4 text-[color:#C18A8A] pl-4">No Tags Subscribed</h4>
         @else
