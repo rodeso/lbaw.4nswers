@@ -24,7 +24,7 @@
         <!-- Main Layout -->
         <main class="flex-grow flex justify-center pt-16">
             <section class="w-3/5 space-y-8">
-                @include('partials.edit-tag-card-admin')
+                @include('partials.editing-tag')
             </section>
         </main>
         

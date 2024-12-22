@@ -785,6 +785,60 @@ paths:
               schema:
                 type: string
                 description: "The HTML content of the tag page."
+  /tags/{id}/edit:
+    get:
+      summary: "Edit Tag"
+      description: "Provide a form to edit a tag. Access: ADM"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Edit Tag Form"
+          content:
+            text/html:
+              schema:
+                type: string
+                description: "The HTML content of the edit tag form."
+  /tags/{id}/update:
+    put:
+      summary: "Update Tag"
+      description: "Process the edit tag form. Access: ADM"
+      tags:
+        - "M06: Tags Management"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+      responses:
+        '302':
+          description: "Redirect after tag update."
+          headers:
+            Location:
+              schema:
+                type: string
+  /tags/{id}/delete:              
     delete:
       summary: "Delete Tag"
       description: "Delete a tag. Access: ADM"

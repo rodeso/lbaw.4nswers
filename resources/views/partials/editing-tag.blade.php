@@ -12,7 +12,7 @@
         </div>
     </header>
 
-    <form action="{{ route('admin.updateTag', $tag->id) }}" method="POST">
+    <form action="{{ route('tag.update', $tag->id) }}" method="POST">
         @csrf
         @method('PUT')
 

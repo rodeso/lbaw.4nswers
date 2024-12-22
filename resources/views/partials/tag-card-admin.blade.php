@@ -12,14 +12,14 @@
                 <div class="flex flex-col space-y-2">
                     <!-- Edit Button -->
                     <a 
-                        href="{{ route('admin.edit-tags', $tag->id) }}" 
+                        href="{{ route('tag.edit', $tag->id) }}" 
                         class="px-4 py-2 text-l w-24 text-white bg-blue-500 rounded-lg hover:bg-blue-700 text-center"
                     >
                         Edit
                     </a>
                     
                     <!-- Delete Button -->
-                    <form method="POST" action="{{ route('admin.deleteTag', $tag->id) }}">
+                    <form method="POST" action="{{ route('tag.delete', $tag->id) }}">
                         @csrf
                         @method('DELETE')
                         <button 

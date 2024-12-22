@@ -43,13 +43,13 @@ Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])->name('hall-
 Route::get('/admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
 Route::get('/admin/tags', [AdminDashboardController::class, 'tags'])->name('admin.tags');
 Route::get('/admin/posts', [AdminDashboardController::class, 'posts'])->name('admin.posts');
-Route::get('/admin/tag/{id}/edit', [AdminDashboardController::class, 'showEditTag'])->name('admin.edit-tags');
-Route::put('/admin/tag/{id}/update', [AdminDashboardController::class, 'updateTag'])->name('admin.updateTag');
 
 Route::post('/user/{id}/toggle-mod', [UserController::class, 'toggleMod'])->name('user.toggleMod');
 Route::post('/user/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('user.toggleBlock');
 
-Route::delete('/tags/{id}', [AdminDashboardController::class, 'deleteTag'])->name('admin.deleteTag');
+Route::get('/tags/{id}/edit', [AdminDashboardController::class, 'showEditTag'])->name('tag.edit');
+Route::put('/tags/{id}/update', [AdminDashboardController::class, 'updateTag'])->name('tag.update');
+Route::delete('/tags/{id}/delete', [AdminDashboardController::class, 'deleteTag'])->name('tag.delete');
 
 // Terms & Conditions
 Route::get('/terms', [TermsConditionsController::class, 'index'])->name('terms-and-conditions');
@@ -108,8 +108,9 @@ Route::delete('/answers/{id}/delete', [PostController::class, 'deleteAnswer'])->
 
 // Edit Comment
 Route::get('/comments/{id}/edit', [PostController::class, 'showEditComment'])->name('comment.edit');
-Route::delete('/comments/{id}/delete', [PostController::class, 'deleteComment'])->name('comment.delete');
 Route::put('/comments/{id}/update', [PostController::class, 'updateComment'])->name('comment.update');
+Route::delete('/comments/{id}/delete', [PostController::class, 'deleteComment'])->name('comment.delete');
+
 
 // Posting Question
 Route::post('/questions', [PostController::class, 'storeQuestion'])->name('question.store');
