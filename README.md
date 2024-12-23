@@ -30,7 +30,7 @@ docker login gitlab.up.pt:5050
 docker run -d --name lbaw24112 -p 8001:80 gitlab.up.pt:5050/lbaw/lbaw2425/lbaw24112
 ```
 
-### Or alternatively locally
+### Or alternatively, run it locally
 
 ```bash
 git clone https://github.com/rodeso/lbaw.4nswers/
