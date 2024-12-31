@@ -16,7 +16,8 @@
     - Leonor Couto (up202205796@fe.up.pt)
     - Pedro Santos (up202205900@fe.up.pt)
     - Rodrigo de Sousa (up202205751@fe.up.pt)
-  
+
+[YouTube](https://youtu.be/0Zd8gBMzRcQ)
 ---
 
 ## Instructions to run the project
