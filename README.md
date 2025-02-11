@@ -10,7 +10,7 @@
 - **Tools:** Laravel, Tailwind
 - **Institution:** [FEUP](https://sigarra.up.pt/feup/en/web_page.Inicial)
 - **Course:** [LBAW](https://sigarra.up.pt/feup/en/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=541888) (Database and Web Applications Laboratory)
-- **Project grade:** TBD
+- **Project grade:** 16
 - **Group members:**
     - Afonso Castro (up202208026@fe.up.pt)
     - Leonor Couto (up202205796@fe.up.pt)
